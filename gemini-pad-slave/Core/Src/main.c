@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "tim.h"
 #include "usart.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -127,6 +128,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_USB_Device_Init();
   MX_TIM6_Init();
   MX_TIM7_Init();
   MX_ADC1_Init();

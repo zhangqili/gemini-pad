@@ -15,6 +15,8 @@
 #include "string.h"
 #include "fezui_config.h"
 
+extern uint8_t fezui_invert;
+
 void fezui_timer_handler();
 void fezui_init();
 
@@ -37,6 +39,8 @@ void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t
         u8g2_uint_t h, lefl_loop_array_t *arr, lefl_bit_array_t *l);
 void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
+void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
+        u8g2_uint_t h, uint8_t level, uint8_t color);
 
 typedef struct __fezui_tile
 {

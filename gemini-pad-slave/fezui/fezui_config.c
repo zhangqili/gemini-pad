@@ -120,7 +120,7 @@ void fezui_draw_cursor(lefl_cursor_t*c)
 {
     u8g2_SetDrawColor(&u8g2, 2);
     u8g2_DrawBox(&u8g2, c->x, c->y, c->w, c->h);
-    u8g2_SetDrawColor(&u8g2, 1);
+    u8g2_SetDrawColor(&u8g2, !fezui_invert);
 }
 
 void fezui_menu_update_selection(lefl_menu_t *menu)

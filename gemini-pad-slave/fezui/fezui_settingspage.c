@@ -1,0 +1,72 @@
+/*
+ * fezui_settingspage.c
+ *
+ *  Created on: 2023年6月19日
+ *      Author: xq123
+ */
+#include "fezui.h"
+lefl_menu_t settingsmenu = {
+    .items = {"Keys Configuration","Calibration","Debug","About"},
+    .selected_index = 0,
+    .len = 4,
+    .menu_cb = settings_menu_cb
+};
+lefl_page_t settingspage={settingspage_logic,settingspage_draw,settingspage_load};
+void settingspage_logic(lefl_page_t *page)
+{
+
+    //fezui_menu_update_selection(&settingsmenu);
+    /*
+    if(lefl_key_is_triggered(keys+2))
+    {
+        lefl_link_frame_go_back(&mainframe);
+    }
+    if(lefl_key_is_triggered(keys+3))
+    {
+        lefl_menu_click(&settingsmenu);
+    }
+    */
+    lefl_cursor_set(&target_cursor, 3,
+            settingsmenu.selected_index * ITEM_HEIGHT + 3,
+            strlen(settingsmenu.items[settingsmenu.selected_index]) * 6 + 6,
+            ITEM_HEIGHT);
+}
+void settingspage_draw(lefl_page_t *page)
+{
+    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    for(uint8_t i=0;i<settingsmenu.len;i++)
+    {
+        u8g2_DrawStr(&u8g2,5,ITEM_HEIGHT*(i+1),settingsmenu.items[i]);
+    }
+    lefl_cursor_draw(&cursor);
+}
+void settings_menu_cb(lefl_menu_t *menu)
+{
+
+    switch (menu->selected_index)
+    {
+    case 0:
+        lefl_link_frame_navigate(&mainframe, &keyconfigpage);
+        break;
+    case 1:
+        lefl_link_frame_navigate(&mainframe, &calibrationpage);
+        break;
+    case 2:
+        lefl_link_frame_navigate(&mainframe, &debugpage);
+        break;
+    case 3:
+        lefl_link_frame_navigate(&mainframe, &aboutpage);
+        break;
+    default:
+        break;
+    }
+}
+void settingspage_load(lefl_page_t *page)
+{
+    keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
+    keys[3].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_click(&settingsmenu);});
+    keys[4].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&settingsmenu, 1);});
+    keys[5].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&settingsmenu, -1);});
+    keys[6].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&settingsmenu, 1);});
+    keys[7].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&settingsmenu, -1);});
+}

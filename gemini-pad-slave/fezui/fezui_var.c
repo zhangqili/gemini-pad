@@ -47,10 +47,9 @@ lefl_loop_array_t KPS_queue =
 };
 uint8_t KPS_history_max=0;
 uint32_t fezui_fps = 0;
-uint8_t fezui_is_updating = 0;
 uint8_t fezui_kps = 0;
 uint8_t UI_KPSMaximumPerSecond = 0;
-uint8_t UI_IsDisplayOn = SCREEN_REST_TIME;
+uint8_t fezui_rest_countdown = SCREEN_REST_TIME;
 uint8_t fezui_debug;
 uint32_t fezui_run_time;
 /*
@@ -97,7 +96,6 @@ lefl_loop_array_t analog_historys[4]=
         .len=HISTORY_LENGTH,
     }
 };
-uint8_t analog_history_buffer[4]={0};
 
 lefl_cursor_t cursor={0,0,128,64,fezui_draw_cursor};
 lefl_cursor_t target_cursor={0,0,0,0,fezui_draw_cursor};

@@ -9,17 +9,10 @@
 lefl_page_t oscilloscopepage={oscilloscopepage_logic,oscilloscopepage_draw,oscilloscopepage_load};
 void oscilloscopepage_logic(lefl_page_t *page)
 {
-    /*
-    if(lefl_key_is_triggered(keys+2))
-    {
-        lefl_link_frame_go_back(&mainframe);
-        lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);
-    }
-    */
-    for (uint8_t i = 0;i<MAIN_KEY_NUM;i++)
-    {
-        lefl_loop_array_push_back(analog_historys+i, analog_history_buffer[i]);
-    }
+    lefl_loop_array_push_back(analog_historys+0, (uint16_t)advanced_keys[0].raw);
+    lefl_loop_array_push_back(analog_historys+1, (uint16_t)advanced_keys[1].raw);
+    lefl_loop_array_push_back(analog_historys+2, (uint16_t)advanced_keys[2].raw);
+    lefl_loop_array_push_back(analog_historys+3, (uint16_t)advanced_keys[3].raw);
 }
 void oscilloscopepage_draw(lefl_page_t *page)
 {

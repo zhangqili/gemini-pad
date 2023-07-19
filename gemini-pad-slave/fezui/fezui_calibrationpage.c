@@ -58,10 +58,6 @@ void calibrationpage_logic(lefl_page_t *page)
             Analog_Read();
         cmd_buffer=CMD_NULL;
     }
-    for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
-    {
-        advanced_keys[i].value=(float)analog_history_buffer[i]/255.0;
-    }
     lefl_cursor_set(
             &target_cursor ,
             100,

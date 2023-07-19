@@ -43,7 +43,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-uint8_t uart_rec_count=0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -258,15 +258,6 @@ void I2C1_EV_IRQHandler(void)
   /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
   /* USER CODE BEGIN I2C1_EV_IRQn 1 */
-  switch (i2c_rec_buf[0])
-  {
-    case 0:
-        //UI_Keys=i2c_rec_buf[1];
-        break;
-    default:
-        break;
-  }
-  HAL_I2C_Slave_Receive_IT(&hi2c1, i2c_rec_buf, 2);
 
   /* USER CODE END I2C1_EV_IRQn 1 */
 }

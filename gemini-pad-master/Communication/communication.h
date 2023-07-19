@@ -33,6 +33,9 @@
                                     HAL_UART_Transmit_DMA(&huart1,USART1_TX_Buffer,USART1_TX_Length);\
                                     USART1_TX_Length=0;
 
+#define Communication_Enable(huart,buf,len) HAL_UART_Receive_DMA(huart,buf,len);\
+                                            __HAL_UART_ENABLE_IT(huart, UART_IT_IDLE);
+
 typedef enum
 {
     //0x00

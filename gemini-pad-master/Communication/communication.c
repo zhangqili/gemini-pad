@@ -44,18 +44,18 @@ void Communication_Pack()
     Communication_Add8(PROTOCOL_ANALOG4,(uint8_t)(ADC_Value_List[3]/16));
     */
     Communication_Add8(PROTOCOL_DEBUG,(uint8_t)(ADC1_Values[1]/16));
-
+    /*
     Communication_Add8(PROTOCOL_ANALOG1,(uint8_t)(advanced_keys[0].value<0?0:(advanced_keys[0].value>1.0?255:advanced_keys[0].value*255)));
     Communication_Add8(PROTOCOL_ANALOG2,(uint8_t)(advanced_keys[1].value<0?0:(advanced_keys[1].value>1.0?255:advanced_keys[1].value*255)));
     Communication_Add8(PROTOCOL_ANALOG3,(uint8_t)(advanced_keys[2].value<0?0:(advanced_keys[2].value>1.0?255:advanced_keys[2].value*255)));
     Communication_Add8(PROTOCOL_ANALOG4,(uint8_t)(advanced_keys[3].value<0?0:(advanced_keys[3].value>1.0?255:advanced_keys[3].value*255)));
+    */
 
-    /*
     Communication_Add32(PROTOCOL_ANALOG1_RAW,advanced_keys[0].raw);
     Communication_Add32(PROTOCOL_ANALOG2_RAW,advanced_keys[1].raw);
     Communication_Add32(PROTOCOL_ANALOG3_RAW,advanced_keys[2].raw);
     Communication_Add32(PROTOCOL_ANALOG4_RAW,advanced_keys[3].raw);
-    */
+
     //Communication_Add(3,4);
 }
 

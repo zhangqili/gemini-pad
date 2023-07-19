@@ -48,7 +48,6 @@ void fezui_init()
 
 void fezui_timer_handler()
 {
-    fezui_is_updating = 1;
     for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
     {
         lefl_advanced_key_update_state(advanced_keys+i, key_buffer[i]);
@@ -94,13 +93,12 @@ void fezui_timer_handler()
     }
 
     fezui_save_counts();
-    fezui_is_updating = 0;
 
     if (KPS_history_max || keys[0].state||keys[1].state||keys[2].state||keys[3].state||keys[4].state||keys[5].state||keys[6].state||keys[7].state)
     {
         //tempuint=keys[0].state+(keys[1].state<<1)+(keys[2].state<<2)+(keys[3].state<<3)+(keys[4].state<<4)+(keys[5].state<<5)+(keys[6].state<<6)+(keys[7].state<<7);
 
-        UI_IsDisplayOn = SCREEN_REST_TIME;
+        fezui_rest_countdown = SCREEN_REST_TIME;
     }
     /*
     u8g2_ClearBuffer(&u8g2);

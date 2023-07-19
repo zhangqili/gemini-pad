@@ -7,6 +7,20 @@
 
 #include "fezui.h"
 
+void fezui_draw_flowingwater(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
+        u8g2_uint_t h, lefl_bit_array_t *bits)
+{
+    for (uint8_t i=0;i<w;i++)
+    {
+        //if (lefl_bit_array_get(bits, i))
+        //  u8g2_DrawVLine(&u8g2,x+i,y,h);
+        if (lefl_bit_array_get(bits, i))
+          u8g2_DrawVLine(&u8g2,x+i,y+1,h-2);
+        if (lefl_bit_array_get(bits, i)^lefl_bit_array_get(bits, i+1))
+          u8g2_DrawVLine(&u8g2,x+i,y,h);
+    }
+}
+
 void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_loop_array_t *arr, lefl_bit_array_t *l)
 {
@@ -14,8 +28,8 @@ void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t
     uint8_t y2;
     for (int8_t i = 0; i < w - 1; i++)
     {
-        y1=lefl_loop_array_get(arr, i)/8;
-        y2=lefl_loop_array_get(arr, i+1)/8;
+        y1=lefl_loop_array_get(arr, i)/128;
+        y2=lefl_loop_array_get(arr, i+1)/128;
         if (y1 > h || y2 > h)
             if (!lefl_bit_array_get(l, i))
                 u8g2_DrawLine(u8g2_ptr, x + w - i - 1, y + 1,x + w - i - 2,y+1);
@@ -26,16 +40,16 @@ void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t
             }
         else if (lefl_bit_array_get(l, i))
         {
-            u8g2_DrawVLine(u8g2_ptr, x + w - i - 1, y + y1, h - y1);
-            u8g2_DrawLine(u8g2_ptr, x + w - i - 1, y + y1,x + w - i - 2,y+y2);
+            u8g2_DrawVLine(u8g2_ptr, x + w - i - 1, y + h - y1, y1);
+            u8g2_DrawLine(u8g2_ptr, x + w - i - 1, y + h - y1,x + w - i - 2,y+h-y2);
         }
         else
-            u8g2_DrawLine(u8g2_ptr, x + w - i - 1, y + y1,x + w - i - 2,y+y2);
+            u8g2_DrawLine(u8g2_ptr, x + w - i - 1, y + h-y1,x + w - i - 2,y+h-y2);
     }
     u8g2_SetFont(u8g2_ptr, u8g2_font_micro_tr);
-    u8g2_DrawBox(&u8g2, x, y, 13, 7);
+    u8g2_DrawBox(&u8g2, x, y, 17, 7);
     u8g2_SetDrawColor(&u8g2, 2);
-    sprintf(fezui_tempstr, "%03d", lefl_loop_array_get(arr, 0));
+    sprintf(fezui_tempstr, "%04d", lefl_loop_array_get(arr, 0));
     u8g2_DrawStr(u8g2_ptr, x + 1, y + 6, fezui_tempstr);
     u8g2_SetDrawColor(&u8g2, !fezui_invert);
     //u8g2_DrawButtonUTF8(&u8g2, x+1, y+6, U8G2_BTN_INV, 2, 1, 1, UI_TempString);
@@ -84,7 +98,6 @@ void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
                 }
             }
             break;
-        case 7:
         case 6:
             for (u8g2_uint_t i = y; i < y+h; i+=2)
             {
@@ -118,7 +131,7 @@ void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
                 }
             }
             break;
-        case 8:
+        case 7:
             u8g2_DrawBox(u8g2_ptr, x, y, w, h);
             break;
         default:

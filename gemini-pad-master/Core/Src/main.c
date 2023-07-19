@@ -55,9 +55,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t count=0;
-float x=0;
-float y=0;
+uint32_t count=0;
 uint8_t cmd_buffer;
 bool sendreport=true;
 /* USER CODE END PV */
@@ -130,8 +128,7 @@ int main(void)
   HAL_TIM_Encoder_Start_IT(&htim2,TIM_CHANNEL_1);
   HAL_TIM_Encoder_Start_IT(&htim3,TIM_CHANNEL_1);
   MX_USART1_UART_Init();
-  HAL_UART_Receive_DMA(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
-  __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+  Communication_Enable(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -149,7 +146,6 @@ int main(void)
     switch (cmd_buffer)
     {
         case CMD_CALIBRATION_START:
-
             keyBoardHIDsub.KEYCODE1=0;
             keyBoardHIDsub.KEYCODE2=0;
             keyBoardHIDsub.KEYCODE3=0;

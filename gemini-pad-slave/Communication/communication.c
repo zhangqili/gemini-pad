@@ -59,7 +59,7 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                   key_buffer[11]=(USART1_RX_Buffer[i+1]&BIT(0));
                   i+=2;
                   break;
-
+                  /*
               case PROTOCOL_ANALOG1:
                   analog_history_buffer[0]=USART1_RX_Buffer[i+1];
                   i+=2;
@@ -76,24 +76,23 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                   analog_history_buffer[3]=USART1_RX_Buffer[i+1];
                   i+=2;
                   break;
-                  /*
+                  */
               case PROTOCOL_ANALOG1_RAW:
-                  memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i,4);
+                  memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i+1,4);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG2_RAW:
-                  memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i,4);
+                  memcpy((uint8_t *)&(advanced_keys[1].raw),USART1_RX_Buffer+i+1,4);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG3_RAW:
-                  memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i,4);
+                  memcpy((uint8_t *)&(advanced_keys[2].raw),USART1_RX_Buffer+i+1,4);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG4_RAW:
-                  memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i,4);
+                  memcpy((uint8_t *)&(advanced_keys[3].raw),USART1_RX_Buffer+i+1,4);
                   i+=5;
                   break;
-                  */
               case PROTOCOL_CMD:
                   cmd_buffer=USART1_RX_Buffer[i+1];
                   i+=2;

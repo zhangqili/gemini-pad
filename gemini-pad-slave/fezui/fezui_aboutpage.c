@@ -6,6 +6,7 @@
  */
 #include "fezui.h"
 
+#define PROJECT_URL "https://github.com/zhangqili/gemini-pad"
 
 lefl_page_t aboutpage={aboutpage_logic,aboutpage_draw,aboutpage_load};
 

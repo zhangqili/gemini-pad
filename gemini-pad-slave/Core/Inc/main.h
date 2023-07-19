@@ -69,7 +69,6 @@ void DWT_Delay_us(volatile uint32_t microseconds);
 #define ALPHA_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-extern uint8_t i2c_rec_buf[8];
 
 /* USER CODE END Private defines */
 

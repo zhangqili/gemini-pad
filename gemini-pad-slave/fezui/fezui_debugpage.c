@@ -16,10 +16,14 @@ void debugpage_logic(lefl_page_t *page)
 void debugpage_draw(lefl_page_t *page)
 {
     u8g2_SetFont(&u8g2, u8g2_font_freedoomr10_tu);
-    sprintf(fezui_tempstr,"KEY1up:%f",advanced_keys[0].upper_bound);
+    sprintf(fezui_tempstr,"%f",advanced_keys[0].raw);
     u8g2_DrawStr(&u8g2, 0, 15, fezui_tempstr);
-    sprintf(fezui_tempstr,"KEY1low:%f",advanced_keys[0].lower_bound);
+    sprintf(fezui_tempstr,"%f",advanced_keys[1].raw);
     u8g2_DrawStr(&u8g2, 0, 30, fezui_tempstr);
+    sprintf(fezui_tempstr,"%f",advanced_keys[2].raw);
+    u8g2_DrawStr(&u8g2, 0, 45, fezui_tempstr);
+    sprintf(fezui_tempstr,"%f",advanced_keys[3].raw);
+    u8g2_DrawStr(&u8g2, 0, 60, fezui_tempstr);
 }
 
 void debugpage_load(lefl_page_t *page)

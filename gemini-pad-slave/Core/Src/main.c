@@ -53,9 +53,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t i2c_rec_buf[8]={0xff};
-uint8_t buf[8]={0};
-uint8_t alpha_flag=0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -135,31 +133,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
   fezui_init();
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-
-
-  /*
-  uint8_t x=0;
-  while(1)
-  {
-      u8g2_ClearBuffer(&u8g2);
-      u8g2_DrawFrame(&u8g2, 9, 9, 32, 32);
-      UI_DrawChart(&u8g2, 10, 10, 32, 32, stat, 32, x, 9);
-      u8g2_SendBuffer(&u8g2);
-      HAL_Delay(50);
-      x++;
-      if(x>=32)
-          x=0;
-  }
-  */
   //HAL_TIM_Base_Start_IT(&htim3);
   HAL_TIM_Base_Start_IT(&htim6);
   HAL_TIM_Base_Start_IT(&htim7);
-  //LL_USART_EnableIT_RXNE(USART1);
-  //HAL_UART_Receive_IT(&huart1,(uint8_t *)UART1_temp,UART1_REC_LENGTH);
-  //HAL_I2C_Slave_Receive_IT(&hi2c1, i2c_rec_buf, 2);
-  //HAL_UART_Receive_IT(&huart1,rec_buf,1);
-  HAL_UART_Receive_DMA(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
-  __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+
+  Communication_Enable(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -181,11 +159,11 @@ int main(void)
     }
     lefl_link_frame_draw(&mainframe);
 #ifdef _SCREEN_REST_ON
-    u8g2_SetPowerSave(&u8g2,!UI_IsDisplayOn);
-    fezui_veil(&u8g2,0,0,128,64,8-UI_IsDisplayOn,0);
+    u8g2_SetPowerSave(&u8g2,!fezui_rest_countdown);
+    fezui_veil(&u8g2,0,0,128,64,7-fezui_rest_countdown,0);
 #endif
 #ifdef _FPS_ON
-    u8g2_SetDrawColor(&u8g2, !fezui_invert);
+    u8g2_SetDrawColor(&u8g2, 2);
     u8g2_SetFont(&u8g2, led_seg_like_font);
     u8g2_DrawStr(&u8g2,96+15,11,fpsstr);
 #endif
@@ -257,8 +235,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if (htim->Instance == TIM6)
     {
         sprintf(fpsstr, "%3ld", fezui_fps);
-        if (UI_IsDisplayOn)
-            UI_IsDisplayOn--;
+        if (fezui_rest_countdown)
+            fezui_rest_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
 
         fezui_fps = 0;

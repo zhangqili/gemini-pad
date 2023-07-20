@@ -6,6 +6,7 @@
  */
 
 #include "fezui.h"
+#include "fezui_var.h"
 #include "communication.h"
 
 lefl_page_t menupage={menupage_logic,menupage_draw,menupage_load};

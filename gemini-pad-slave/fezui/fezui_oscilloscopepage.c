@@ -5,6 +5,7 @@
  *      Author: xq123
  */
 #include "fezui.h"
+#include "fezui_var.h"
 
 lefl_page_t oscilloscopepage={oscilloscopepage_logic,oscilloscopepage_draw,oscilloscopepage_load};
 void oscilloscopepage_logic(lefl_page_t *page)

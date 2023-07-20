@@ -8,6 +8,7 @@
 #include "communication.h"
 #include "lefl.h"
 #include "fezui.h"
+#include "fezui_var.h"
 
 COM_CREATE(USART1)
 

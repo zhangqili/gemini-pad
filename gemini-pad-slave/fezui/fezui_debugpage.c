@@ -5,6 +5,7 @@
  *      Author: xq123
  */
 #include "fezui.h"
+#include "fezui_var.h"
 #include "communication.h"
 
 lefl_page_t debugpage={debugpage_logic,debugpage_draw,debugpage_load};
@@ -29,8 +30,8 @@ void debugpage_draw(lefl_page_t *page)
 	fezui_draw_dialog(&u8g2, 32, 16, 64, 32, NULL);
 	fezui_draw_slider(&u8g2, 64, 16+2, 64-4, 20, &slider);
     u8g2_SetFont(&u8g2, u8g2_font_freedoomr10_tu);
-    sprintf(fezui_tempstr,"%f", targetnum);
-    u8g2_DrawStr(&u8g2, 0, 64, fezui_tempstr);
+    sprintf(fezui_buffer,"%f", targetnum);
+    u8g2_DrawStr(&u8g2, 0, 64, fezui_buffer);
 }
 
 void debugpage_load(lefl_page_t *page)

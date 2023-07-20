@@ -5,6 +5,7 @@
  *      Author: xq123
  */
 #include "fezui.h"
+#include "fezui_var.h"
 
 #define PROJECT_URL "https://github.com/zhangqili/gemini-pad"
 

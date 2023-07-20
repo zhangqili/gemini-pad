@@ -6,6 +6,7 @@
  */
 
 #include "fezui.h"
+#include "fezui_var.h"
 #include "communication.h"
 
 #define MARGIN_LEFT           65
@@ -45,27 +46,27 @@ void homepage_draw(lefl_page_t *page)
     u8g2_DrawStr(&u8g2,96,MARGIN_UP-1,"FPS:");
     u8g2_SetFont(&u8g2, led_seg_like_font);
 
-    sprintf(fezui_tempstr, "%5ld", fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
-    u8g2_DrawStr(&u8g2,2,63,fezui_tempstr);
+    sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
+    u8g2_DrawStr(&u8g2,2,63,fezui_buffer);
 
-    sprintf(fezui_tempstr, "%5ld", fezui_keytotalcounts[1]-fezui_keyinitcounts[1]);
-    u8g2_DrawStr(&u8g2,34,63,fezui_tempstr);
+    sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[1]-fezui_keyinitcounts[1]);
+    u8g2_DrawStr(&u8g2,34,63,fezui_buffer);
 
-    sprintf(fezui_tempstr, "%5ld", fezui_keytotalcounts[2]-fezui_keyinitcounts[2]);
-    u8g2_DrawStr(&u8g2,66,63,fezui_tempstr);
+    sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[2]-fezui_keyinitcounts[2]);
+    u8g2_DrawStr(&u8g2,66,63,fezui_buffer);
 
-    sprintf(fezui_tempstr, "%5ld", fezui_keytotalcounts[3]-fezui_keyinitcounts[3]);
-    u8g2_DrawStr(&u8g2,98,63,fezui_tempstr);
+    sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[3]-fezui_keyinitcounts[3]);
+    u8g2_DrawStr(&u8g2,98,63,fezui_buffer);
 
 #ifndef _FPS_ON
     u8g2_DrawStr(&u8g2,96+15,MARGIN_UP-1,fpsstr);
 #endif
 
-    sprintf(fezui_tempstr,"%2d",fezui_kps);
-    u8g2_DrawStr(&u8g2,15,MARGIN_UP-1,fezui_tempstr);
+    sprintf(fezui_buffer,"%2d",fezui_kps);
+    u8g2_DrawStr(&u8g2,15,MARGIN_UP-1,fezui_buffer);
 
-    sprintf(fezui_tempstr,"%2d",KPS_history_max);
-    u8g2_DrawStr(&u8g2,15+32,MARGIN_UP-1,fezui_tempstr);
+    sprintf(fezui_buffer,"%2d",KPS_history_max);
+    u8g2_DrawStr(&u8g2,15+32,MARGIN_UP-1,fezui_buffer);
 
     //sprintf(fezui_tempstr,"%.0f",advanced_keys[0].raw);
     //u8g2_DrawStr(&u8g2,64,MARGIN_UP-1,fezui_tempstr);

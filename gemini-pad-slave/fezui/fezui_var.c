@@ -4,9 +4,8 @@
  *  Created on: 2023年6月19日
  *      Author: xq123
  */
-#include "fezui.h"
+#include "fezui_var.h"
 
-char fezui_tempstr[STRING_LENGTH] = {0};
 char fpsstr[8] = {0};
 char comstr[8] = {0};
 

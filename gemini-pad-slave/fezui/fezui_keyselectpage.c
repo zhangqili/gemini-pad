@@ -5,6 +5,7 @@
  *      Author: xq123
  */
 #include "fezui.h"
+#include "fezui_var.h"
 
 
 float UI_KeySelection_Cursor_X=0;

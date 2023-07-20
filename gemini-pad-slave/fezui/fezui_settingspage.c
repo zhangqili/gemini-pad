@@ -5,6 +5,7 @@
  *      Author: xq123
  */
 #include "fezui.h"
+#include "fezui_var.h"
 lefl_menu_t settingsmenu = {
     .items = {"Keys Configuration","Calibration","Debug","About"},
     .selected_index = 0,

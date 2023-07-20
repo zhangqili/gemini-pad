@@ -30,6 +30,7 @@
 #include "stdlib.h"
 //#include "uart_rec.h"
 #include "fezui.h"
+#include "fezui_var.h"
 #include "display.h"
 #include "communication.h"
 #include "driver_w25qxx_advance.h"

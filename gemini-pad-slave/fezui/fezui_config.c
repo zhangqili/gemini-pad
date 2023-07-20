@@ -6,6 +6,7 @@
  */
 
 #include "fezui.h"
+#include "fezui_var.h"
 #include "lefl.h"
 #include "flash_address.h"
 #include "MB85RC16.h"

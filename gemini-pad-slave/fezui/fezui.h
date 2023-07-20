@@ -20,6 +20,8 @@
 typedef uint8_t fezui_uint_t;
 typedef int8_t fezui_int_t;
 
+extern char fezui_buffer[STRING_LENGTH];
+
 typedef struct __fezui_t
 {
 	u8g2_t u8g2;

@@ -51,8 +51,8 @@ void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t
     u8g2_SetFont(u8g2_ptr, u8g2_font_micro_tr);
     u8g2_DrawBox(&u8g2, x, y, 17, 7);
     u8g2_SetDrawColor(&u8g2, 2);
-    sprintf(fezui_tempstr, "%04d", lefl_loop_array_get(arr, 0));
-    u8g2_DrawStr(u8g2_ptr, x + 1, y + 6, fezui_tempstr);
+    sprintf(fezui_buffer, "%04d", lefl_loop_array_get(arr, 0));
+    u8g2_DrawStr(u8g2_ptr, x + 1, y + 6, fezui_buffer);
     u8g2_SetDrawColor(&u8g2, !ui.invert);
     //u8g2_DrawButtonUTF8(&u8g2, x+1, y+6, U8G2_BTN_INV, 2, 1, 1, UI_TempString);
 }

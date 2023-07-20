@@ -78,6 +78,8 @@ void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_
 void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color)
 {
+	uint8_t previous_color;
+	previous_color = u8g2_GetDrawColor(u8g2_ptr);
     u8g2_SetDrawColor(&u8g2, color);
     switch(level)
     {
@@ -139,6 +141,7 @@ void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         default:
             break;
     }
+	u8g2_SetDrawColor(u8g2_ptr,previous_color);
 }
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n)
@@ -154,12 +157,12 @@ void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_
 {
 	if(slider->orientation == ORIENTATION_HORIZAIONTAL)
 	{
-		u8g2_DrawHLine(u8g2_ptr, x+1, y+3, w-2);
-		u8g2_DrawBox(u8g2_ptr, x + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(w-2), y - 2, 3, 5);
+		u8g2_DrawHLine(u8g2_ptr, x+1, y+2, w-2);
+		u8g2_DrawBox(u8g2_ptr, x + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(w-2), y, 3, 5);
 	}
 	else
 	{
-		u8g2_DrawVLine(u8g2_ptr, x+3, y+1, h-2);
-		u8g2_DrawBox(u8g2_ptr, x - 2 , y + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(h-2), 3, 5);
+		u8g2_DrawVLine(u8g2_ptr, x+2, y+1, h-2);
+		u8g2_DrawBox(u8g2_ptr, x , y + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(h-2), 5, 3);
 	}
 }

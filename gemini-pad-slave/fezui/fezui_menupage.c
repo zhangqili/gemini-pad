@@ -79,7 +79,7 @@ void main_menu_cb(lefl_menu_t *menu)
         lefl_link_frame_navigate(&mainframe, &oscilloscopepage);
         break;
     case 2:
-    lefl_link_frame_navigate(&mainframe, &statisticpage);
+    	lefl_link_frame_navigate(&mainframe, &statisticpage);
         break;
     case 3:
         lefl_link_frame_navigate(&mainframe, &settingspage);

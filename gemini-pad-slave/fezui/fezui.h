@@ -87,7 +87,6 @@ typedef struct __fezui_slider_t
     float min;
     float interval;
     float *f_ptr;
-    bool invert;
     fezui_orientation_t orientation;
 } fezui_slider_t;
 
@@ -105,7 +104,21 @@ typedef struct __fezui_tile_t
  * fezui_dialog.c
  */
 
+typedef enum
+{
+	DIALOG_NORMAL,
+	DIALOG_WARNING,
+	DIALOG_ERROR,
+} fezui_dialog_type_t;
 
+typedef struct __fezui_dialog_t
+{
+    char *title;
+    float *text;
+    fezui_dialog_type_t type;
+} fezui_dialog_t;
+
+void fezui_draw_dialog(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_dialog_t *dialog);
 
 
 #endif /* FEZUI_H_ */

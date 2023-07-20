@@ -242,7 +242,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if(sendreport)
         Keyboard_SendReport();
     Communication_Pack();
-    Communication_Transmit();
+    Communication_USART1_Transmit();
     /*
 	RGB_Colors[0].r=(uint8_t)(255.0*Analog_Values[0]);
 	RGB_Colors[1].b=(uint8_t)(255.0*Analog_Values[1]);

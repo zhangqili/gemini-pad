@@ -83,8 +83,8 @@ void Analog_Init()
         ADC_Sums[i]=0.0;
     }
 
-    Communication_Add8(PROTOCOL_CMD,CMD_CALIBRATION_DOWN);
-    Communication_Transmit();
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_CALIBRATION_DOWN);
+    Communication_USART1_Transmit();
     RGB_Colors[0].g=127;
     RGB_Colors[1].b=127;
     RGB_Colors[2].r=127;
@@ -130,8 +130,8 @@ void Analog_Init()
     }
     Analog_Save();
 
-    Communication_Add8(PROTOCOL_CMD,CMD_CALIBRATION_END);
-    Communication_Transmit();
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_CALIBRATION_END);
+    Communication_USART1_Transmit();
     /*
     for(uint8_t i =0;i<4;i++)
     {

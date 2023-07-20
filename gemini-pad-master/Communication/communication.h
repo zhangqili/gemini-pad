@@ -13,28 +13,43 @@
 #define BIT(a) (1<<a)
 
 
-#define Communication_SOH() USART1_TX_Buffer[0]=1;
-#define Communication_STX() USART1_TX_Buffer[1]=2;
-#define Communication_ETX() USART1_TX_Buffer[USART1_TX_Length]=3;
-#define Communication_EOH() USART1_TX_Buffer[USART1_TX_Length]=4;
+#define COM_CREATE(u)\
+uint8_t u##_RX_Buffer[BUFFER_LENGTH];\
+uint8_t u##_RX_Length=0;\
+uint8_t u##_TX_Buffer[BUFFER_LENGTH];\
+uint8_t u##_TX_Length=0;
 
-#define Communication_Add8(a,b) USART1_TX_Buffer[USART1_TX_Length]=(a);\
-                               USART1_TX_Buffer[USART1_TX_Length+1]=(b);\
-                               if(USART1_TX_Length<BUFFER_LENGTH)USART1_TX_Length+=2;
+#define COM_DECLARE(u)\
+extern uint8_t u##_RX_Buffer[BUFFER_LENGTH];\
+extern uint8_t u##_RX_Length;\
+extern uint8_t u##_TX_Buffer[BUFFER_LENGTH];\
+extern uint8_t u##_TX_Length;
 
-#define Communication_Add32(a,b) USART1_TX_Buffer[USART1_TX_Length]=(a);\
-                               memcpy(USART1_TX_Buffer+USART1_TX_Length+1,(uint8_t*)&(b),4);\
-                               if(USART1_TX_Length<BUFFER_LENGTH)USART1_TX_Length+=5;
+#define Communication_SOH(u) u##_TX_Buffer[0]=1;
+#define Communication_STX(u) u##_TX_Buffer[1]=2;
+#define Communication_ETX(u) u##_TX_Buffer[USART1_TX_Length]=3;
+#define Communication_EOH(u) u##_TX_Buffer[USART1_TX_Length]=4;
 
-#define Communication_AddLength()   USART1_TX_Buffer[USART1_TX_Length]=(USART1_TX_Length+1);\
-                                    USART1_TX_Length++;
+#define Communication_Add8(u,a,b) u##_TX_Buffer[u##_TX_Length]=(a);\
+                               u##_TX_Buffer[u##_TX_Length+1]=(b);\
+                               if(u##_TX_Length<BUFFER_LENGTH){u##_TX_Length+=2;}
 
-#define Communication_Transmit()    Communication_AddLength();\
-                                    HAL_UART_Transmit_DMA(&huart1,USART1_TX_Buffer,USART1_TX_Length);\
-                                    USART1_TX_Length=0;
+#define Communication_Add32(u,a,b) u##_TX_Buffer[u##_TX_Length]=(a);\
+                               memcpy(u##_TX_Buffer+u##_TX_Length+1,(uint8_t*)&(b),4);\
+                               if(u##_TX_Length<BUFFER_LENGTH)u##_TX_Length+=5;
+
+#define Communication_AddLength(u)  u##_TX_Buffer[u##_TX_Length]=(u##_TX_Length+1);\
+                                    u##_TX_Length++;
+
 
 #define Communication_Enable(huart,buf,len) HAL_UART_Receive_DMA(huart,buf,len);\
                                             __HAL_UART_ENABLE_IT(huart, UART_IT_IDLE);
+
+
+#define Communication_USART1_Transmit()    	Communication_AddLength(USART1);\
+                                    		HAL_UART_Transmit_DMA(&huart1,USART1_TX_Buffer,USART1_TX_Length);\
+                                    		USART1_TX_Length=0;
+
 
 typedef enum
 {
@@ -118,10 +133,8 @@ typedef enum
     CMD_NA_0F,
 } USART_CMD;
 
-extern uint8_t USART1_TX_Buffer[BUFFER_LENGTH];
-extern uint8_t USART1_TX_Length;
-extern uint8_t USART1_RX_Buffer[BUFFER_LENGTH];
-extern uint8_t USART1_RX_Length;
+
+COM_DECLARE(USART1)
 
 extern uint16_t USART1_TX_Count;
 extern uint16_t USART1_RX_Count;

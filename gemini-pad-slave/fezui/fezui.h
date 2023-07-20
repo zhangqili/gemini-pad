@@ -17,8 +17,8 @@
 #include "fezui_config.h"
 #include "fezui_interface.h"
 
-typedef fezui_uint_t uint8_t;
-typedef fezui_int_t int8_t;
+typedef uint8_t fezui_uint_t;
+typedef int8_t fezui_int_t;
 
 typedef struct __fezui_t
 {
@@ -85,7 +85,7 @@ typedef struct __fezui_slider_t
 } fezui_slider_t;
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n);
-void fezui_draw_slider(u8g2_t *u8g2_ptr, fezui_slider_t *slider);
+void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w,uint8_t h, fezui_slider_t *slider);
 
 typedef struct __fezui_tile_t
 {

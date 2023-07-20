@@ -1,9 +1,0 @@
-[submodule "gemini-pad-slave/lefl"]
-	path = gemini-pad-slave/lefl
-	url = https://github.com/zhangqili/lefl.git
-[submodule "gemini-pad-master/lefl"]
-	path = gemini-pad-master/lefl
-	url = https://github.com/zhangqili/lefl.git
-[submodule "gemini-pad-slave/u8g2"]
-	path = gemini-pad-slave/u8g2
-	url = https://github.com/olikraus/u8g2.git

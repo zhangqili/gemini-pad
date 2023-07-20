@@ -39,7 +39,7 @@ void debugpage_load(lefl_page_t *page)
     keys[3].key_cb=NULL;
     keys[4].key_cb=lambda(void,(lefl_key_t*k){fezui_slider_increase(&slider, 1);});
     keys[5].key_cb=lambda(void,(lefl_key_t*k){fezui_slider_increase(&slider, -1);});
-    keys[6].key_cb=NULL;
-    keys[7].key_cb=NULL;
+    keys[6].key_cb=lambda(void,(lefl_key_t*k){fezui_slider_increase(&slider, 1);});
+    keys[7].key_cb=lambda(void,(lefl_key_t*k){fezui_slider_increase(&slider, -1);});
 }
 

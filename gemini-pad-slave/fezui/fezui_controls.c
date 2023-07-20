@@ -163,6 +163,6 @@ void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_
 	else
 	{
 		u8g2_DrawVLine(u8g2_ptr, x+2, y+1, h-2);
-		u8g2_DrawBox(u8g2_ptr, x , y + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(h-2), 5, 3);
+		u8g2_DrawBox(u8g2_ptr, x , y + ((slider->max-*(slider->f_ptr))/slider->max-slider->min)*(h-2), 5, 3);
 	}
 }

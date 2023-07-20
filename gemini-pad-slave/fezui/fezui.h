@@ -80,8 +80,15 @@ typedef enum
 	ORIENTATION_VERTICAL
 } fezui_orientation_t;
 
+typedef enum
+{
+	ORIENTATION_HORIZAIONTAL,
+	ORIENTATION_VERTICAL
+} fezui_orientation_t;
+
 typedef struct __fezui_slider_t
 {
+    //fezui_base_t base;
     //fezui_base_t base;
     float max;
     float min;

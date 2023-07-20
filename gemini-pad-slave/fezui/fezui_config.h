@@ -37,7 +37,8 @@ extern uint32_t fezui_keyinitcounts[MAIN_KEY_NUM];
 extern uint32_t fezui_fps;
 extern uint8_t fezui_kps;
 extern uint8_t KPS_history_max;
-extern char fpsstr[STRING_LENGTH];
+extern char fpsstr[8];
+extern char comstr[8];
 extern lefl_loop_array_t KPS_history;
 extern uint8_t UI_KPSMaximumPerSecond;
 extern uint8_t fezui_rest_countdown;
@@ -53,9 +54,6 @@ extern uint8_t analog_history_buffer[4];
 
 extern lefl_bit_array_t lines[4];
 extern lefl_loop_array_t KPS_queue;
-
-extern lefl_animation_base_t animations[4];
-extern uint8_t wheelcount;
 
 
 void fezui_draw_cursor(lefl_cursor_t*c);

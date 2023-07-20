@@ -21,6 +21,8 @@ void fezui_draw_flowingwater(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g
     }
 }
 
+
+extern fezui_t ui;
 void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_loop_array_t *arr, lefl_bit_array_t *l)
 {
@@ -51,7 +53,7 @@ void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t
     u8g2_SetDrawColor(&u8g2, 2);
     sprintf(fezui_tempstr, "%04d", lefl_loop_array_get(arr, 0));
     u8g2_DrawStr(u8g2_ptr, x + 1, y + 6, fezui_tempstr);
-    u8g2_SetDrawColor(&u8g2, !fezui_invert);
+    u8g2_SetDrawColor(&u8g2, !ui.invert);
     //u8g2_DrawButtonUTF8(&u8g2, x+1, y+6, U8G2_BTN_INV, 2, 1, 1, UI_TempString);
 }
 
@@ -137,5 +139,18 @@ void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         default:
             break;
     }
+}
+
+void fezui_slider_increase(fezui_slider_t *slider, int8_t n)
+{
+    *(slider->f_ptr)+=slider->interval*n;
+    if(*(slider->f_ptr)>slider->max)
+        *(slider->f_ptr)=slider->max;
+    if(*(slider->f_ptr)<slider->min)
+        *(slider->f_ptr)=slider->min;
+}
+
+void fezui_draw_slider(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, fezui_slider_t *slider)
+{
 
 }

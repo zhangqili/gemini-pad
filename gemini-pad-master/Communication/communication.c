@@ -17,6 +17,9 @@ uint8_t USART1_TX_Length=0;
 uint8_t USART1_RX_Buffer[BUFFER_LENGTH];
 uint8_t USART1_RX_Length=0;
 
+uint16_t Communication_TX_Count=0;
+uint16_t Communication_RX_Count=0;
+
 extern uint8_t cmd_buffer;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;

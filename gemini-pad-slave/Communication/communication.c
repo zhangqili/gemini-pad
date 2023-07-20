@@ -13,6 +13,8 @@ uint8_t USART1_RX_Buffer[BUFFER_LENGTH];
 uint8_t USART1_RX_Length=0;
 uint8_t USART1_TX_Buffer[BUFFER_LENGTH];
 uint8_t USART1_TX_Length=0;
+uint16_t Communication_TX_Count=0;
+uint16_t Communication_RX_Count=0;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
 
@@ -27,6 +29,7 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
       //if(USART1_RX_Buffer[0]==1&&USART1_RX_Buffer[1]==2&&USART1_RX_Buffer[USART1_RX_Length-2]==3&&USART1_RX_Buffer[USART1_RX_Length-1]==4)
       if(USART1_RX_Buffer[USART1_RX_Length-1]==USART1_RX_Length)
       {
+          Communication_RX_Count++;
           for(uint8_t i = 0;i<USART1_RX_Length-1;)
           {
               switch(USART1_RX_Buffer[i])
@@ -79,18 +82,22 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                   */
               case PROTOCOL_ANALOG1_RAW:
                   memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i+1,4);
+                  lefl_advanced_key_update_raw(advanced_keys + 0, (uint16_t)advanced_keys[0].raw);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG2_RAW:
                   memcpy((uint8_t *)&(advanced_keys[1].raw),USART1_RX_Buffer+i+1,4);
+                  lefl_advanced_key_update_raw(advanced_keys + 1, (uint16_t)advanced_keys[1].raw);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG3_RAW:
                   memcpy((uint8_t *)&(advanced_keys[2].raw),USART1_RX_Buffer+i+1,4);
+                  lefl_advanced_key_update_raw(advanced_keys + 2, (uint16_t)advanced_keys[2].raw);
                   i+=5;
                   break;
               case PROTOCOL_ANALOG4_RAW:
                   memcpy((uint8_t *)&(advanced_keys[3].raw),USART1_RX_Buffer+i+1,4);
+                  lefl_advanced_key_update_raw(advanced_keys + 3, (uint16_t)advanced_keys[3].raw);
                   i+=5;
                   break;
               case PROTOCOL_CMD:

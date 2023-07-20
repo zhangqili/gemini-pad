@@ -54,6 +54,7 @@
 
 /* USER CODE BEGIN PV */
 
+extern fezui_t ui;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -147,15 +148,15 @@ int main(void)
     u8g2_ClearBuffer(&u8g2);
     //sprintf(fezui_tempstr,"%d",UI_IsDisplayOn);
     //u8g2_DrawStr(&u8g2, 64, 10, fezui_tempstr);
-    if(fezui_invert)
+    if(ui.invert)
     {
         u8g2_SetDrawColor(&u8g2, 1);
         u8g2_DrawBox(&u8g2, 0, 0, 128, 64);
-        u8g2_SetDrawColor(&u8g2, !fezui_invert);
+        u8g2_SetDrawColor(&u8g2, !ui.invert);
     }
     else
     {
-        u8g2_SetDrawColor(&u8g2, !fezui_invert);
+        u8g2_SetDrawColor(&u8g2, !ui.invert);
     }
     lefl_link_frame_draw(&mainframe);
 #ifdef _SCREEN_REST_ON
@@ -230,15 +231,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
         fezui_timer_handler();
         //HAL_IWDG_Refresh(&hiwdg);
-
     }
     if (htim->Instance == TIM6)
     {
         sprintf(fpsstr, "%3ld", fezui_fps);
+        sprintf(comstr, "%4d", Communication_RX_Count);
         if (fezui_rest_countdown)
             fezui_rest_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
-
+        Communication_RX_Count=0;
         fezui_fps = 0;
         UI_KPSMaximumPerSecond = 0;
         fezui_run_time++;

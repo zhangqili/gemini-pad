@@ -7,8 +7,13 @@
 #include "fezui.h"
 
 char fezui_tempstr[STRING_LENGTH] = {0};
-char fpsstr[STRING_LENGTH] = {0};
+char fpsstr[8] = {0};
+char comstr[8] = {0};
 
+fezui_t ui =
+{
+    .invert=1
+};
 
 uint8_t key_buffer[KEY_NUM] = {0};
 uint8_t cmd_buffer = 0;
@@ -63,6 +68,12 @@ enum USB_HID_KEYBOARD_SCAN_CODES *ansi_104_keycode[6][17] = {
 };
 */
 
+/*
+  Fontname: led_seg_like
+  Copyright: Created with Fony 1.4.6
+  Glyphs: 10/10
+  BBX Build Mode: 0
+*/
 const uint8_t led_seg_like_font[195] U8G2_FONT_SECTION("led_seg_like_font") =
         "\32\0\3\3\3\4\4\1\4\5\11\0\0\11\0\0\0\0\0\0\0\0\246 \5\0\354\0!\5\0\354"
         "\0\42\5\0\354\0#\5\0\354\0$\5\0\354\0%\5\0\354\0&\5\0\354\0'\5\0\354\0("

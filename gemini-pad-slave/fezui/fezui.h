@@ -12,24 +12,53 @@
 #include "lefl.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "stdbool.h"
 #include "string.h"
 #include "fezui_config.h"
+#include "fezui_interface.h"
 
-extern uint8_t fezui_invert;
+typedef fezui_uint_t uint8_t;
+typedef fezui_int_t int8_t;
+
+typedef struct __fezui_t
+{
+    uint16_t width;
+    uint16_t height;
+    bool invert;
+} fezui_t;
 
 void fezui_timer_handler();
 void fezui_init();
+
+typedef struct __fezui_point_t
+{
+    fezui_uint_t x;
+    fezui_uint_t y;
+} fezui_point_t;
+
+typedef struct __fezui_size_t
+{
+    fezui_uint_t w;
+    fezui_uint_t h;
+} fezui_size_t;
+
+
+typedef struct __fezui_base_t
+{
+    fezui_point_t location;
+    fezui_size_t size;
+} fezui_base_t;
 
 /*
  * fezui_interface.c
  */
 /*
  uint8_t ui_init();
- void ui_clear_buf();
- void ui_send_buf();
- void ui_draw_rectangle(uint16_t x,uint16_t y,uint16_t w,uint16_t h,bool fill);
- void ui_draw_pixel(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
- void ui_draw_line(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
+ void fezui_clear_buf();
+ void fezui_send_buf();
+ void fezui_draw_rectangle(uint16_t x,uint16_t y,uint16_t w,uint16_t h,bool fill);
+ void fezui_draw_pixel(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
+ void fezui_draw_line(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
  */
 
 /*
@@ -45,11 +74,31 @@ void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
 void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
 
-typedef struct __fezui_tile
+typedef struct __fezui_slider_t
+{
+    fezui_base_t base;
+    float max;
+    float min;
+    float interval;
+    float *f_ptr;
+    bool invert;
+} fezui_slider_t;
+
+void fezui_slider_increase(fezui_slider_t *slider, int8_t n);
+void fezui_draw_slider(u8g2_t *u8g2_ptr, fezui_slider_t *slider);
+
+typedef struct __fezui_tile_t
 {
     char *header;
     char *icon;
-    void (*tile_cb)(struct __fezui_tile *tile);
-} fezui_tile;
+    void (*tile_cb)(struct __fezui_tile_t *tile);
+} fezui_tile_t;
+
+/*
+ * fezui_dialog.c
+ */
+
+
+
 
 #endif /* FEZUI_H_ */

@@ -26,8 +26,11 @@ void drawrawdata(uint8_t x, uint8_t y,uint8_t n)
     sprintf(fezui_tempstr,"state:%d",advanced_keys[n].state);
     u8g2_DrawStr(&u8g2, x, y+7*1, fezui_tempstr);
 
-    sprintf(fezui_tempstr,"value:%.3f",advanced_keys[n].value);
+    sprintf(fezui_tempstr,"raw:%4.1f",advanced_keys[n].raw);
     u8g2_DrawStr(&u8g2, x, y+7*2, fezui_tempstr);
+
+    sprintf(fezui_tempstr,"value:%.3f",advanced_keys[n].value);
+    u8g2_DrawStr(&u8g2, x+64, y+7*2, fezui_tempstr);
 
     sprintf(fezui_tempstr,"mode:%d",advanced_keys[n].mode);
     u8g2_DrawStr(&u8g2, x, y+7*3, fezui_tempstr);

@@ -123,6 +123,9 @@ extern uint8_t USART1_TX_Length;
 extern uint8_t USART1_RX_Buffer[BUFFER_LENGTH];
 extern uint8_t USART1_RX_Length;
 
+extern uint16_t Communication_TX_Count;
+extern uint16_t Communication_RX_Count;
+
 void Communication_Pack();
 void Communication_Unpack(UART_HandleTypeDef *huart);
 

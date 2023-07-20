@@ -48,10 +48,10 @@ void fezui_init()
 
 void fezui_timer_handler()
 {
-    for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
-    {
-        lefl_advanced_key_update_state(advanced_keys+i, key_buffer[i]);
-    }
+    //for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
+    //{
+    //    lefl_advanced_key_update_state(advanced_keys+i, key_buffer[i]);
+    //}
     for (uint8_t i = MAIN_KEY_NUM; i < KEY_NUM; i++)
     {
         lefl_key_update(keys+i-4, key_buffer[i]);
@@ -114,11 +114,12 @@ void fezui_timer_handler()
     */
 }
 
+extern fezui_t ui;
 void fezui_draw_cursor(lefl_cursor_t*c)
 {
     u8g2_SetDrawColor(&u8g2, 2);
     u8g2_DrawBox(&u8g2, c->x, c->y, c->w, c->h);
-    u8g2_SetDrawColor(&u8g2, !fezui_invert);
+    u8g2_SetDrawColor(&u8g2, !ui.invert);
 }
 
 void fezui_menu_update_selection(lefl_menu_t *menu)

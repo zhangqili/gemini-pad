@@ -21,16 +21,6 @@
 #define TILE3                 20
 #define TILE4                 30
 
-/*
-  Fontname: led_seg_like
-  Copyright: Created with Fony 1.4.6
-  Glyphs: 10/10
-  BBX Build Mode: 0
-*/
-
-
-uint8_t wheelcount = 0;
-
 
 lefl_page_t homepage={homepage_logic,homepage_draw,homepage_load};
 void homepage_logic(lefl_page_t *page)
@@ -86,8 +76,6 @@ void homepage_draw(lefl_page_t *page)
     if(keys[1].state)
         u8g2_DrawButtonUTF8(&u8g2, 67 + MARGIN_UP, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "A");
 
-
-
     u8g2_DrawHLine(&u8g2,0,MARGIN_UP,128);
     u8g2_DrawHLine(&u8g2,0,CHART_HEIGHT+MARGIN_UP,128);
     u8g2_DrawVLine(&u8g2,64,MARGIN_UP,CHART_HEIGHT+MARGIN_DOWN);
@@ -103,7 +91,7 @@ void homepage_load(lefl_page_t *page)
     keys[1].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[2].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[3].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[4].key_cb=lambda(void,(lefl_key_t*k){wheelcount++;});
+    keys[4].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[5].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[6].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[7].key_cb=lambda(void,(lefl_key_t*k){;});

@@ -121,8 +121,8 @@ void calibrationpage_load(lefl_page_t *page)
     keys[6].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[7].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
-    keys[3].key_cb=lambda(void,(lefl_key_t*k){Communication_Add8(PROTOCOL_CMD,CMD_CALIBRATION_START);
-                                                Communication_Transmit();
+    keys[3].key_cb=lambda(void,(lefl_key_t*k){Communication_Add8(USART1, PROTOCOL_CMD, CMD_CALIBRATION_START);
+                                                Communication_USART1_Transmit();
                                                 calibrationstate=CMD_CALIBRATION_START;});
     keys[4].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, 1);});
     keys[5].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, -1);});

@@ -154,7 +154,6 @@ void fezui_slider_increase(fezui_slider_t *slider, int8_t n)
 }
 
 void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_slider_t *slider)
-void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_slider_t *slider)
 {
 	if(slider->orientation == ORIENTATION_HORIZAIONTAL)
 	{

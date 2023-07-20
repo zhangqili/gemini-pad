@@ -91,8 +91,8 @@ void main_menu_cb(lefl_menu_t *menu)
 
 void menupage_load(lefl_page_t *page)
 {
-    Communication_Add8(PROTOCOL_CMD,CMD_REPORT_STOP);
-    Communication_Transmit();
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_STOP);
+    Communication_USART1_Transmit();
     lefl_animation_begin(&menuanimation);
 
     keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);});

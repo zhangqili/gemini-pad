@@ -22,6 +22,7 @@ typedef int8_t fezui_int_t;
 
 typedef struct __fezui_t
 {
+	u8g2_t u8g2;
     uint16_t width;
     uint16_t height;
     bool invert;
@@ -73,12 +74,6 @@ void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
 void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
-
-typedef enum
-{
-	ORIENTATION_HORIZAIONTAL,
-	ORIENTATION_VERTICAL
-} fezui_orientation_t;
 
 typedef enum
 {

@@ -85,8 +85,8 @@ void homepage_draw(lefl_page_t *page)
 
 void homepage_load(lefl_page_t *page)
 {
-    Communication_Add8(PROTOCOL_CMD,CMD_REPORT_START);
-    Communication_Transmit();
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_START);
+    Communication_USART1_Transmit();
     keys[0].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[1].key_cb=lambda(void,(lefl_key_t*k){;});
     keys[2].key_cb=lambda(void,(lefl_key_t*k){;});

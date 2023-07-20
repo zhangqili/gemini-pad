@@ -235,11 +235,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if (htim->Instance == TIM6)
     {
         sprintf(fpsstr, "%3ld", fezui_fps);
-        sprintf(comstr, "%4d", Communication_RX_Count);
+        sprintf(comstr, "%4d", USART1_RX_Count);
         if (fezui_rest_countdown)
             fezui_rest_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
-        Communication_RX_Count=0;
+        USART1_RX_Count=0;
         fezui_fps = 0;
         UI_KPSMaximumPerSecond = 0;
         fezui_run_time++;

@@ -9,12 +9,9 @@
 #include "lefl.h"
 #include "fezui.h"
 
-uint8_t USART1_RX_Buffer[BUFFER_LENGTH];
-uint8_t USART1_RX_Length=0;
-uint8_t USART1_TX_Buffer[BUFFER_LENGTH];
-uint8_t USART1_TX_Length=0;
-uint16_t Communication_TX_Count=0;
-uint16_t Communication_RX_Count=0;
+COM_CREATE(USART1)
+uint16_t USART1_TX_Count=0;
+uint16_t USART1_RX_Count=0;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
 
@@ -29,7 +26,7 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
       //if(USART1_RX_Buffer[0]==1&&USART1_RX_Buffer[1]==2&&USART1_RX_Buffer[USART1_RX_Length-2]==3&&USART1_RX_Buffer[USART1_RX_Length-1]==4)
       if(USART1_RX_Buffer[USART1_RX_Length-1]==USART1_RX_Length)
       {
-          Communication_RX_Count++;
+          USART1_RX_Count++;
           for(uint8_t i = 0;i<USART1_RX_Length-1;)
           {
               switch(USART1_RX_Buffer[i])

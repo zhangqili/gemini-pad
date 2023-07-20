@@ -74,14 +74,21 @@ void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
 void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
 
+typedef enum
+{
+	ORIENTATION_HORIZAIONTAL,
+	ORIENTATION_VERTICAL
+} fezui_orientation_t;
+
 typedef struct __fezui_slider_t
 {
-    fezui_base_t base;
+    //fezui_base_t base;
     float max;
     float min;
     float interval;
     float *f_ptr;
     bool invert;
+    fezui_orientation_t orientation;
 } fezui_slider_t;
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n);

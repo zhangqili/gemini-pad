@@ -150,7 +150,16 @@ void fezui_slider_increase(fezui_slider_t *slider, int8_t n)
         *(slider->f_ptr)=slider->min;
 }
 
-void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w,uint8_t h, fezui_slider_t *slider)
+void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_slider_t *slider)
 {
-
+	if(slider->orientation == ORIENTATION_HORIZAIONTAL)
+	{
+		u8g2_DrawHLine(u8g2_ptr, x+1, y+3, w-2);
+		u8g2_DrawBox(u8g2_ptr, x + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(w-2), y - 2, 3, 5);
+	}
+	else
+	{
+		u8g2_DrawVLine(u8g2_ptr, x+3, y+1, h-2);
+		u8g2_DrawBox(u8g2_ptr, x - 2 , y + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(h-2), 3, 5);
+	}
 }

@@ -10,7 +10,7 @@
 #include "fezui.h"
 
 extern const uint8_t led_seg_like_font[195] U8G2_FONT_SECTION("led_seg_like_font");
-
+extern fezui_t fezui;
 extern uint8_t key_buffer[KEY_NUM];
 extern lefl_advanced_key_t advanced_keys[MAIN_KEY_NUM];
 extern lefl_key_t keys[KEY_NUM-MAIN_KEY_NUM];

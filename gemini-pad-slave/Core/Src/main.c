@@ -55,7 +55,6 @@
 
 /* USER CODE BEGIN PV */
 
-extern fezui_t ui;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -146,30 +145,30 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    u8g2_ClearBuffer(&u8g2);
+    u8g2_ClearBuffer(&(fezui.u8g2));
     //sprintf(fezui_tempstr,"%d",UI_IsDisplayOn);
-    //u8g2_DrawStr(&u8g2, 64, 10, fezui_tempstr);
-    if(ui.invert)
+    //u8g2_DrawStr(&(fezui.u8g2), 64, 10, fezui_tempstr);
+    if(fezui.invert)
     {
-        u8g2_SetDrawColor(&u8g2, 1);
-        u8g2_DrawBox(&u8g2, 0, 0, 128, 64);
-        u8g2_SetDrawColor(&u8g2, !ui.invert);
+        u8g2_SetDrawColor(&(fezui.u8g2), 1);
+        u8g2_DrawBox(&(fezui.u8g2), 0, 0, 128, 64);
+        u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
     }
     else
     {
-        u8g2_SetDrawColor(&u8g2, !ui.invert);
+        u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
     }
     lefl_link_frame_draw(&mainframe);
 #ifdef _SCREEN_REST_ON
-    u8g2_SetPowerSave(&u8g2,!fezui_rest_countdown);
-    fezui_veil(&u8g2,0,0,128,64,7-fezui_rest_countdown,0);
+    u8g2_SetPowerSave(&(fezui.u8g2),!fezui_rest_countdown);
+    fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,0);
 #endif
 #ifdef _FPS_ON
-    u8g2_SetDrawColor(&u8g2, 2);
-    u8g2_SetFont(&u8g2, led_seg_like_font);
-    u8g2_DrawStr(&u8g2,96+15,11,fpsstr);
+    u8g2_SetDrawColor(&(fezui.u8g2), 2);
+    u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
+    u8g2_DrawStr(&(fezui.u8g2),96+15,11,fpsstr);
 #endif
-    u8g2_SendBuffer(&u8g2);
+    u8g2_SendBuffer(&(fezui.u8g2));
     fezui_fps++;
     /* USER CODE END WHILE */
 

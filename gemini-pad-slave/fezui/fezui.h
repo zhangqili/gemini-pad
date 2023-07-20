@@ -8,7 +8,7 @@
 #ifndef FEZUI_H_
 #define FEZUI_H_
 
-#include "display.h"
+#include "u8g2.h"
 #include "lefl.h"
 #include "stdlib.h"
 #include "stdio.h"
@@ -29,6 +29,9 @@ typedef struct __fezui_t
     uint16_t height;
     bool invert;
 } fezui_t;
+
+//#define FEZUI_CREATE(name) fezui_t name;
+//#define FEZUI_DECLARE(name) fezui_t name;
 
 void fezui_timer_handler();
 void fezui_init();
@@ -67,14 +70,14 @@ typedef struct __fezui_base_t
 /*
  * fezui_controls.c
  */
-void fezui_draw_flowingwater(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
+void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_bit_array_t *bits);
-void fezui_draw_wave(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
+void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr,
         lefl_bit_array_t *l);
-void fezui_draw_chart(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y,
+void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
-void fezui_veil(u8g2_t *u8g2_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
+void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
 
 typedef enum
@@ -95,7 +98,7 @@ typedef struct __fezui_slider_t
 } fezui_slider_t;
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n);
-void fezui_draw_slider(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w,uint8_t h, fezui_slider_t *slider);
+void fezui_draw_slider(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,uint8_t h, fezui_slider_t *slider);
 
 typedef struct __fezui_tile_t
 {
@@ -122,7 +125,7 @@ typedef struct __fezui_dialog_t
     fezui_dialog_type_t type;
 } fezui_dialog_t;
 
-void fezui_draw_dialog(u8g2_t *u8g2_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_dialog_t *dialog);
+void fezui_draw_dialog(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_dialog_t *dialog);
 
 
 #endif /* FEZUI_H_ */

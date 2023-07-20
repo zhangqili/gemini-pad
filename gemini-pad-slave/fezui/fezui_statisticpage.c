@@ -16,37 +16,37 @@ void statisticpage_logic(lefl_page_t *page)
 }
 void statisticpage_draw(lefl_page_t *page)
 {
-    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
 
     sprintf(fezui_buffer,"%s","Total hits");
-    u8g2_DrawStr(&u8g2,0,10*1,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),0,10*1,fezui_buffer);
 
     sprintf(fezui_buffer,"%s","KEY1");
-    u8g2_DrawStr(&u8g2,0,10*2,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),0,10*2,fezui_buffer);
 
     sprintf(fezui_buffer,"%s","KEY2");
-    u8g2_DrawStr(&u8g2,0,10*3,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),0,10*3,fezui_buffer);
 
     sprintf(fezui_buffer,"%s","KEY3");
-    u8g2_DrawStr(&u8g2,0,10*4,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),0,10*4,fezui_buffer);
 
     sprintf(fezui_buffer,"%s","KEY4");
-    u8g2_DrawStr(&u8g2,0,10*5,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),0,10*5,fezui_buffer);
 
 
-    u8g2_SetFont(&u8g2, led_seg_like_font);
+    u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
 
     sprintf(fezui_buffer,"%8ld",fezui_keytotalcounts[0]);
-    u8g2_DrawStr(&u8g2,WIDTH-6*9,10*2,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-6*9,10*2,fezui_buffer);
 
     sprintf(fezui_buffer,"%8ld",fezui_keytotalcounts[1]);
-    u8g2_DrawStr(&u8g2,WIDTH-6*9,10*3,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-6*9,10*3,fezui_buffer);
 
     sprintf(fezui_buffer,"%8ld",fezui_keytotalcounts[2]);
-    u8g2_DrawStr(&u8g2,WIDTH-6*9,10*4,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-6*9,10*4,fezui_buffer);
 
     sprintf(fezui_buffer,"%8ld",fezui_keytotalcounts[3]);
-    u8g2_DrawStr(&u8g2,WIDTH-6*9,10*5,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-6*9,10*5,fezui_buffer);
 }
 
 void statisticpage_load(lefl_page_t *page)

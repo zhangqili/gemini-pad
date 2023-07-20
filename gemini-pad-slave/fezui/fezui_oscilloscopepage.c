@@ -17,10 +17,10 @@ void oscilloscopepage_logic(lefl_page_t *page)
 }
 void oscilloscopepage_draw(lefl_page_t *page)
 {
-    fezui_draw_wave(&u8g2, 0, 0, 64, 32, analog_historys+0, lines+0);
-    fezui_draw_wave(&u8g2, 64, 0, 64, 32, analog_historys+1, lines+1);
-    fezui_draw_wave(&u8g2, 0, 32, 64, 32, analog_historys+2, lines+2);
-    fezui_draw_wave(&u8g2, 64, 32, 64, 32, analog_historys+3, lines+3);
+    fezui_draw_wave(&(fezui), 0, 0, 64, 32, analog_historys+0, lines+0);
+    fezui_draw_wave(&(fezui), 64, 0, 64, 32, analog_historys+1, lines+1);
+    fezui_draw_wave(&(fezui), 0, 32, 64, 32, analog_historys+2, lines+2);
+    fezui_draw_wave(&(fezui), 64, 32, 64, 32, analog_historys+3, lines+3);
 }
 
 void oscilloscopepage_load(lefl_page_t *page)

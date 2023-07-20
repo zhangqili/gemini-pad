@@ -5,6 +5,5 @@
  *      Author: xq123
  */
 #include "fezui.h"
-#include "display.h"
 
 char fezui_buffer[STRING_LENGTH] = {0};

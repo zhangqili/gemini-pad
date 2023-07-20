@@ -10,6 +10,7 @@
 #include "lefl.h"
 #include "flash_address.h"
 #include "MB85RC16.h"
+#include "display.h"
 
 
 uint8_t tempuint;
@@ -18,29 +19,29 @@ uint8_t tempuint;
 void fezui_init()
 {
     MD_OLED_RST_Set();
-    u8g2_Setup_ssd1306_128x64_noname_f(&u8g2, U8G2_R0, u8x8_byte_4wire_hw_spi,
+    u8g2_Setup_ssd1306_128x64_noname_f(&(fezui.u8g2), U8G2_R0, u8x8_byte_4wire_hw_spi,
             u8x8_stm32_gpio_and_delay);
-    u8g2_InitDisplay(&u8g2);
-    u8g2_SetPowerSave(&u8g2, 0);
-    u8g2_SetBitmapMode(&u8g2, 1);
-    u8g2_SetFontMode(&u8g2, 1);
-    u8g2_ClearBuffer(&u8g2);
-    u8g2_DrawLine(&u8g2, 15, 15, 20, 18);
-    u8g2_DrawLine(&u8g2, 15, 22, 20, 18);
-    u8g2_DrawLine(&u8g2, 26, 16, 20, 18);
-    u8g2_DrawLine(&u8g2, 26, 26, 20, 18);
-    u8g2_DrawLine(&u8g2, 26, 16, 31, 12);
-    u8g2_DrawLine(&u8g2, 21, 8, 31, 12);
-    u8g2_DrawLine(&u8g2, 39, 4, 31, 12);
-    u8g2_DrawLine(&u8g2, 42, 21, 31, 12);
-    u8g2_DrawLine(&u8g2, 26, 26, 33, 30);
-    u8g2_DrawLine(&u8g2, 46, 39, 33, 30);
-    u8g2_DrawLine(&u8g2, 26, 26, 26, 38);
-    u8g2_DrawLine(&u8g2, 42, 44, 26, 38);
-    u8g2_DrawLine(&u8g2, 42, 21, 52, 27);
-    u8g2_DrawLine(&u8g2, 55, 26, 52, 27);
-    u8g2_DrawLine(&u8g2, 42, 21, 50, 32);
-    u8g2_SendBuffer(&u8g2);
+    u8g2_InitDisplay(&(fezui.u8g2));
+    u8g2_SetPowerSave(&(fezui.u8g2), 0);
+    u8g2_SetBitmapMode(&(fezui.u8g2), 1);
+    u8g2_SetFontMode(&(fezui.u8g2), 1);
+    u8g2_ClearBuffer(&(fezui.u8g2));
+    u8g2_DrawLine(&(fezui.u8g2), 15, 15, 20, 18);
+    u8g2_DrawLine(&(fezui.u8g2), 15, 22, 20, 18);
+    u8g2_DrawLine(&(fezui.u8g2), 26, 16, 20, 18);
+    u8g2_DrawLine(&(fezui.u8g2), 26, 26, 20, 18);
+    u8g2_DrawLine(&(fezui.u8g2), 26, 16, 31, 12);
+    u8g2_DrawLine(&(fezui.u8g2), 21, 8, 31, 12);
+    u8g2_DrawLine(&(fezui.u8g2), 39, 4, 31, 12);
+    u8g2_DrawLine(&(fezui.u8g2), 42, 21, 31, 12);
+    u8g2_DrawLine(&(fezui.u8g2), 26, 26, 33, 30);
+    u8g2_DrawLine(&(fezui.u8g2), 46, 39, 33, 30);
+    u8g2_DrawLine(&(fezui.u8g2), 26, 26, 26, 38);
+    u8g2_DrawLine(&(fezui.u8g2), 42, 44, 26, 38);
+    u8g2_DrawLine(&(fezui.u8g2), 42, 21, 52, 27);
+    u8g2_DrawLine(&(fezui.u8g2), 55, 26, 52, 27);
+    u8g2_DrawLine(&(fezui.u8g2), 42, 21, 50, 32);
+    u8g2_SendBuffer(&(fezui.u8g2));
 
     Analog_Read();
     fezui_read_counts();
@@ -102,25 +103,25 @@ void fezui_timer_handler()
         fezui_rest_countdown = SCREEN_REST_TIME;
     }
     /*
-    u8g2_ClearBuffer(&u8g2);
+    u8g2_ClearBuffer(&(fezui.u8g2));
     //sprintf(fezui_tempstr,"%d",UI_IsDisplayOn);
-    //u8g2_DrawStr(&u8g2, 64, 10, fezui_tempstr);
+    //u8g2_DrawStr(&(fezui.u8g2), 64, 10, fezui_tempstr);
     lefl_link_frame_draw(&mainframe);
 #ifdef _SCREEN_REST_ON
-    u8g2_SetPowerSave(&u8g2,!UI_IsDisplayOn);
+    u8g2_SetPowerSave(&(fezui.u8g2),!UI_IsDisplayOn);
 #endif
-    u8g2_SendBuffer(&u8g2);
+    u8g2_SendBuffer(&(fezui.u8g2));
 
     UI_FPS++;
     */
 }
 
-extern fezui_t ui;
+extern fezui_t fezui;
 void fezui_draw_cursor(lefl_cursor_t*c)
 {
-    u8g2_SetDrawColor(&u8g2, 2);
-    u8g2_DrawBox(&u8g2, c->x, c->y, c->w, c->h);
-    u8g2_SetDrawColor(&u8g2, !ui.invert);
+    u8g2_SetDrawColor(&(fezui.u8g2), 2);
+    u8g2_DrawBox(&(fezui.u8g2), c->x, c->y, c->w, c->h);
+    u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
 }
 
 void fezui_menu_update_selection(lefl_menu_t *menu)

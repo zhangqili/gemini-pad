@@ -87,7 +87,7 @@ void keyselectpage_logic(lefl_page_t *page)
 void keyselectpage_draw(lefl_page_t *page)
 {
     uint16_t delta_x = 0;
-    u8g2_SetFont(&u8g2, u8g2_font_micro_mr);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_mr);
     if (UI_KeySelection_Scroller_X < 64)
     {
         for (uint8_t i = 0; i < 6; i++)
@@ -95,14 +95,14 @@ void keyselectpage_draw(lefl_page_t *page)
             delta_x = 1;
             for (uint8_t j = 0; j < 17; j++)
             {
-                u8g2_DrawStr(&u8g2, delta_x, 10 * (i + 1),
+                u8g2_DrawStr(&(fezui.u8g2), delta_x, 10 * (i + 1),
                         ansi_104_keymap[i][j]);
                 delta_x += strlen(ansi_104_keymap[i][j]) * 4 + 4;
                 //if(delta_x>WIDTH)
                 //break;
             }
         }
-        u8g2_DrawXBMP(&u8g2, 4 * 5 + 1, 10 * 6 - 5, 5, 5, win_icon);
+        u8g2_DrawXBMP(&(fezui.u8g2), 4 * 5 + 1, 10 * 6 - 5, 5, 5, win_icon);
     }
     else
     {
@@ -111,17 +111,17 @@ void keyselectpage_draw(lefl_page_t *page)
             delta_x = 1;
             for (uint8_t j = 0; j < 17; j++)
             {
-                u8g2_DrawStr(&u8g2,
+                u8g2_DrawStr(&(fezui.u8g2),
                         delta_x + 64 - (int16_t) UI_KeySelection_Scroller_X,
                         10 * (i + 1), ansi_104_keymap[i][j]);
                 delta_x += strlen(ansi_104_keymap[i][j]) * 4 + 4;
                 //if(delta_x>WIDTH)
                 //break;
             }
-            u8g2_DrawXBMP(&u8g2,
+            u8g2_DrawXBMP(&(fezui.u8g2),
                     4 * 5 + 65 - (int16_t) UI_KeySelection_Scroller_X,
                     10 * 6 - 5, 5, 5, win_icon);
-            u8g2_DrawXBMP(&u8g2,
+            u8g2_DrawXBMP(&(fezui.u8g2),
                     4 * 40 + 61 - (int16_t) UI_KeySelection_Scroller_X,
                     10 * 6 - 5, 5, 5, win_icon);
         }

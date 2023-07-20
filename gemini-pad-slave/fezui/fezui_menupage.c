@@ -59,10 +59,10 @@ void menupage_logic(lefl_page_t *page)
 }
 void menupage_draw(lefl_page_t *page)
 {
-    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     for(uint8_t i=0;i<mainmenu.len;i++)
     {
-        u8g2_DrawStr(&u8g2,5 + (int16_t)menu_offset,ITEM_HEIGHT*(i+1),mainmenu.items[i]);
+        u8g2_DrawStr(&(fezui.u8g2),5 + (int16_t)menu_offset,ITEM_HEIGHT*(i+1),mainmenu.items[i]);
     }
     fezui_draw_cursor(&cursor);
 

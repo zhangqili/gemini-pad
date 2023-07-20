@@ -71,36 +71,36 @@ static lefl_cursor_t targetselectedkey={0,0,0,0};
 
 void draw_pad()
 {
-    u8g2_DrawRFrame(&u8g2, (uint8_t)deltax+40, 6, 86, 54, 3);
-    u8g2_DrawFrame(&u8g2, (uint8_t)deltax+40+30, 9, 50, 22);
-    u8g2_DrawFrame(&u8g2, (uint8_t)deltax+40+73, 3, 6, 4);
-    u8g2_DrawFrame(&u8g2, (uint8_t)deltax+40+60, 3, 6, 4);
+    u8g2_DrawRFrame(&(fezui.u8g2), (uint8_t)deltax+40, 6, 86, 54, 3);
+    u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+30, 9, 50, 22);
+    u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+73, 3, 6, 4);
+    u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+60, 3, 6, 4);
     if(keys[0].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+40+73, 59, 6, 4);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+40+73, 59, 6, 4);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+40+73, 59, 6, 4);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+73, 59, 6, 4);
     if(keys[1].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+40+60, 59, 6, 4);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+40+60, 59, 6, 4);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
     if(advanced_keys[0].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+44+20*0, 6+32, 19, 19);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+44+20*0, 6+32, 19, 19);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
     if(advanced_keys[1].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+44+20*1, 6+32, 19, 19);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+44+20*1, 6+32, 19, 19);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
     if(advanced_keys[2].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+44+20*2, 6+32, 19, 19);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+44+20*2, 6+32, 19, 19);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
     if(advanced_keys[3].state)
-        u8g2_DrawBox(&u8g2, (uint8_t)deltax+44+20*3, 6+32, 19, 19);
+        u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
     else
-        u8g2_DrawFrame(&u8g2, (uint8_t)deltax+44+20*3, 6+32, 19, 19);
-    u8g2_DrawCircle(&u8g2, (uint8_t)deltax+44, 32, 7, U8G2_DRAW_ALL);
-    u8g2_DrawCircle(&u8g2, (uint8_t)deltax+55, 20, 7, U8G2_DRAW_ALL);
+        u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
+    u8g2_DrawCircle(&(fezui.u8g2), (uint8_t)deltax+44, 32, 7, U8G2_DRAW_ALL);
+    u8g2_DrawCircle(&(fezui.u8g2), (uint8_t)deltax+55, 20, 7, U8G2_DRAW_ALL);
 }
 
 void keyconfigpage_logic(lefl_page_t *page)
@@ -129,13 +129,13 @@ void keyconfigpage_logic(lefl_page_t *page)
 
 void keyconfigpage_draw(lefl_page_t *page)
 {
-    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     for(uint8_t i=0;i<keyconfigmenu.len;i++)
     {
-        u8g2_DrawStr(&u8g2,1,32+3-(int16_t)deltay+i*ITEM_HEIGHT+2,keyconfigmenu.items[i]);
+        u8g2_DrawStr(&(fezui.u8g2),1,32+3-(int16_t)deltay+i*ITEM_HEIGHT+2,keyconfigmenu.items[i]);
     }
     lefl_cursor_draw(&cursor);
-    u8g2_DrawVLine(&u8g2, 32, 0, 64);
+    u8g2_DrawVLine(&(fezui.u8g2), 32, 0, 64);
     draw_pad();
 }
 

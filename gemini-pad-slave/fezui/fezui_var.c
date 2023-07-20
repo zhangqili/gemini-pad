@@ -9,7 +9,7 @@
 char fpsstr[8] = {0};
 char comstr[8] = {0};
 
-fezui_t ui =
+fezui_t fezui =
 {
     .invert=1
 };

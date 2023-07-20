@@ -34,54 +34,54 @@ void homepage_logic(lefl_page_t *page)
 }
 void homepage_draw(lefl_page_t *page)
 {
-    fezui_draw_flowingwater(&u8g2,MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH-1,lines+0);
-    fezui_draw_flowingwater(&u8g2,MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
-    fezui_draw_flowingwater(&u8g2,MARGIN_LEFT,TILE3+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+2);
-    fezui_draw_flowingwater(&u8g2,MARGIN_LEFT,TILE4+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+3);
+    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH-1,lines+0);
+    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
+    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE3+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+2);
+    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE4+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+3);
 
-    fezui_draw_chart(&u8g2, 0, MARGIN_UP, CHART_WIDTH, CHART_HEIGHT, &KPS_history, KPS_history_max);
-    u8g2_SetFont(&u8g2, u8g2_font_micro_tr);
-    u8g2_DrawStr(&u8g2,0,MARGIN_UP-1,"KPS:");
-    u8g2_DrawStr(&u8g2,32,MARGIN_UP-1,"MAX:");
-    u8g2_DrawStr(&u8g2,96,MARGIN_UP-1,"FPS:");
-    u8g2_SetFont(&u8g2, led_seg_like_font);
+    fezui_draw_chart(&(fezui), 0, MARGIN_UP, CHART_WIDTH, CHART_HEIGHT, &KPS_history, KPS_history_max);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
+    u8g2_DrawStr(&(fezui.u8g2),0,MARGIN_UP-1,"KPS:");
+    u8g2_DrawStr(&(fezui.u8g2),32,MARGIN_UP-1,"MAX:");
+    u8g2_DrawStr(&(fezui.u8g2),96,MARGIN_UP-1,"FPS:");
+    u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
 
     sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
-    u8g2_DrawStr(&u8g2,2,63,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),2,63,fezui_buffer);
 
     sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[1]-fezui_keyinitcounts[1]);
-    u8g2_DrawStr(&u8g2,34,63,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),34,63,fezui_buffer);
 
     sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[2]-fezui_keyinitcounts[2]);
-    u8g2_DrawStr(&u8g2,66,63,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),66,63,fezui_buffer);
 
     sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[3]-fezui_keyinitcounts[3]);
-    u8g2_DrawStr(&u8g2,98,63,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),98,63,fezui_buffer);
 
 #ifndef _FPS_ON
-    u8g2_DrawStr(&u8g2,96+15,MARGIN_UP-1,fpsstr);
+    u8g2_DrawStr(&(fezui.u8g2),96+15,MARGIN_UP-1,fpsstr);
 #endif
 
     sprintf(fezui_buffer,"%2d",fezui_kps);
-    u8g2_DrawStr(&u8g2,15,MARGIN_UP-1,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),15,MARGIN_UP-1,fezui_buffer);
 
     sprintf(fezui_buffer,"%2d",KPS_history_max);
-    u8g2_DrawStr(&u8g2,15+32,MARGIN_UP-1,fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),15+32,MARGIN_UP-1,fezui_buffer);
 
     //sprintf(fezui_tempstr,"%.0f",advanced_keys[0].raw);
-    //u8g2_DrawStr(&u8g2,64,MARGIN_UP-1,fezui_tempstr);
+    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_tempstr);
 
-    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     if(keys[0].state)
-        u8g2_DrawButtonUTF8(&u8g2, 67, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "S");
+        u8g2_DrawButtonUTF8(&(fezui.u8g2), 67, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "S");
     if(keys[1].state)
-        u8g2_DrawButtonUTF8(&u8g2, 67 + MARGIN_UP, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "A");
+        u8g2_DrawButtonUTF8(&(fezui.u8g2), 67 + MARGIN_UP, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "A");
 
-    u8g2_DrawHLine(&u8g2,0,MARGIN_UP,128);
-    u8g2_DrawHLine(&u8g2,0,CHART_HEIGHT+MARGIN_UP,128);
-    u8g2_DrawVLine(&u8g2,64,MARGIN_UP,CHART_HEIGHT+MARGIN_DOWN);
-    u8g2_DrawVLine(&u8g2,32,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
-    u8g2_DrawVLine(&u8g2,96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
+    u8g2_DrawHLine(&(fezui.u8g2),0,MARGIN_UP,128);
+    u8g2_DrawHLine(&(fezui.u8g2),0,CHART_HEIGHT+MARGIN_UP,128);
+    u8g2_DrawVLine(&(fezui.u8g2),64,MARGIN_UP,CHART_HEIGHT+MARGIN_DOWN);
+    u8g2_DrawVLine(&(fezui.u8g2),32,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
+    u8g2_DrawVLine(&(fezui.u8g2),96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
 }
 
 void homepage_load(lefl_page_t *page)

@@ -34,10 +34,10 @@ void settingspage_logic(lefl_page_t *page)
 }
 void settingspage_draw(lefl_page_t *page)
 {
-    u8g2_SetFont(&u8g2, u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     for(uint8_t i=0;i<settingsmenu.len;i++)
     {
-        u8g2_DrawStr(&u8g2,5,ITEM_HEIGHT*(i+1),settingsmenu.items[i]);
+        u8g2_DrawStr(&(fezui.u8g2),5,ITEM_HEIGHT*(i+1),settingsmenu.items[i]);
     }
     lefl_cursor_draw(&cursor);
 }

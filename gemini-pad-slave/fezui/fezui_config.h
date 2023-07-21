@@ -10,8 +10,8 @@
 
 #define WIDTH                 128
 #define HEIGHT                64
-#define STRING_LENGTH         64
-#define NUMBER_STRING_LENGTH  STRING_LENGTH
+#define BUFFER_LENGTH         64
+#define NUMBER_STRING_LENGTH  BUFFER_LENGTH
 #define REFRESH_RATE          170
 #define KPS_HISTORY_LENGTH    65
 //#define TILE_LENGTH         56
@@ -27,7 +27,6 @@
 #define roll()                rand()%2;
 
 
-void fezui_draw_cursor(lefl_cursor_t*c);
 void Analog_Read();
 void fezui_read_counts();
 void fezui_save_counts();

@@ -107,8 +107,8 @@ lefl_loop_array_t analog_historys[4]=
     }
 };
 
-lefl_cursor_t cursor={0,0,128,64,fezui_draw_cursor};
-lefl_cursor_t target_cursor={0,0,0,0,fezui_draw_cursor};
+lefl_cursor_t cursor={0,0,128,64};
+lefl_cursor_t target_cursor={0,0,0,0};
 
 lefl_bit_array_t lines[4]=
 {

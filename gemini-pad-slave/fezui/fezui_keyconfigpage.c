@@ -134,7 +134,7 @@ void keyconfigpage_draw(lefl_page_t *page)
     {
         u8g2_DrawStr(&(fezui.u8g2),1,32+3-(int16_t)deltay+i*ITEM_HEIGHT+2,keyconfigmenu.items[i]);
     }
-    lefl_cursor_draw(&cursor);
+    fezui_draw_cursor(&fezui, &cursor);
     u8g2_DrawVLine(&(fezui.u8g2), 32, 0, 64);
     draw_pad();
 }

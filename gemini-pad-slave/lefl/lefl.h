@@ -31,13 +31,11 @@ extern "C" {
         float y;
         float w;
         float h;
-        void (*draw_cb)(struct __lefl_cursor_t* cursor);
     } lefl_cursor_t;
 
     extern lefl_cursor_t cursor;
     extern lefl_cursor_t target_cursor;
 
-    void lefl_cursor_draw(lefl_cursor_t* c);
     void lefl_cursor_move(lefl_cursor_t* c, lefl_cursor_t* tc);
     void lefl_cursor_set(lefl_cursor_t* c, float x, float y, float w, float h);
 

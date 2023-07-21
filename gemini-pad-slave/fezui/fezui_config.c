@@ -117,12 +117,6 @@ void fezui_timer_handler()
 }
 
 extern fezui_t fezui;
-void fezui_draw_cursor(lefl_cursor_t*c)
-{
-    u8g2_SetDrawColor(&(fezui.u8g2), 2);
-    u8g2_DrawBox(&(fezui.u8g2), c->x, c->y, c->w, c->h);
-    u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
-}
 
 void fezui_menu_update_selection(lefl_menu_t *menu)
 {

@@ -8,10 +8,10 @@
 #include "fezui_var.h"
 
 
-float UI_KeySelection_Cursor_X=0;
-float UI_KeySelection_Cursor_TargetX=0;
-float UI_KeySelection_Scroller_X=0;
-float UI_KeySelection_Scroller_TargetX=0;
+static float Cursor_X=0;
+static float Cursor_TargetX=0;
+static float Scroller_X=0;
+static float Scroller_TargetX=0;
 // width: 5, height: 5
 const unsigned char win_icon[] U8X8_PROGMEM = { 0x1b,0x1b,0x00,0x1b,0x1b };
 
@@ -29,80 +29,58 @@ lefl_animation_base_t keyboardanimation={
         .parameter1=3.0,
         .parameter2=3.0,
         .mode=LEFL_ANIMATION_EASE_OUT,
-        .target=&UI_KeySelection_Scroller_X,
+        .target=&Scroller_X,
 };
 
 lefl_page_t keyselectpage={keyselectpage_logic,keyselectpage_draw,keyselectpage_load};
 void keyselectpage_logic(lefl_page_t *page)
 {
-    /*
-    if (lefl_key_is_triggered(keys+2))
-    {
-        lefl_link_frame_go_back(&mainframe);
-        //ui_cursor_reset();
-    }
-    if (lefl_key_is_triggered(keys+4))
-    {
-        lefl_keyboard_x_increase(&keyboard, 1);
-    }
-    if (lefl_key_is_triggered(keys+5))
-    {
-        lefl_keyboard_x_increase(&keyboard, -1);
-    }
-    if (lefl_key_is_triggered(keys+6))
-    {
-        lefl_keyboard_y_increase(&keyboard, 1);
-    }
-    if (lefl_key_is_triggered(keys+7))
-    {
-        lefl_keyboard_y_increase(&keyboard, -1);
-    }
-    */
-    UI_KeySelection_Cursor_TargetX = 0;
+
+    Cursor_TargetX = 0;
     for (uint8_t i = 0; i < keyboard.x; i++)
     {
-        UI_KeySelection_Cursor_TargetX += strlen(ansi_104_keymap[keyboard.y][i]) * 4 + 4;
+        Cursor_TargetX += strlen(ansi_104_keymap[keyboard.y][i]) * 4 + 4;
     }
-    UI_KeySelection_Scroller_TargetX = UI_KeySelection_Cursor_TargetX
+    Scroller_TargetX = Cursor_TargetX
             + strlen(ansi_104_keymap[keyboard.y][keyboard.x]) * 4 / 2;
-    if (UI_KeySelection_Scroller_TargetX >= 64)
+    if (Scroller_TargetX >= 64)
     {
         lefl_cursor_set(&target_cursor,
         64 - strlen(ansi_104_keymap[keyboard.y][keyboard.x]) * 4 / 2,
-        keyboard.y * 10 + 4,
+        keyboard.y * 10,
         strlen(ansi_104_keymap[keyboard.y][keyboard.x]) * 4+ 1,
         7);
     }
     else
     {
         lefl_cursor_set(&target_cursor,
-        UI_KeySelection_Cursor_TargetX,
-        keyboard.y * 10 + 4,
+        Cursor_TargetX,
+        keyboard.y * 10,
         strlen(ansi_104_keymap[keyboard.y][keyboard.x]) * 4+ 1,
         7);
     }
-    lefl_easing_pid(&UI_KeySelection_Scroller_X,
-            UI_KeySelection_Scroller_TargetX);
+    lefl_easing_pid(&Scroller_X,
+            Scroller_TargetX);
 }
 void keyselectpage_draw(lefl_page_t *page)
 {
     uint16_t delta_x = 0;
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_mr);
-    if (UI_KeySelection_Scroller_X < 64)
+    if (Scroller_X < 64)
     {
         for (uint8_t i = 0; i < 6; i++)
         {
             delta_x = 1;
             for (uint8_t j = 0; j < 17; j++)
             {
-                u8g2_DrawStr(&(fezui.u8g2), delta_x, 10 * (i + 1),
+                u8g2_DrawStr(&(fezui.u8g2), delta_x, 10 * (i + 1) - 4,
                         ansi_104_keymap[i][j]);
                 delta_x += strlen(ansi_104_keymap[i][j]) * 4 + 4;
                 //if(delta_x>WIDTH)
                 //break;
             }
         }
-        u8g2_DrawXBMP(&(fezui.u8g2), 4 * 5 + 1, 10 * 6 - 5, 5, 5, win_icon);
+        u8g2_DrawXBMP(&(fezui.u8g2), 4 * 5 + 1, 10 * 6 - 5 - 4, 5, 5, win_icon);
     }
     else
     {
@@ -112,27 +90,31 @@ void keyselectpage_draw(lefl_page_t *page)
             for (uint8_t j = 0; j < 17; j++)
             {
                 u8g2_DrawStr(&(fezui.u8g2),
-                        delta_x + 64 - (int16_t) UI_KeySelection_Scroller_X,
-                        10 * (i + 1), ansi_104_keymap[i][j]);
+                        delta_x + 64 - (int16_t) Scroller_X,
+                        10 * (i + 1) - 4, ansi_104_keymap[i][j]);
                 delta_x += strlen(ansi_104_keymap[i][j]) * 4 + 4;
                 //if(delta_x>WIDTH)
                 //break;
             }
             u8g2_DrawXBMP(&(fezui.u8g2),
-                    4 * 5 + 65 - (int16_t) UI_KeySelection_Scroller_X,
-                    10 * 6 - 5, 5, 5, win_icon);
+                    4 * 5 + 65 - (int16_t) Scroller_X,
+                    10 * 6 - 5 - 4, 5, 5, win_icon);
             u8g2_DrawXBMP(&(fezui.u8g2),
-                    4 * 40 + 61 - (int16_t) UI_KeySelection_Scroller_X,
-                    10 * 6 - 5, 5, 5, win_icon);
+                    4 * 40 + 61 - (int16_t) Scroller_X,
+                    10 * 6 - 5 - 4, 5, 5, win_icon);
         }
     }
-    lefl_cursor_draw(&cursor);
+    fezui_draw_cursor(&fezui, &cursor);
+    if (Scroller_X < 64)
+    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 363, 64, 0, ORIENTATION_HORIZAIONTAL);
+    else
+    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 363, 64, (Scroller_X-64)/(363-64), ORIENTATION_HORIZAIONTAL);
 }
 
 void keyselectpage_load(lefl_page_t *page)
 {
-    UI_KeySelection_Cursor_X = 0;
-    UI_KeySelection_Scroller_X = 0;
+    Cursor_X = 0;
+    Scroller_X = 0;
     keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
     keys[3].key_cb=lambda(void,(lefl_key_t*k){lefl_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);});
     keys[4].key_cb=lambda(void,(lefl_key_t*k){lefl_keyboard_x_increase(&keyboard, 1);});

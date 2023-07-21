@@ -64,7 +64,7 @@ void menupage_draw(lefl_page_t *page)
     {
         u8g2_DrawStr(&(fezui.u8g2),5 + (int16_t)menu_offset,ITEM_HEIGHT*(i+1),mainmenu.items[i]);
     }
-    fezui_draw_cursor(&cursor);
+    fezui_draw_cursor(&fezui, &cursor);
 
 }
 

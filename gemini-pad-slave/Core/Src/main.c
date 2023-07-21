@@ -120,7 +120,6 @@ int main(void)
   MX_USB_Device_Init();
   fezui_init();
   HAL_Delay(500);
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -133,6 +132,7 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   fezui_init();
+
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
   //HAL_TIM_Base_Start_IT(&htim3);
   HAL_TIM_Base_Start_IT(&htim6);
@@ -170,6 +170,7 @@ int main(void)
 #endif
     u8g2_SendBuffer(&(fezui.u8g2));
     fezui_fps++;
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

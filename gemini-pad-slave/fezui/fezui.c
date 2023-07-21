@@ -6,4 +6,4 @@
  */
 #include "fezui.h"
 
-char fezui_buffer[STRING_LENGTH] = {0};
+char fezui_buffer[BUFFER_LENGTH] = {0};

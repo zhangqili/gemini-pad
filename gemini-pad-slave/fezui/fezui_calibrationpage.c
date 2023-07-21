@@ -99,7 +99,7 @@ void calibrationpage_draw(lefl_page_t *page)
         sprintf(fezui_buffer, "<%s>", calibrationmenu.items[calibrationmenu.selected_index]);
         u8g2_DrawStr(&(fezui.u8g2), 102, 7, fezui_buffer);
         //u8g2_SetDrawColor(&(fezui.u8g2), 1);
-        fezui_draw_cursor(&cursor);
+        fezui_draw_cursor(&fezui, &cursor);
         break;
     default:
         drawrawdata(0, 8, calibrationmenu.selected_index);
@@ -111,7 +111,7 @@ void calibrationpage_draw(lefl_page_t *page)
         sprintf(fezui_buffer, "<%s>", calibrationmenu.items[calibrationmenu.selected_index]);
         u8g2_DrawStr(&(fezui.u8g2), 102, 7, fezui_buffer);
         //u8g2_SetDrawColor(&(fezui.u8g2), 1);
-        fezui_draw_cursor(&cursor);
+        fezui_draw_cursor(&fezui, &cursor);
         break;
     }
 }

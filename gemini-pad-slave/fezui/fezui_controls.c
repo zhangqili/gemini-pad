@@ -7,6 +7,13 @@
 
 #include "fezui.h"
 
+void fezui_draw_cursor(fezui_t *fezui_ptr, lefl_cursor_t*c)
+{
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
+    u8g2_DrawBox(&(fezui_ptr->u8g2), c->x, c->y, c->w, c->h);
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
+}
+
 void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_bit_array_t *bits)
 {
@@ -141,6 +148,21 @@ void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
             break;
     }
 	u8g2_SetDrawColor(&(fezui_ptr->u8g2),previous_color);
+}
+
+void fezui_draw_scrollbar(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,
+		uint8_t h, float range, float size, float value, fezui_orientation_t o)
+{
+	if(o == ORIENTATION_HORIZAIONTAL)
+	{
+		u8g2_DrawHLine(&(fezui_ptr->u8g2), x, y+2, w);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x + (w-w*size/range)*value, y ,w*size/range, 5);
+	}
+	else
+	{
+		u8g2_DrawVLine(&(fezui_ptr->u8g2), x+2, y, h);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y  + (h-h*size/range)*value, 5, h*size/range);
+	}
 }
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n)

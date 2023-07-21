@@ -39,7 +39,7 @@ void settingspage_draw(lefl_page_t *page)
     {
         u8g2_DrawStr(&(fezui.u8g2),5,ITEM_HEIGHT*(i+1),settingsmenu.items[i]);
     }
-    lefl_cursor_draw(&cursor);
+    fezui_draw_cursor(&fezui, &cursor);
 }
 void settings_menu_cb(lefl_menu_t *menu)
 {

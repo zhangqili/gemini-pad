@@ -17,10 +17,10 @@
 #include "fezui_config.h"
 #include "fezui_interface.h"
 
-typedef uint8_t fezui_uint_t;
-typedef int8_t fezui_int_t;
+typedef u8g2_uint_t fezui_uint_t;
+typedef u8g2_int_t fezui_int_t;
 
-extern char fezui_buffer[STRING_LENGTH];
+extern char fezui_buffer[BUFFER_LENGTH];
 
 typedef struct __fezui_t
 {
@@ -35,6 +35,7 @@ typedef struct __fezui_t
 
 void fezui_timer_handler();
 void fezui_init();
+
 
 typedef struct __fezui_point_t
 {
@@ -70,6 +71,14 @@ typedef struct __fezui_base_t
 /*
  * fezui_controls.c
  */
+
+typedef enum
+{
+	ORIENTATION_HORIZAIONTAL,
+	ORIENTATION_VERTICAL
+} fezui_orientation_t;
+
+void fezui_draw_cursor(fezui_t *fezui_ptr, lefl_cursor_t*c);
 void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_bit_array_t *bits);
 void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
@@ -79,12 +88,9 @@ void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
 void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
+void fezui_draw_scrollbar(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,
+		uint8_t h, float range, float size, float value, fezui_orientation_t o);
 
-typedef enum
-{
-	ORIENTATION_HORIZAIONTAL,
-	ORIENTATION_VERTICAL
-} fezui_orientation_t;
 
 typedef struct __fezui_slider_t
 {

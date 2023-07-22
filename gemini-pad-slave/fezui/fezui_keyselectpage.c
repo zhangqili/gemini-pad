@@ -106,9 +106,9 @@ void keyselectpage_draw(lefl_page_t *page)
     }
     fezui_draw_cursor(&fezui, &cursor);
     if (Scroller_X < 64)
-    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 363, 64, 0, ORIENTATION_HORIZAIONTAL);
+    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 64.0/363.0, 0, ORIENTATION_HORIZAIONTAL);
     else
-    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 363, 64, (Scroller_X-64)/(363-64), ORIENTATION_HORIZAIONTAL);
+    	fezui_draw_scrollbar(&fezui, 1, 58, 126, 3, 64.0/363.0, (Scroller_X-64)/(363-64), ORIENTATION_HORIZAIONTAL);
 }
 
 void keyselectpage_load(lefl_page_t *page)

@@ -88,9 +88,8 @@ void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
 void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color);
-void fezui_draw_scrollbar(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,
-		uint8_t h, float range, float size, float value, fezui_orientation_t o);
-
+void fezui_draw_scrollbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
+        u8g2_uint_t h, float size, float value, fezui_orientation_t o);
 
 typedef struct __fezui_slider_t
 {
@@ -104,7 +103,7 @@ typedef struct __fezui_slider_t
 } fezui_slider_t;
 
 void fezui_slider_increase(fezui_slider_t *slider, int8_t n);
-void fezui_draw_slider(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,uint8_t h, fezui_slider_t *slider);
+void fezui_draw_slider(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,u8g2_uint_t h, fezui_slider_t *slider);
 
 typedef struct __fezui_tile_t
 {
@@ -133,5 +132,20 @@ typedef struct __fezui_dialog_t
 
 void fezui_draw_dialog(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_dialog_t *dialog);
 
+/*
+ * fezui_scrollviewer.c
+ */
+
+typedef struct __fezui_scrollview_t
+{
+    float height;
+    float width;
+    float content_height;
+    float content_width;
+    float abscissa;
+    float ordinate;
+} fezui_scrollview_t;
+
+void fezui_draw_scrollview(fezui_t *fezui_ptr, uint8_t x, uint8_t y, fezui_scrollview_t* scrollview);
 
 #endif /* FEZUI_H_ */

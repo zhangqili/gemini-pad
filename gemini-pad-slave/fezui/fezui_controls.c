@@ -150,18 +150,18 @@ void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
 	u8g2_SetDrawColor(&(fezui_ptr->u8g2),previous_color);
 }
 
-void fezui_draw_scrollbar(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w,
-		uint8_t h, float range, float size, float value, fezui_orientation_t o)
+void fezui_draw_scrollbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
+        u8g2_uint_t h, float size, float value, fezui_orientation_t o)
 {
 	if(o == ORIENTATION_HORIZAIONTAL)
 	{
 		u8g2_DrawHLine(&(fezui_ptr->u8g2), x, y+2, w);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x + (w-w*size/range)*value, y ,w*size/range, 5);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x + (w-w*size)*value, y ,w*size, h);
 	}
 	else
 	{
 		u8g2_DrawVLine(&(fezui_ptr->u8g2), x+2, y, h);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y  + (h-h*size/range)*value, 5, h*size/range);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y  + (h-h*size)*value, w, h*size);
 	}
 }
 
@@ -174,16 +174,16 @@ void fezui_slider_increase(fezui_slider_t *slider, int8_t n)
         *(slider->f_ptr)=slider->min;
 }
 
-void fezui_draw_slider(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w, uint8_t h, fezui_slider_t *slider)
+void fezui_draw_slider(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h, fezui_slider_t *slider)
 {
 	if(slider->orientation == ORIENTATION_HORIZAIONTAL)
 	{
-		u8g2_DrawHLine(&(fezui_ptr->u8g2), x+1, y+2, w-2);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(w-2), y, 3, 5);
+		u8g2_DrawHLine(&(fezui_ptr->u8g2), x+1, y+h/2, w-2);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x + ((*(slider->f_ptr)-slider->min)/slider->max-slider->min)*(w-2), y, 3, h);
 	}
 	else
 	{
-		u8g2_DrawVLine(&(fezui_ptr->u8g2), x+2, y+1, h-2);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y + ((slider->max-*(slider->f_ptr))/slider->max-slider->min)*(h-2), 5, 3);
+		u8g2_DrawVLine(&(fezui_ptr->u8g2), x+w/2, y+1, h-2);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y + ((slider->max-*(slider->f_ptr))/slider->max-slider->min)*(h-2), w, 3);
 	}
 }

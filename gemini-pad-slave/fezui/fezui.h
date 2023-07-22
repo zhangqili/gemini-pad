@@ -138,12 +138,12 @@ void fezui_draw_dialog(fezui_t *fezui_ptr, uint8_t x, uint8_t y, uint8_t w, uint
 
 typedef struct __fezui_scrollview_t
 {
-    float height;
-    float width;
-    float content_height;
-    float content_width;
-    float abscissa;
-    float ordinate;
+    u8g2_int_t height;
+    u8g2_int_t width;
+    u8g2_int_t content_height;
+    u8g2_int_t content_width;
+    u8g2_int_t abscissa;
+    u8g2_int_t ordinate;
 } fezui_scrollview_t;
 
 void fezui_draw_scrollview(fezui_t *fezui_ptr, uint8_t x, uint8_t y, fezui_scrollview_t* scrollview);

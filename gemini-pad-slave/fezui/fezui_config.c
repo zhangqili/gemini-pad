@@ -23,7 +23,7 @@ void fezui_init()
             u8x8_stm32_gpio_and_delay);
     u8g2_InitDisplay(&(fezui.u8g2));
     u8g2_SetPowerSave(&(fezui.u8g2), 0);
-    u8g2_SetBitmapMode(&(fezui.u8g2), 1);
+    //u8g2_SetBitmapMode(&(fezui.u8g2), 1);
     u8g2_SetFontMode(&(fezui.u8g2), 1);
     u8g2_ClearBuffer(&(fezui.u8g2));
     u8g2_DrawLine(&(fezui.u8g2), 15, 15, 20, 18);

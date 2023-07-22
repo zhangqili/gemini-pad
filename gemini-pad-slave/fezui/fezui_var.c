@@ -118,33 +118,6 @@ lefl_bit_array_t lines[4]=
     {.len=64},
 };
 
-lefl_animation_base_t animations[4]=
-{
-        {
-                .easing_func=lefl_animation_cubic_ease,
-                .end=170,
-                .mode=LEFL_ANIMATION_EASE_OUT,
-                .target=&cursor.x,
-        },
-        {
-                .easing_func=lefl_animation_cubic_ease,
-                .end=170,
-                .mode=LEFL_ANIMATION_EASE_OUT,
-                .target=&cursor.y,
-        },
-        {
-                .easing_func=lefl_animation_cubic_ease,
-                .end=170,
-                .mode=LEFL_ANIMATION_EASE_OUT,
-                .target=&cursor.w,
-        },
-        {
-                .easing_func=lefl_animation_cubic_ease,
-                .end=170,
-                .mode=LEFL_ANIMATION_EASE_OUT,
-                .target=&cursor.h,
-        },
-};
 
 
 

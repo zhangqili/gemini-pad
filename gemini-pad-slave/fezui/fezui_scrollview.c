@@ -6,10 +6,19 @@
  */
 #include "fezui.h"
 
-void fezui_draw_scrollview(fezui_t *fezui_ptr, uint8_t x, uint8_t y, fezui_scrollview_t* scrollview)
+void fezui_draw_scrollview(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h, fezui_scrollview_t* scrollview)
 {
-    if(scrollview->content_width>scrollview->width)
-        fezui_draw_scrollbar(fezui_ptr, x, y + scrollview->height - 5, scrollview->width - 5, 5, (float)scrollview->width/(float)scrollview->content_width, (float)scrollview->abscissa/(float)(scrollview->content_width-scrollview->width), ORIENTATION_HORIZAIONTAL);
-    if(scrollview->content_height>scrollview->height)
-        fezui_draw_scrollbar(fezui_ptr, x + scrollview->width - 5, y, 5, scrollview->height-5, (float)scrollview->height/(float)scrollview->content_height, (float)scrollview->ordinate/(float)(scrollview->content_height-scrollview->height), ORIENTATION_VERTICAL);
+    if(scrollview->content_width>w&&scrollview->content_height>h)
+    {
+        fezui_draw_scrollbar(fezui_ptr, x, y + h - 5, w - 5, 5, (float)w/(float)scrollview->content_width, (float)scrollview->abscissa/(float)(scrollview->content_width-w), ORIENTATION_HORIZAIONTAL);
+        fezui_draw_scrollbar(fezui_ptr, x + w - 5, y, 5, h-5, (float)h/(float)scrollview->content_height, (float)scrollview->ordinate/(float)(scrollview->content_height-h), ORIENTATION_VERTICAL);
+    }
+    else if(scrollview->content_width>w)
+    {
+        fezui_draw_scrollbar(fezui_ptr, x, y + h - 5, w, 5, (float)w/(float)scrollview->content_width, (float)scrollview->abscissa/(float)(scrollview->content_width-w), ORIENTATION_HORIZAIONTAL);
+    }
+    else if(scrollview->content_height>h)
+    {
+        fezui_draw_scrollbar(fezui_ptr, x + w - 5, y, 5, h, (float)h/(float)scrollview->content_height, (float)scrollview->ordinate/(float)(scrollview->content_height-h), ORIENTATION_VERTICAL);
+    }
 }

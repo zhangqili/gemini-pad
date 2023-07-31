@@ -132,11 +132,12 @@ int main(void)
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   fezui_init();
-
+  HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
   //HAL_TIM_Base_Start_IT(&htim3);
   HAL_TIM_Base_Start_IT(&htim6);
   HAL_TIM_Base_Start_IT(&htim7);
+  HAL_ADC_Start_DMA(&hadc1, &fezui_temp_raw, 1);
 
   Communication_Enable(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
   /* USER CODE END 2 */
@@ -165,7 +166,7 @@ int main(void)
 #endif
 #ifdef _FPS_ON
     u8g2_SetDrawColor(&(fezui.u8g2), 2);
-    u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
+    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
     u8g2_DrawStr(&(fezui.u8g2),96+15,11,fpsstr);
 #endif
     u8g2_SendBuffer(&(fezui.u8g2));

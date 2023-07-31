@@ -180,11 +180,11 @@ extern "C" {
      */
 
 #define LEFL_ARRAY_MAX 200
-    typedef uint16_t lefl_array_t;
+    typedef uint16_t lefl_array_elm_t;
 
     typedef struct __lefl_loop_array_t
     {
-        lefl_array_t list[LEFL_ARRAY_MAX];
+        lefl_array_elm_t list[LEFL_ARRAY_MAX];
         int16_t index;
         int16_t len;
     } lefl_loop_array_t;
@@ -195,9 +195,9 @@ extern "C" {
         int16_t index;
     } lefl_loop_array_iterator_t;
 
-    lefl_array_t lefl_loop_array_get(lefl_loop_array_t* arr, int16_t j);
-    void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_t t);
-    lefl_array_t lefl_loop_array_max(lefl_loop_array_t* arr);
+    lefl_array_elm_t lefl_loop_array_get(lefl_loop_array_t* arr, int16_t j);
+    void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_elm_t t);
+    lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t* arr);
 
     typedef uint64_t lefl_bit_array_unit_t;
 #define LEFL_BIT_ARRAY_UNIT_WIDTH (sizeof(lefl_bit_array_unit_t)*8)

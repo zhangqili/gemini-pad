@@ -16,7 +16,7 @@ const unsigned char win_icon[] U8X8_PROGMEM = { 0x1b, 0x1b, 0x00, 0x1b, 0x1b };
 lefl_keyboard_t keyboard = { .x = 0, .y = 0 };
 
 static fezui_scrollview_t scrollview = { .content_height = 64, .content_width =
-        363, .abscissa = 0, .ordinate = 0 };
+        433, .abscissa = 0, .ordinate = 0 };
 
 lefl_page_t keyselectpage = { keyselectpage_logic, keyselectpage_draw,
         keyselectpage_load };
@@ -69,6 +69,9 @@ void keyselectpage_draw(lefl_page_t *page)
                 4 * 40 - 3 - (u8g2_int_t)scrollview.abscissa, 10 * 6 - 5 - 4, 5,
                 5, win_icon);
     }
+    sprintf(fezui_buffer,"%d",delta_x);
+    u8g2_DrawStr(&(fezui.u8g2), 96, 48, fezui_buffer);
+
     fezui_draw_cursor(&fezui, &cursor);
     fezui_draw_scrollview(&fezui, 0, 0, 128, 64, &scrollview);
 }

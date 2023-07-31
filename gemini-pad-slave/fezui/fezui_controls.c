@@ -187,3 +187,47 @@ void fezui_draw_slider(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_ui
 		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y + ((slider->max-*(slider->f_ptr))/slider->max-slider->min)*(h-2), w, 3);
 	}
 }
+
+void fezui_draw_rolling_number(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, fezui_rolling_number_t* rolling_number)
+{
+    const uint8_t *temp_font=(fezui_ptr->u8g2).font;
+    u8g2_SetFont(&(fezui_ptr->u8g2), rolling_number->font);
+    uint8_t font_height = u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2));
+    uint8_t font_width = u8g2_GetMaxCharWidth(&(fezui_ptr->u8g2));
+    uint8_t actual_digit = 1;
+    char str_buffer[2]={0};
+    u8g2_long_t num=rolling_number->number;
+    for (;num/=10;actual_digit++);
+    num=rolling_number->number;
+    u8g2_SetClipWindow(&(fezui_ptr->u8g2),x,y-font_height,x+rolling_number->digit*font_width,y);
+    for (uint8_t i = 0; i < rolling_number->digit; i++)
+    {
+        for (uint8_t j = 0; j < 10; j++)
+        {
+            str_buffer[0] = j+48;
+            u8g2_DrawStr(&(fezui_ptr->u8g2), x+(rolling_number->digit-i-1)*font_width, y+j*font_height-(u8g2_int_t)rolling_number->offsets[i], str_buffer);
+        }
+    }
+    u8g2_SetMaxClipWindow(&(fezui_ptr->u8g2));
+    u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);
+}
+
+void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rolling_number)
+{
+    const uint8_t *temp_font=(fezui_ptr->u8g2).font;
+    u8g2_SetFont(&(fezui_ptr->u8g2), rolling_number->font);
+    u8g2_long_t num=rolling_number->number;
+    lefl_easing_pid(rolling_number->offsets, num%10*u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2)));
+    for (uint8_t i = 1; i < rolling_number->digit; i++)
+    {
+        if(num/=10)
+        {
+            lefl_easing_pid(rolling_number->offsets+i, num%10*(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
+        }
+        else
+        {
+            lefl_easing_pid(rolling_number->offsets+i, -(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
+        }
+    }
+    u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);
+}

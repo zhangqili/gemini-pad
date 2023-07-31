@@ -4,7 +4,7 @@
 #include "lefl.h"
 
 
-lefl_array_t lefl_loop_array_get(lefl_loop_array_t *arr,int16_t j)
+lefl_array_elm_t lefl_loop_array_get(lefl_loop_array_t *arr,int16_t j)
 {
     if(j>=0&&j<arr->len)
     {
@@ -16,7 +16,7 @@ lefl_array_t lefl_loop_array_get(lefl_loop_array_t *arr,int16_t j)
     }
 }
 
-void lefl_loop_array_push_back(lefl_loop_array_t *arr,lefl_array_t t)
+void lefl_loop_array_push_back(lefl_loop_array_t *arr,lefl_array_elm_t t)
 {
     arr->index++;
     if(arr->index>=arr->len)
@@ -26,9 +26,9 @@ void lefl_loop_array_push_back(lefl_loop_array_t *arr,lefl_array_t t)
     arr->list[arr->index]=t;
 }
 
-lefl_array_t lefl_loop_array_max(lefl_loop_array_t *arr)
+lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t *arr)
 {
-    lefl_array_t max = 0;
+    lefl_array_elm_t max = 0;
     for(uint8_t i=0;i<arr->len;i++)
     {
         if(arr->list[i]>max)

@@ -15,7 +15,7 @@
 #define REFRESH_RATE          170
 #define KPS_HISTORY_LENGTH    65
 //#define TILE_LENGTH         56
-#define SCREEN_REST_TIME      15
+#define SCREEN_REST_TIME      60
 #define KEY_NUM               12
 #define MAIN_KEY_NUM          4
 #define ITEM_HEIGHT           14

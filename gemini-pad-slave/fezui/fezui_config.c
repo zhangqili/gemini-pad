@@ -71,7 +71,7 @@ void fezui_timer_handler()
             n++;
         }
         lefl_bit_array_shift(lines+i, 1);
-        if (advanced_keys[i].state)
+        if (advanced_keys[i].key.state)
         {
             lefl_bit_array_set(lines+i, 0, true);
         }
@@ -93,7 +93,6 @@ void fezui_timer_handler()
         KPS_history_max=fezui_kps;
         KPS_history.list[KPS_history.index]=fezui_kps;
     }
-
     fezui_save_counts();
 
     if (KPS_history_max || keys[0].state||keys[1].state||keys[2].state||keys[3].state||keys[4].state||keys[5].state||keys[6].state||keys[7].state)

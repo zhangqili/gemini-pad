@@ -7,6 +7,9 @@
 #include "fezui.h"
 #include "fezui_var.h"
 
+#define ROW_HEIGHT 8
+
+bool configing = false;
 
 lefl_menu_t keyconfigmenu={
         .items={"KEY1","KEY2","KEY3","KEY4","SHIFT","ALPHA","KNOB","WHEEL"},
@@ -38,7 +41,11 @@ lefl_menu_t keyconfig_analog_speed_mode_menu={
         .selected_index=0
 };
 
+lefl_menu_t *current_menu=&keyconfig_digital_mode_menu;
+
 static float deltay=0;
+static float contentDeltaY=0;
+static float contentTargetDeltaY=0;
 //static float targety=0;
 static float deltax=64;
 //static float targetx=0;
@@ -67,7 +74,7 @@ static lefl_animation_base_t keyconfiganimationy={
 
 
 static lefl_cursor_t selectedkey={0,0,0,0};
-static lefl_cursor_t targetselectedkey={0,0,0,0};
+static lefl_cursor_t targetselectedkey={27,32-4,WIDTH-27,ROW_HEIGHT};
 
 void draw_pad()
 {
@@ -75,27 +82,27 @@ void draw_pad()
     u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+30, 9, 50, 22);
     u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+73, 3, 6, 4);
     u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+60, 3, 6, 4);
-    if(keys[0].state)
+    if(keys[1].state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+40+73, 59, 6, 4);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+73, 59, 6, 4);
-    if(keys[1].state)
+    if(keys[0].state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
-    if(advanced_keys[0].state)
+    if(advanced_keys[0].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
-    if(advanced_keys[1].state)
+    if(advanced_keys[1].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
-    if(advanced_keys[2].state)
+    if(advanced_keys[2].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
-    if(advanced_keys[3].state)
+    if(advanced_keys[3].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
@@ -117,41 +124,146 @@ void keyconfigpage_logic(lefl_page_t *page)
     if(selection1!=keyconfigmenu.selected_index)
     {
         keyconfiganimationy.from = deltay;
-        keyconfiganimationy.to = keyconfigmenu.selected_index*ITEM_HEIGHT;
+        keyconfiganimationy.to = keyconfigmenu.selected_index*ROW_HEIGHT;
         lefl_animation_begin(&keyconfiganimationy);
     }
     selection1=keyconfigmenu.selected_index;
+
     //targety=keyconfigmenu.selected_index*ITEM_HEIGHT;
     //lefl_easing_pid(&deltay,targety);
     //lefl_easing_pid(&deltax,targetx);
+    contentTargetDeltaY = current_menu->selected_index*ROW_HEIGHT;
+    lefl_easing_pid(&contentDeltaY,contentTargetDeltaY);
     lefl_cursor_move(&selectedkey, &targetselectedkey);
 }
 
 void keyconfigpage_draw(lefl_page_t *page)
 {
-    u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_5x8_mr);
     for(uint8_t i=0;i<keyconfigmenu.len;i++)
     {
-        u8g2_DrawStr(&(fezui.u8g2),1,32+3-(int16_t)deltay+i*ITEM_HEIGHT+2,keyconfigmenu.items[i]);
+        u8g2_DrawStr(&(fezui.u8g2),1,32+3-(int16_t)deltay+i*ROW_HEIGHT,keyconfigmenu.items[i]);
     }
     fezui_draw_cursor(&fezui, &cursor);
-    u8g2_DrawVLine(&(fezui.u8g2), 32, 0, 64);
-    draw_pad();
+    u8g2_DrawVLine(&(fezui.u8g2), 26, 0, 64);
+    if(configing)
+    {
+        for(uint8_t i=0;i<(*current_menu).len;i++)
+        {
+            u8g2_DrawStr(&(fezui.u8g2),28,32+3-(int16_t)contentDeltaY+i*ROW_HEIGHT,(*current_menu).items[i]);
+        }
+        fezui_draw_cursor(&fezui, &selectedkey);
+    }
+    else
+    {
+        draw_pad();
+    }
 }
 
 void keyconfigpage_load(lefl_page_t *page)
 {
     keyconfiganimationy.from = 64;
-    keyconfiganimationy.to = keyconfigmenu.selected_index*ITEM_HEIGHT;
-    keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
-    keys[3].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_navigate(&mainframe, &keyselectpage);});
-    keys[4].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&keyconfigmenu, 1);});
-    keys[5].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&keyconfigmenu, -1);});
-    keys[6].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&keyconfigmenu, 1);});
-    keys[7].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&keyconfigmenu, -1);});
+    keyconfiganimationy.to = keyconfigmenu.selected_index*ROW_HEIGHT;
+    keys[2].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                configing = false;
+            }
+            else
+            {
+                lefl_link_frame_go_back(&mainframe);
+            }
+        });
+    keys[3].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                switch (current_menu->selected_index)
+                {
+                    case 0:
+
+                        break;
+                    default:
+                        break;
+                }
+                lefl_link_frame_navigate(&mainframe, &keyselectpage);
+            }
+            else
+            {
+                configing=true;
+                lefl_cursor_set(&selectedkey, 26, 0, 1, 64);
+                if(keyconfigmenu.selected_index<MAIN_KEY_NUM)
+                {
+                    switch (advanced_keys[keyconfigmenu.selected_index].mode)
+                    {
+                        case LEFL_KEY_ANALOG_NORMAL_MODE:
+                            current_menu = &keyconfig_analog_normal_mode_menu;
+                            break;
+                        case LEFL_KEY_ANALOG_RAPID_MODE:
+                            current_menu = &keyconfig_analog_rapid_mode_menu;
+                            break;
+                        case LEFL_KEY_ANALOG_SPEED_MODE:
+                            current_menu = &keyconfig_analog_speed_mode_menu;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    current_menu = &keyconfig_digital_mode_menu;
+                }
+            }
+        });
+    keys[4].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                lefl_menu_index_increase(current_menu, 1);
+            }
+            else
+            {
+                lefl_menu_index_increase(&keyconfigmenu, 1);
+            }
+        });
+
+    keys[5].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                lefl_menu_index_increase(current_menu, -1);
+            }
+            else
+            {
+                lefl_menu_index_increase(&keyconfigmenu, -1);
+            }
+        });
+    keys[6].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                lefl_menu_index_increase(current_menu, 1);
+            }
+            else
+            {
+                lefl_menu_index_increase(&keyconfigmenu, 1);
+            }
+        });
+    keys[7].key_cb=lambda(void,(lefl_key_t*k)
+        {
+            if(configing)
+            {
+                lefl_menu_index_increase(current_menu, -1);
+            }
+            else
+            {
+                lefl_menu_index_increase(&keyconfigmenu, -1);
+            }
+        });
     lefl_animation_begin(&keyconfiganimationy);
     lefl_animation_begin(&keyconfiganimationx);
-    lefl_cursor_set(&target_cursor, 0,32-8,32,ITEM_HEIGHT + 2);
+    lefl_cursor_set(&target_cursor, 0,32-4,26,ROW_HEIGHT);
 }
 
 lefl_page_t keyconfigpage={keyconfigpage_logic,keyconfigpage_draw,keyconfigpage_load};

@@ -178,11 +178,11 @@ extern "C" {
      */
 
 #define LEFL_ARRAY_MAX 200
-    typedef uint16_t lefl_array_t;
+    typedef uint16_t lefl_array_elm_t;
 
     typedef struct __lefl_loop_array_t
     {
-        lefl_array_t list[LEFL_ARRAY_MAX];
+        lefl_array_elm_t list[LEFL_ARRAY_MAX];
         int16_t index;
         int16_t len;
     } lefl_loop_array_t;
@@ -193,9 +193,9 @@ extern "C" {
         int16_t index;
     } lefl_loop_array_iterator_t;
 
-    lefl_array_t lefl_loop_array_get(lefl_loop_array_t* arr, int16_t j);
-    void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_t t);
-    lefl_array_t lefl_loop_array_max(lefl_loop_array_t* arr);
+    lefl_array_elm_t lefl_loop_array_get(lefl_loop_array_t* arr, int16_t j);
+    void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_elm_t t);
+    lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t* arr);
 
     typedef uint64_t lefl_bit_array_unit_t;
 #define LEFL_BIT_ARRAY_UNIT_WIDTH (sizeof(lefl_bit_array_unit_t)*8)
@@ -208,6 +208,21 @@ extern "C" {
     void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b);
     bool lefl_bit_array_get(lefl_bit_array_t* arr, int16_t n);
     void lefl_bit_array_shift(lefl_bit_array_t* arr, int16_t n);
+
+    typedef uint16_t lefl_stack_elm_t;
+
+    typedef struct __lefl_stack_t
+    {
+        lefl_stack_elm_t list[LEFL_ARRAY_MAX];
+        int16_t top;
+        int16_t len;
+    } lefl_stack_t;
+
+    lefl_stack_elm_t lefl_stack_get(lefl_stack_t* stack, lefl_stack_elm_t j);
+    void lefl_stack_push(lefl_stack_t* stack, lefl_stack_elm_t t);
+    lefl_stack_elm_t lefl_stack_pop(lefl_stack_t* stack, lefl_stack_elm_t *t);
+
+
     /*
      * lefl_input.c
      */
@@ -232,7 +247,8 @@ extern "C" {
 
     typedef struct __lefl_advanced_key_t
     {
-        uint16_t id;
+        lefl_key_t key;
+        lefl_key_mode_t mode;
         float value;
         float raw;
         float trigger_distance;
@@ -247,10 +263,6 @@ extern "C" {
         float range;
         float upper_bound;
         float lower_bound;
-        bool trigger;
-        bool state;
-        lefl_key_mode_t mode;
-        void (*key_cb)(struct __lefl_advanced_key_t* key);
     } lefl_advanced_key_t;
 
     void lefl_advanced_key_init(lefl_advanced_key_t* key);

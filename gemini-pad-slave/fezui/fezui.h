@@ -56,6 +56,13 @@ typedef struct __fezui_base_t
     fezui_size_t size;
 } fezui_base_t;
 
+
+typedef enum
+{
+    FEZUI_ALIGN_LEFT,
+    FEZUI_ALIGN_CENTER,
+    FEZUI_ALIGN_RIGHT
+} fezui_align_t;
 /*
  * fezui_interface.c
  */
@@ -112,6 +119,20 @@ typedef struct __fezui_tile_t
     void (*tile_cb)(struct __fezui_tile_t *tile);
 } fezui_tile_t;
 
+#define ROLLING_NUMBER_OFFSET_LENGTH 8
+
+typedef struct __fezui_rolling_number_t
+{
+    u8g2_long_t number;
+    uint8_t digit;
+    float offsets[8];
+    const uint8_t *font;
+} fezui_rolling_number_t;
+
+void fezui_draw_rolling_number(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, fezui_rolling_number_t* rolling_number);
+//void fezui_rolling_number_set(fezui_rolling_number_t* rolling_number, u8g2_long_t num);
+#define fezui_rolling_number_set(rolling_number, num) (rolling_number)->number=(num);
+void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rolling_number);
 /*
  * fezui_dialog.c
  */

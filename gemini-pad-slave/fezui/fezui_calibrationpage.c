@@ -24,7 +24,7 @@ void drawrawdata(uint8_t x, uint8_t y,uint8_t n)
 {
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_4x6_mr);
 
-    sprintf(fezui_buffer,"state:%d",advanced_keys[n].state);
+    sprintf(fezui_buffer,"state:%d",advanced_keys[n].key.state);
     u8g2_DrawStr(&(fezui.u8g2), x, y+7*1, fezui_buffer);
 
     sprintf(fezui_buffer,"raw:%4.1f",advanced_keys[n].raw);

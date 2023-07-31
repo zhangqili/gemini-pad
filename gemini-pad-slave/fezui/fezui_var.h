@@ -9,7 +9,7 @@
 #define FEZUI_VAR_H_
 #include "fezui.h"
 
-extern const uint8_t led_seg_like_font[195] U8G2_FONT_SECTION("led_seg_like_font");
+extern const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m");
 extern fezui_t fezui;
 extern uint8_t key_buffer[KEY_NUM];
 extern lefl_advanced_key_t advanced_keys[MAIN_KEY_NUM];
@@ -29,7 +29,7 @@ extern uint8_t fezui_debug;
 extern uint8_t cmd_buffer;
 
 extern uint32_t fezui_run_time;
-
+extern uint32_t fezui_temp_raw;
 
 extern lefl_loop_array_t analog_historys[4];
 extern uint8_t analog_history_buffer[4];

@@ -167,7 +167,7 @@ int main(void)
 #ifdef _FPS_ON
     u8g2_SetDrawColor(&(fezui.u8g2), 2);
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
-    u8g2_DrawStr(&(fezui.u8g2),96+15,11,fpsstr);
+    u8g2_DrawStr(&(fezui.u8g2),95+15,10,fpsstr);
 #endif
     u8g2_SendBuffer(&(fezui.u8g2));
     fezui_fps++;

@@ -11,16 +11,16 @@
 
 #define MARGIN_LEFT           65
 #define PADDING_UP            0
-#define MARGIN_UP             12
+#define MARGIN_UP             11
 #define MARGIN_DOWN           12
 #define HALF_WIDTH            64
 #define TILE_WIDTH            10
 #define CHART_HEIGHT          (HEIGHT-MARGIN_DOWN-MARGIN_UP)
 #define CHART_WIDTH           64
 #define TILE1                 1
-#define TILE2                 10
-#define TILE3                 20
-#define TILE4                 30
+#define TILE2                 11
+#define TILE3                 21
+#define TILE4                 31
 
 
 lefl_page_t homepage={homepage_logic,homepage_draw,homepage_load};
@@ -91,7 +91,7 @@ void homepage_logic(lefl_page_t *page)
 }
 void homepage_draw(lefl_page_t *page)
 {
-    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH-1,lines+0);
+    fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+0);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE3+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+2);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE4+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+3);
@@ -100,7 +100,7 @@ void homepage_draw(lefl_page_t *page)
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
     u8g2_DrawStr(&(fezui.u8g2),0,MARGIN_UP-1,"KPS:");
     u8g2_DrawStr(&(fezui.u8g2),32,MARGIN_UP-1,"MAX:");
-    u8g2_DrawStr(&(fezui.u8g2),96,MARGIN_UP-1,"FPS:");
+    u8g2_DrawStr(&(fezui.u8g2),95,MARGIN_UP-1,"FPS:");
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
 
     //sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
@@ -121,7 +121,7 @@ void homepage_draw(lefl_page_t *page)
     fezui_draw_rolling_number(&fezui, 98, 63, &key4_num);
 
 #ifndef _FPS_ON
-    u8g2_DrawStr(&(fezui.u8g2),96+15,MARGIN_UP-1,fpsstr);
+    u8g2_DrawStr(&(fezui.u8g2),95+15,MARGIN_UP-1,fpsstr);
 #endif
 
     //sprintf(fezui_buffer,"%2d",fezui_kps);

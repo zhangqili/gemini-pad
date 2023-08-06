@@ -184,7 +184,7 @@ extern "C" {
 
     typedef struct __lefl_loop_array_t
     {
-        lefl_array_elm_t list[LEFL_ARRAY_MAX];
+        lefl_array_elm_t data[LEFL_ARRAY_MAX];
         int16_t index;
         int16_t len;
     } lefl_loop_array_t;
@@ -203,7 +203,7 @@ extern "C" {
 #define LEFL_BIT_ARRAY_UNIT_WIDTH (sizeof(lefl_bit_array_unit_t)*8)
     typedef struct __lefl_bit_array_t
     {
-        lefl_bit_array_unit_t list[4];
+        lefl_bit_array_unit_t data[4];
         int16_t len;
     } lefl_bit_array_t;
 

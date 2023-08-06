@@ -6,27 +6,18 @@
  */
 #include "fezui.h"
 #include "fezui_var.h"
-lefl_menu_t settingsmenu = {
-    .items = {"Keys Configuration","Calibration","Debug","About"},
-    .selected_index = 0,
-    .len = 4,
-    .menu_cb = settings_menu_cb
-};
+lefl_menu_t settingsmenu;
+const char* settingsmenu_items[] = {"Keys Configuration","Calibration","Debug","About"};
 lefl_page_t settingspage={settingspage_logic,settingspage_draw,settingspage_load};
+
+
+void settingspage_init()
+{
+    lefl_menu_init(&settingsmenu, settingsmenu_items, sizeof(settingsmenu_items)/sizeof(const char*), settings_menu_cb);
+}
+
 void settingspage_logic(lefl_page_t *page)
 {
-
-    //fezui_menu_update_selection(&settingsmenu);
-    /*
-    if(lefl_key_is_triggered(keys+2))
-    {
-        lefl_link_frame_go_back(&mainframe);
-    }
-    if(lefl_key_is_triggered(keys+3))
-    {
-        lefl_menu_click(&settingsmenu);
-    }
-    */
     lefl_cursor_set(&target_cursor, 3,
             settingsmenu.selected_index * ITEM_HEIGHT + 3,
             strlen(settingsmenu.items[settingsmenu.selected_index]) * 6 + 6,

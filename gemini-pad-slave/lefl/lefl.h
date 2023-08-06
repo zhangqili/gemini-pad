@@ -46,12 +46,13 @@ extern "C" {
 
     typedef struct __lefl_menu_t
     {
-        const char* items[LEFL_MENU_MAX_LENGTH];
+        const char* *items;
         int8_t selected_index;
         uint8_t len;
         void (*menu_cb)(struct __lefl_menu_t* menu);
     } lefl_menu_t;
 
+    void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(lefl_menu_t* menu));
     void lefl_menu_index_increase(lefl_menu_t* menu, int8_t delta);
     void lefl_menu_click(lefl_menu_t* menu);
     void fezui_menu_update_selection(lefl_menu_t* menu);
@@ -90,12 +91,13 @@ extern "C" {
 
     typedef struct __lefl_frame_t
     {
-        lefl_page_t* pages[LEFL_PAGE_MAX];
-        int8_t index;
-        int8_t len;
+        lefl_page_t* *pages;
+        uint8_t index;
+        uint8_t len;
         void (*frame_cb)(struct __lefl_frame_t* frame);
     } lefl_frame_t;
 
+    void lefl_frame_init(lefl_frame_t* frame, lefl_page_t* *data,uint8_t len);
     void lefl_frame_go_forward(lefl_frame_t* frame);
     void lefl_frame_go_back(lefl_frame_t* frame);
     void lefl_frame_go_home(lefl_frame_t* frame);
@@ -177,12 +179,11 @@ extern "C" {
      * lefl_datastruct.c
      */
 
-#define LEFL_ARRAY_MAX 200
     typedef uint16_t lefl_array_elm_t;
 
     typedef struct __lefl_loop_array_t
     {
-        lefl_array_elm_t list[LEFL_ARRAY_MAX];
+        lefl_array_elm_t *data;
         int16_t index;
         int16_t len;
     } lefl_loop_array_t;
@@ -193,6 +194,7 @@ extern "C" {
         int16_t index;
     } lefl_loop_array_iterator_t;
 
+    void lefl_loop_array_init(lefl_loop_array_t *arr,lefl_array_elm_t *data,uint16_t len);
     lefl_array_elm_t lefl_loop_array_get(lefl_loop_array_t* arr, int16_t j);
     void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_elm_t t);
     lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t* arr);
@@ -201,10 +203,11 @@ extern "C" {
 #define LEFL_BIT_ARRAY_UNIT_WIDTH (sizeof(lefl_bit_array_unit_t)*8)
     typedef struct __lefl_bit_array_t
     {
-        lefl_bit_array_unit_t list[4];
-        int16_t len;
+        lefl_bit_array_unit_t *data;
+        uint16_t len;
     } lefl_bit_array_t;
 
+    void lefl_bit_array_init(lefl_bit_array_t* arr, lefl_bit_array_unit_t *data, uint16_t len);
     void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b);
     bool lefl_bit_array_get(lefl_bit_array_t* arr, int16_t n);
     void lefl_bit_array_shift(lefl_bit_array_t* arr, int16_t n);
@@ -213,7 +216,7 @@ extern "C" {
 
     typedef struct __lefl_stack_t
     {
-        lefl_stack_elm_t list[LEFL_ARRAY_MAX];
+        lefl_stack_elm_t *data;
         int16_t top;
         int16_t len;
     } lefl_stack_t;

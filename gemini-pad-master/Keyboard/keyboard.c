@@ -48,10 +48,10 @@ void Keyboard_SendReport()
     //keyBoardHIDsub.KEYCODE2=rand()%2?KEY2_BINDING:0;
     //keyBoardHIDsub.KEYCODE3=rand()%2?KEY3_BINDING:0;
     //keyBoardHIDsub.KEYCODE4=rand()%2?KEY4_BINDING:0;
-    keyBoardHIDsub.KEYCODE1=advanced_keys[0].state?KEY1_BINDING:0;
-    keyBoardHIDsub.KEYCODE2=advanced_keys[1].state?KEY2_BINDING:0;
-    keyBoardHIDsub.KEYCODE3=advanced_keys[2].state?KEY3_BINDING:0;
-    keyBoardHIDsub.KEYCODE4=advanced_keys[3].state?KEY4_BINDING:0;
+    keyBoardHIDsub.KEYCODE1=advanced_keys[0].key.state?KEY1_BINDING:0;
+    keyBoardHIDsub.KEYCODE2=advanced_keys[1].key.state?KEY2_BINDING:0;
+    keyBoardHIDsub.KEYCODE3=advanced_keys[2].key.state?KEY3_BINDING:0;
+    keyBoardHIDsub.KEYCODE4=advanced_keys[3].key.state?KEY4_BINDING:0;
     //keyBoardHIDsub.KEYCODE1=keys[0]?keys[4]?0:0x35:keyBoardHIDsub.KEYCODE1;//`
     //keyBoardHIDsub.MODIFIER=keys[0]?keys[4]?0:0x80:keyBoardHIDsub.MODIFIER;
     //keyBoardHIDsub.KEYCODE2=keys[1]?keys[5]?0:0x2b:keyBoardHIDsub.KEYCODE2;//Tab

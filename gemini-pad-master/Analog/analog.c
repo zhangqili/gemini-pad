@@ -39,28 +39,24 @@ lefl_advanced_key_t advanced_keys[KEY_NUM]=
                         .trigger_distance=0.02,
                         .release_distance=0.02,
                         .schmitt_parameter=0.01,
-                        .key_cb=NULL,
                 },
                 {
                         .mode=LEFL_KEY_ANALOG_RAPID_MODE,
                         .trigger_distance=0.02,
                         .release_distance=0.02,
                         .schmitt_parameter=0.01,
-                        .key_cb=NULL,
                 },
                 {
                         .mode=LEFL_KEY_ANALOG_RAPID_MODE,
                         .trigger_distance=0.02,
                         .release_distance=0.02,
                         .schmitt_parameter=0.01,
-                        .key_cb=NULL,
                 },
                 {
                         .mode=LEFL_KEY_ANALOG_RAPID_MODE,
                         .trigger_distance=0.02,
                         .release_distance=0.02,
                         .schmitt_parameter=0.01,
-                        .key_cb=NULL,
                 }
         };
 

@@ -24,7 +24,7 @@ void Communication_Pack()
 {
     USART1_TX_Length=0;
     //Communication_Add(1,2);
-    Communication_Add8(USART1, PROTOCOL_KEYS0,advanced_keys[0].state<<3|advanced_keys[1].state<<2|advanced_keys[2].state<<1|advanced_keys[3].state|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
+    Communication_Add8(USART1, PROTOCOL_KEYS0,advanced_keys[0].key.state<<3|advanced_keys[1].key.state<<2|advanced_keys[2].key.state<<1|advanced_keys[3].key.state|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
 
     //Communication_Add(PROTOCOL_KEYS0,Keyboard_Keys[0]<<3|Keyboard_Keys[1]<<2|Keyboard_Keys[2]<<1|Keyboard_Keys[3]|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
     Communication_Add8(USART1, PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[7]?BIT(3):BIT(2)):0)|

@@ -3,6 +3,14 @@
  */
 #include "lefl.h"
 
+void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(lefl_menu_t* menu))
+{
+    menu->items=items;
+    menu->len=len;
+    menu->menu_cb=cb;
+    menu->selected_index=0;
+}
+
 void lefl_menu_index_increase(lefl_menu_t *menu, int8_t delta)
 {
     menu->selected_index+=delta;

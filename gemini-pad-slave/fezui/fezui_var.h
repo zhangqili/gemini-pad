@@ -23,6 +23,9 @@ extern uint8_t KPS_history_max;
 extern char fpsstr[8];
 extern char comstr[8];
 extern lefl_loop_array_t KPS_history;
+extern lefl_array_elm_t KPS_history_data[KPS_HISTORY_LENGTH];
+extern lefl_loop_array_t KPS_queue;
+extern lefl_array_elm_t KPS_queue_data[REFRESH_RATE];
 extern uint8_t UI_KPSMaximumPerSecond;
 extern uint8_t fezui_rest_countdown;
 extern uint8_t fezui_debug;
@@ -32,9 +35,16 @@ extern uint32_t fezui_run_time;
 extern uint32_t fezui_temp_raw;
 
 extern lefl_loop_array_t analog_historys[4];
-extern uint8_t analog_history_buffer[4];
+extern lefl_array_elm_t analog_history1_data[HISTORY_LENGTH];
+extern lefl_array_elm_t analog_history2_data[HISTORY_LENGTH];
+extern lefl_array_elm_t analog_history3_data[HISTORY_LENGTH];
+extern lefl_array_elm_t analog_history4_data[HISTORY_LENGTH];
 
 extern lefl_bit_array_t lines[4];
+extern lefl_bit_array_unit_t lines1_data[1];
+extern lefl_bit_array_unit_t lines2_data[1];
+extern lefl_bit_array_unit_t lines3_data[1];
+extern lefl_bit_array_unit_t lines4_data[1];
 extern lefl_loop_array_t KPS_queue;
 
 

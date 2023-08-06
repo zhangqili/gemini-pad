@@ -39,16 +39,10 @@ lefl_key_t keys[KEY_NUM-MAIN_KEY_NUM];
 uint32_t fezui_keytotalcounts[MAIN_KEY_NUM]={0};
 uint32_t fezui_keyinitcounts[MAIN_KEY_NUM]={0};
 
-lefl_loop_array_t KPS_history =
-{
-    .index=0,
-    .len=KPS_HISTORY_LENGTH,
-};
-lefl_loop_array_t KPS_queue =
-{
-    .index=0,
-    .len=REFRESH_RATE,
-};
+lefl_loop_array_t KPS_history;
+lefl_array_elm_t KPS_history_data[KPS_HISTORY_LENGTH];
+lefl_loop_array_t KPS_queue;
+lefl_array_elm_t KPS_queue_data[REFRESH_RATE];
 uint8_t KPS_history_max=0;
 uint32_t fezui_fps = 0;
 uint8_t fezui_kps = 0;
@@ -88,36 +82,19 @@ lefl_link_frame_t mainframe = {
         .current_page=&homepage
     };
 
-lefl_loop_array_t analog_historys[4]=
-{
-    {
-        .index=0,
-        .len=HISTORY_LENGTH,
-    },
-    {
-        .index=0,
-        .len=HISTORY_LENGTH,
-    },
-    {
-        .index=0,
-        .len=HISTORY_LENGTH,
-    },
-    {
-        .index=0,
-        .len=HISTORY_LENGTH,
-    }
-};
-
+lefl_loop_array_t analog_historys[4];
+lefl_array_elm_t analog_history1_data[HISTORY_LENGTH];
+lefl_array_elm_t analog_history2_data[HISTORY_LENGTH];
+lefl_array_elm_t analog_history3_data[HISTORY_LENGTH];
+lefl_array_elm_t analog_history4_data[HISTORY_LENGTH];
 lefl_cursor_t cursor={0,0,128,64};
 lefl_cursor_t target_cursor={0,0,0,0};
 
-lefl_bit_array_t lines[4]=
-{
-    {.len=64},
-    {.len=64},
-    {.len=64},
-    {.len=64},
-};
+lefl_bit_array_t lines[4];
+lefl_bit_array_unit_t lines1_data[1];
+lefl_bit_array_unit_t lines2_data[1];
+lefl_bit_array_unit_t lines3_data[1];
+lefl_bit_array_unit_t lines4_data[1];
 
 
 

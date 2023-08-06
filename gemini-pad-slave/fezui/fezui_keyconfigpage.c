@@ -11,35 +11,20 @@
 
 bool configing = false;
 
-lefl_menu_t keyconfigmenu={
-        .items={"KEY1","KEY2","KEY3","KEY4","SHIFT","ALPHA","KNOB","WHEEL"},
-        .len=8,
-        .selected_index=0
-};
+lefl_menu_t keyconfigmenu;
+const char* keyconfigmenu_items[] = {"KEY1","KEY2","KEY3","KEY4","SHIFT","ALPHA","KNOB","WHEEL"};
 
-lefl_menu_t keyconfig_digital_mode_menu={
-        .items={"Bindings","Mode"},
-        .len=2,
-        .selected_index=0
-};
+lefl_menu_t keyconfig_digital_mode_menu;
+const char* keyconfig_digital_mode_menu_items[] = {"Bindings","Mode"};
 
-lefl_menu_t keyconfig_analog_normal_mode_menu={
-        .items={"Bindings","Mode","Trigger distance","Schmitt parameter","Upper deadzone","Lower deadzone"},
-        .len=6,
-        .selected_index=0
-};
+lefl_menu_t keyconfig_analog_normal_mode_menu;
+const char* keyconfig_analog_normal_mode_menu_items[] = {"Bindings","Mode","Trigger distance","Schmitt parameter","Upper deadzone","Lower deadzone"};
 
-lefl_menu_t keyconfig_analog_rapid_mode_menu={
-        .items={"Bindings","Mode","Trigger distance","Release distance","Schmitt parameter","Upper deadzone","Lower deadzone"},
-        .len=7,
-        .selected_index=0
-};
+lefl_menu_t keyconfig_analog_rapid_mode_menu;
+const char* keyconfig_analog_rapid_mode_menu_items[] = {"Bindings","Mode","Trigger distance","Release distance","Schmitt parameter","Upper deadzone","Lower deadzone"};
 
-lefl_menu_t keyconfig_analog_speed_mode_menu={
-        .items={"Bindings","Mode","Trigger speed","Release speed","Upper deadzone","Lower deadzone"},
-        .len=6,
-        .selected_index=0
-};
+lefl_menu_t keyconfig_analog_speed_mode_menu;
+const char* keyconfig_analog_speed_mode_menu_items[] = {"Bindings","Mode","Trigger speed","Release speed","Upper deadzone","Lower deadzone"};
 
 lefl_menu_t *current_menu=&keyconfig_digital_mode_menu;
 
@@ -110,17 +95,19 @@ void draw_pad()
     u8g2_DrawCircle(&(fezui.u8g2), (uint8_t)deltax+55, 20, 7, U8G2_DRAW_ALL);
 }
 
+void keyconfigpage_init()
+{
+    lefl_menu_init(&keyconfigmenu, keyconfigmenu_items, sizeof(keyconfigmenu_items)/sizeof(const char*), NULL);
+    lefl_menu_init(&keyconfig_digital_mode_menu, keyconfig_digital_mode_menu_items, sizeof(keyconfig_digital_mode_menu_items)/sizeof(const char*), NULL);
+    lefl_menu_init(&keyconfig_analog_normal_mode_menu, keyconfig_analog_normal_mode_menu_items, sizeof(keyconfig_analog_normal_mode_menu_items)/sizeof(const char*), NULL);
+    lefl_menu_init(&keyconfig_analog_rapid_mode_menu, keyconfig_analog_rapid_mode_menu_items, sizeof(keyconfig_analog_rapid_mode_menu_items)/sizeof(const char*), NULL);
+    lefl_menu_init(&keyconfig_analog_speed_mode_menu, keyconfig_analog_speed_mode_menu_items, sizeof(keyconfig_analog_speed_mode_menu_items)/sizeof(const char*), NULL);
+}
+
 void keyconfigpage_logic(lefl_page_t *page)
 {
     lefl_animation_tick(&keyconfiganimationx);
     lefl_animation_tick(&keyconfiganimationy);
-    /*
-    if(lefl_key_is_triggered(keys+2))
-    {
-        lefl_link_frame_go_back(&mainframe);
-    }
-    */
-    //fezui_menu_update_selection(&keyconfigmenu);
     if(selection1!=keyconfigmenu.selected_index)
     {
         keyconfiganimationy.from = deltay;
@@ -128,10 +115,6 @@ void keyconfigpage_logic(lefl_page_t *page)
         lefl_animation_begin(&keyconfiganimationy);
     }
     selection1=keyconfigmenu.selected_index;
-
-    //targety=keyconfigmenu.selected_index*ITEM_HEIGHT;
-    //lefl_easing_pid(&deltay,targety);
-    //lefl_easing_pid(&deltax,targetx);
     contentTargetDeltaY = current_menu->selected_index*ROW_HEIGHT;
     lefl_easing_pid(&contentDeltaY,contentTargetDeltaY);
     lefl_cursor_move(&selectedkey, &targetselectedkey);

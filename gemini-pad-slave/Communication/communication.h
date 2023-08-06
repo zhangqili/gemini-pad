@@ -132,8 +132,8 @@ typedef enum
 
 COM_DECLARE(USART1)
 
-extern uint16_t USART1_TX_Count;
-extern uint16_t USART1_RX_Count;
+extern uint32_t USART1_TX_Count;
+extern uint32_t USART1_RX_Count;
 
 void Communication_Unpack();
 

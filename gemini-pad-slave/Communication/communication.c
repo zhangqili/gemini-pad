@@ -12,8 +12,8 @@
 
 COM_CREATE(USART1)
 
-uint16_t USART1_TX_Count=0;
-uint16_t USART1_RX_Count=0;
+uint32_t USART1_TX_Count=0;
+uint32_t USART1_RX_Count=0;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
 

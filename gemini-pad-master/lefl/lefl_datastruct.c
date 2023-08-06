@@ -3,6 +3,12 @@
  */
 #include "lefl.h"
 
+void lefl_loop_array_init(lefl_loop_array_t *arr,lefl_array_elm_t *data,uint16_t len)
+{
+    arr->data = data;
+    arr->len = len;
+    arr->index = 0;
+}
 
 lefl_array_elm_t lefl_loop_array_get(lefl_loop_array_t *arr,int16_t j)
 {
@@ -35,6 +41,12 @@ lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t *arr)
             max=arr->data[i];
     }
     return max;
+}
+
+void lefl_bit_array_init(lefl_bit_array_t* arr, lefl_bit_array_unit_t *data, uint16_t len)
+{
+    arr->data = data;
+    arr->len = len;
 }
 
 void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b)
@@ -79,3 +91,28 @@ void lefl_bit_array_shift(lefl_bit_array_t* arr, int16_t n)
     }
 }
 
+
+lefl_stack_elm_t lefl_stack_get(lefl_stack_t* stack, lefl_stack_elm_t j)
+{
+    if(j>0 && j < stack->top)
+        return stack->data[j];
+    else
+        return 0;
+}
+void lefl_stack_push(lefl_stack_t* stack, lefl_stack_elm_t t)
+{
+    if(stack->top+1<stack->len)
+    {
+        stack->data[stack->top]=t;
+        stack->top++;
+    }
+}
+lefl_stack_elm_t lefl_stack_pop(lefl_stack_t* stack, lefl_stack_elm_t *t)
+{
+    if(stack->top>0)
+    {
+        stack->top--;
+        *t = stack->data[stack->top];
+    }
+    return *t;
+}

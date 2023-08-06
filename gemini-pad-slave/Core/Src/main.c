@@ -19,9 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
+#include "i2c.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -111,18 +115,14 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
-  w25qxx_advance_init(W25Q128, W25QXX_INTERFACE_SPI, W25QXX_BOOL_FALSE);
-  MX_USB_Device_Init();
-  fezui_init();
-  HAL_Delay(500);
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
@@ -131,6 +131,7 @@ int main(void)
   MX_TIM7_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+  w25qxx_advance_init(W25Q128, W25QXX_INTERFACE_SPI, W25QXX_BOOL_FALSE);
   fezui_init();
   HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
   HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
@@ -160,6 +161,7 @@ int main(void)
         u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
     }
     lefl_link_frame_draw(&mainframe);
+    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,comstr);
 #ifdef _SCREEN_REST_ON
     u8g2_SetPowerSave(&(fezui.u8g2),!fezui_rest_countdown);
     fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,0);
@@ -237,10 +239,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if (htim->Instance == TIM6)
     {
         sprintf(fpsstr, "%3ld", fezui_fps);
-        sprintf(comstr, "%4d", USART1_RX_Count);
+        sprintf(comstr, "%4ld", USART1_RX_Count);
         if (fezui_rest_countdown)
             fezui_rest_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
+        if(USART1_RX_Count<5000)
+        {
+            __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+            HAL_UART_DMAStop(&huart1);
+            HAL_UART_DeInit(&huart1);
+            MX_USART1_UART_Init();
+            Communication_Enable(&huart1,USART1_RX_Buffer,BUFFER_LENGTH);
+        }
         USART1_RX_Count=0;
         fezui_fps = 0;
         UI_KPSMaximumPerSecond = 0;

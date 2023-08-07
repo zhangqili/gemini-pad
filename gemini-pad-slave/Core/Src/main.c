@@ -152,19 +152,25 @@ int main(void)
     //u8g2_DrawStr(&(fezui.u8g2), 64, 10, fezui_tempstr);
     if(fezui.invert)
     {
-        u8g2_SetDrawColor(&(fezui.u8g2), 1);
-        u8g2_DrawBox(&(fezui.u8g2), 0, 0, 128, 64);
-        u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
+        u8g2_SendF(&(fezui.u8g2), "c", 0xA7);
     }
     else
     {
-        u8g2_SetDrawColor(&(fezui.u8g2), !fezui.invert);
     }
+    u8g2_SetDrawColor(&(fezui.u8g2),1);
     lefl_link_frame_draw(&mainframe);
-    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,comstr);
+    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
+    u8g2_DrawStr(&(fezui.u8g2),64,10,comstr);
 #ifdef _SCREEN_REST_ON
+    if(fezui.invert)
+    {
+        fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,1);
+    }
+    else
+    {
+        fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,0);
+    }
     u8g2_SetPowerSave(&(fezui.u8g2),!fezui_rest_countdown);
-    fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,0);
 #endif
 #ifdef _FPS_ON
     u8g2_SetDrawColor(&(fezui.u8g2), 2);
@@ -243,7 +249,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         if (fezui_rest_countdown)
             fezui_rest_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
-        if(USART1_RX_Count<5000)
+        if(USART1_RX_Count<500)
         {
             __HAL_UART_CLEAR_IDLEFLAG(&huart1);
             HAL_UART_DMAStop(&huart1);

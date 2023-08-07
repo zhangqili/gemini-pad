@@ -9,9 +9,11 @@
 
 void fezui_draw_cursor(fezui_t *fezui_ptr, lefl_cursor_t*c)
 {
+    uint8_t color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
     u8g2_DrawBox(&(fezui_ptr->u8g2), c->x, c->y, c->w, c->h);
-    u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), color_backup);
+    //u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
 }
 
 void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
@@ -32,6 +34,7 @@ void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u
 void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_loop_array_t *arr, lefl_bit_array_t *l)
 {
+    uint8_t color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
     uint8_t y1;
     uint8_t y2;
     for (int8_t i = 0; i < w - 1; i++)
@@ -59,8 +62,8 @@ void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
     sprintf(fezui_buffer, "%04d", lefl_loop_array_get(arr, 0));
     u8g2_DrawStr(&(fezui_ptr->u8g2), x + 1, y + 6, fezui_buffer);
-    u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
-    //u8g2_DrawButtonUTF8(&(fezui.u8g2), x+1, y+6, U8G2_BTN_INV, 2, 1, 1, UI_TempString);
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), color_backup);
+    //u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
 }
 
 void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
@@ -84,8 +87,8 @@ void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uin
 void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, uint8_t level, uint8_t color)
 {
-	uint8_t previous_color;
-	previous_color = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
+	uint8_t color_backup;
+	color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), color);
     switch(level)
     {
@@ -147,7 +150,7 @@ void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         default:
             break;
     }
-	u8g2_SetDrawColor(&(fezui_ptr->u8g2),previous_color);
+	u8g2_SetDrawColor(&(fezui_ptr->u8g2),color_backup);
 }
 
 void fezui_draw_scrollbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,

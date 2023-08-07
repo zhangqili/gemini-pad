@@ -82,23 +82,23 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                       break;
                       */
                   case PROTOCOL_ANALOG1_RAW:
-                      memcpy((uint8_t *)&(advanced_keys[0].raw),USART1_RX_Buffer+i+1,4);
-                      lefl_advanced_key_update_raw(advanced_keys + 0, (uint16_t)advanced_keys[0].raw);
+                      memcpy((uint8_t *)&(Keyboard_AdvancedKeys[0].raw),USART1_RX_Buffer+i+1,4);
+                      lefl_advanced_key_update_raw(Keyboard_AdvancedKeys + 0, (uint16_t)Keyboard_AdvancedKeys[0].raw);
                       i+=5;
                       break;
                   case PROTOCOL_ANALOG2_RAW:
-                      memcpy((uint8_t *)&(advanced_keys[1].raw),USART1_RX_Buffer+i+1,4);
-                      lefl_advanced_key_update_raw(advanced_keys + 1, (uint16_t)advanced_keys[1].raw);
+                      memcpy((uint8_t *)&(Keyboard_AdvancedKeys[1].raw),USART1_RX_Buffer+i+1,4);
+                      lefl_advanced_key_update_raw(Keyboard_AdvancedKeys + 1, (uint16_t)Keyboard_AdvancedKeys[1].raw);
                       i+=5;
                       break;
                   case PROTOCOL_ANALOG3_RAW:
-                      memcpy((uint8_t *)&(advanced_keys[2].raw),USART1_RX_Buffer+i+1,4);
-                      lefl_advanced_key_update_raw(advanced_keys + 2, (uint16_t)advanced_keys[2].raw);
+                      memcpy((uint8_t *)&(Keyboard_AdvancedKeys[2].raw),USART1_RX_Buffer+i+1,4);
+                      lefl_advanced_key_update_raw(Keyboard_AdvancedKeys + 2, (uint16_t)Keyboard_AdvancedKeys[2].raw);
                       i+=5;
                       break;
                   case PROTOCOL_ANALOG4_RAW:
-                      memcpy((uint8_t *)&(advanced_keys[3].raw),USART1_RX_Buffer+i+1,4);
-                      lefl_advanced_key_update_raw(advanced_keys + 3, (uint16_t)advanced_keys[3].raw);
+                      memcpy((uint8_t *)&(Keyboard_AdvancedKeys[3].raw),USART1_RX_Buffer+i+1,4);
+                      lefl_advanced_key_update_raw(Keyboard_AdvancedKeys + 3, (uint16_t)Keyboard_AdvancedKeys[3].raw);
                       i+=5;
                       break;
                   case PROTOCOL_CMD:

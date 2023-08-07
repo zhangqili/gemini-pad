@@ -29,14 +29,15 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdbool.h"
-#include "usbd_hid.h"
 #include "stdlib.h"
 #include "analog.h"
 #include "rgb.h"
 #include "keyboard.h"
+#include "lefl.h"
 #include "flash_address.h"
 #include "MB85RC16.h"
 #include "communication.h"
+#include "usbd_custom_hid_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,6 +114,8 @@ int main(void)
   MX_I2C2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  lefl_bit_array_init(&Keyboard_KeyArray, (size_t*)(Keyboard_ReportBuffer+2), 120);
+
 
   HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
   HAL_TIM_PWM_Start(&htim17,TIM_CHANNEL_1);
@@ -146,13 +149,8 @@ int main(void)
     switch (cmd_buffer)
     {
         case CMD_CALIBRATION_START:
-            keyBoardHIDsub.KEYCODE1=0;
-            keyBoardHIDsub.KEYCODE2=0;
-            keyBoardHIDsub.KEYCODE3=0;
-            keyBoardHIDsub.KEYCODE4=0;
-            keyBoardHIDsub.KEYCODE5=0;
-            keyBoardHIDsub.KEYCODE6=0;
-            USBD_HID_SendReport(&hUsbDeviceFS,(uint8_t*)&keyBoardHIDsub,sizeof(keyBoardHIDsub));
+            memset(Keyboard_ReportBuffer,0,sizeof(Keyboard_ReportBuffer)/sizeof(uint8_t));
+            USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
             cmd_buffer=CMD_NULL;
             HAL_TIM_Base_Stop_IT(&htim7);
             Analog_Init();
@@ -251,26 +249,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	RGB_Colors[3].g=(uint8_t)(255.0*Analog_Values[3]);
 	*/
 #define COLOR_INTERVAL(key,low,up) (uint8_t)(key<0?low:(key>1.0?up:key*up))
-    RGB_Colors[0].r=COLOR_INTERVAL(advanced_keys[0].value,0,255.0);
-    RGB_Colors[0].g=COLOR_INTERVAL(advanced_keys[0].value,0,34.0);
-    RGB_Colors[0].b=COLOR_INTERVAL(advanced_keys[0].value,0,145.0);
-    RGB_Colors[1].r=COLOR_INTERVAL(advanced_keys[1].value,0,255.0);
-    RGB_Colors[1].g=COLOR_INTERVAL(advanced_keys[1].value,0,180.0);
-    RGB_Colors[1].b=COLOR_INTERVAL(advanced_keys[1].value,0,0);
-    RGB_Colors[2].r=COLOR_INTERVAL(advanced_keys[2].value,0,51.0);
-    RGB_Colors[2].g=COLOR_INTERVAL(advanced_keys[2].value,0,80.0);
-    RGB_Colors[2].b=COLOR_INTERVAL(advanced_keys[2].value,0,136.0);
-    RGB_Colors[3].r=COLOR_INTERVAL(advanced_keys[3].value,0,255.0);
-    RGB_Colors[3].g=COLOR_INTERVAL(advanced_keys[3].value,0,70.0);
-    RGB_Colors[3].b=COLOR_INTERVAL(advanced_keys[3].value,0,145.0);
-	//RGB_Colors[1].B=Keyboard_Keys[1]?0:128;
-    /*
-    RGB_Colors[0].g=Keyboard_Keys[0]?RGB_Colors[0].G?RGB_Colors[0].G-=1:0:128;
-    RGB_Colors[1].b=Keyboard_Keys[1]?RGB_Colors[1].B?RGB_Colors[1].B-=1:0:128;
-    RGB_Colors[2].g=Keyboard_Keys[2]?RGB_Colors[2].G?RGB_Colors[2].G-=1:0:128;
-    RGB_Colors[3].r=Keyboard_Keys[3]?RGB_Colors[3].R?RGB_Colors[3].R-=1:0:128;
-    RGB_Colors[3].g=Keyboard_Keys[3]?RGB_Colors[3].G?RGB_Colors[3].G-=1:0:128;
-    */
+    RGB_Colors[0].r=COLOR_INTERVAL(Keyboard_AdvancedKeys[0].value,0,255.0);
+    RGB_Colors[0].g=COLOR_INTERVAL(Keyboard_AdvancedKeys[0].value,0,34.0);
+    RGB_Colors[0].b=COLOR_INTERVAL(Keyboard_AdvancedKeys[0].value,0,145.0);
+    RGB_Colors[1].r=COLOR_INTERVAL(Keyboard_AdvancedKeys[1].value,0,255.0);
+    RGB_Colors[1].g=COLOR_INTERVAL(Keyboard_AdvancedKeys[1].value,0,180.0);
+    RGB_Colors[1].b=COLOR_INTERVAL(Keyboard_AdvancedKeys[1].value,0,0);
+    RGB_Colors[2].r=COLOR_INTERVAL(Keyboard_AdvancedKeys[2].value,0,51.0);
+    RGB_Colors[2].g=COLOR_INTERVAL(Keyboard_AdvancedKeys[2].value,0,80.0);
+    RGB_Colors[2].b=COLOR_INTERVAL(Keyboard_AdvancedKeys[2].value,0,136.0);
+    RGB_Colors[3].r=COLOR_INTERVAL(Keyboard_AdvancedKeys[3].value,0,255.0);
+    RGB_Colors[3].g=COLOR_INTERVAL(Keyboard_AdvancedKeys[3].value,0,70.0);
+    RGB_Colors[3].b=COLOR_INTERVAL(Keyboard_AdvancedKeys[3].value,0,145.0);
 
 	Analog_Clean();
   }

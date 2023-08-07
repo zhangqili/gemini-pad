@@ -12,7 +12,7 @@
 extern const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m");
 extern fezui_t fezui;
 extern uint8_t key_buffer[KEY_NUM];
-extern lefl_advanced_key_t advanced_keys[MAIN_KEY_NUM];
+extern lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
 extern lefl_key_t keys[KEY_NUM-MAIN_KEY_NUM];
 
 extern uint32_t fezui_keytotalcounts[MAIN_KEY_NUM];
@@ -41,10 +41,10 @@ extern lefl_array_elm_t analog_history3_data[HISTORY_LENGTH];
 extern lefl_array_elm_t analog_history4_data[HISTORY_LENGTH];
 
 extern lefl_bit_array_t lines[4];
-extern lefl_bit_array_unit_t lines1_data[1];
-extern lefl_bit_array_unit_t lines2_data[1];
-extern lefl_bit_array_unit_t lines3_data[1];
-extern lefl_bit_array_unit_t lines4_data[1];
+extern lefl_bit_array_unit_t lines1_data[2];
+extern lefl_bit_array_unit_t lines2_data[2];
+extern lefl_bit_array_unit_t lines3_data[2];
+extern lefl_bit_array_unit_t lines4_data[2];
 extern lefl_loop_array_t KPS_queue;
 
 

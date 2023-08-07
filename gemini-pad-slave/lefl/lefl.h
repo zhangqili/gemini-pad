@@ -78,8 +78,6 @@ extern "C" {
     /*
      * lefl_nav.c
      */
-#define LEFL_PAGE_MAX 8
-
     typedef struct __lefl_page_t
     {
         void (*page_logic_cb)(struct __lefl_page_t* page);
@@ -199,7 +197,7 @@ extern "C" {
     void lefl_loop_array_push_back(lefl_loop_array_t* arr, lefl_array_elm_t t);
     lefl_array_elm_t lefl_loop_array_max(lefl_loop_array_t* arr);
 
-    typedef uint64_t lefl_bit_array_unit_t;
+    typedef size_t lefl_bit_array_unit_t;
 #define LEFL_BIT_ARRAY_UNIT_WIDTH (sizeof(lefl_bit_array_unit_t)*8)
     typedef struct __lefl_bit_array_t
     {

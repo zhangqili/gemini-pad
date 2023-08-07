@@ -26,7 +26,7 @@ extern float ADC_Averages[KEY_NUM];
 
 extern float Analog_Values[KEY_NUM];
 
-extern lefl_advanced_key_t advanced_keys[KEY_NUM];
+extern lefl_advanced_key_t Keyboard_AdvancedKeys[KEY_NUM];
 
 void Analog_Scan();
 void Analog_Init();

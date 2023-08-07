@@ -82,13 +82,13 @@ void fezui_timer_handler()
     uint8_t n=0;
     for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
     {
-        if (lefl_advanced_key_is_triggered(advanced_keys+i))
+        if (lefl_advanced_key_is_triggered(Keyboard_AdvancedKeys+i))
         {
             fezui_keytotalcounts[i]++;
             n++;
         }
         lefl_bit_array_shift(lines+i, 1);
-        if (advanced_keys[i].key.state)
+        if (Keyboard_AdvancedKeys[i].key.state)
         {
             lefl_bit_array_set(lines+i, 0, true);
         }
@@ -158,17 +158,17 @@ void Analog_Read()
 {
     for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
     {
-        MB85RC16_ReadByte (i*64+KEY1_CONFIG_ADDRESS,       &(advanced_keys[i].mode));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1,     &(advanced_keys[i].trigger_distance));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*1, &(advanced_keys[i].release_distance));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*2, &(advanced_keys[i].schmitt_parameter));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*3, &(advanced_keys[i].trigger_speed));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*4, &(advanced_keys[i].release_speed));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*5, &(advanced_keys[i].upper_deadzone));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*6, &(advanced_keys[i].lower_deadzone));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*7, &(advanced_keys[i].range));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*8, &(advanced_keys[i].upper_bound));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*9, &(advanced_keys[i].lower_bound));
+        MB85RC16_ReadByte (i*64+KEY1_CONFIG_ADDRESS,       &(Keyboard_AdvancedKeys[i].mode));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1,     &(Keyboard_AdvancedKeys[i].trigger_distance));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*1, &(Keyboard_AdvancedKeys[i].release_distance));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*2, &(Keyboard_AdvancedKeys[i].schmitt_parameter));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*3, &(Keyboard_AdvancedKeys[i].trigger_speed));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*4, &(Keyboard_AdvancedKeys[i].release_speed));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*5, &(Keyboard_AdvancedKeys[i].upper_deadzone));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*6, &(Keyboard_AdvancedKeys[i].lower_deadzone));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*7, &(Keyboard_AdvancedKeys[i].range));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*8, &(Keyboard_AdvancedKeys[i].upper_bound));
+        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*9, &(Keyboard_AdvancedKeys[i].lower_bound));
     }
 }
 

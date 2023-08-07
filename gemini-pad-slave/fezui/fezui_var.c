@@ -16,7 +16,7 @@ fezui_t fezui =
 
 uint8_t key_buffer[KEY_NUM] = {0};
 uint8_t cmd_buffer = 0;
-lefl_advanced_key_t advanced_keys[MAIN_KEY_NUM]=
+lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM]=
 {
     {
 
@@ -91,10 +91,10 @@ lefl_cursor_t cursor={0,0,128,64};
 lefl_cursor_t target_cursor={0,0,0,0};
 
 lefl_bit_array_t lines[4];
-lefl_bit_array_unit_t lines1_data[1];
-lefl_bit_array_unit_t lines2_data[1];
-lefl_bit_array_unit_t lines3_data[1];
-lefl_bit_array_unit_t lines4_data[1];
+lefl_bit_array_unit_t lines1_data[2];
+lefl_bit_array_unit_t lines2_data[2];
+lefl_bit_array_unit_t lines3_data[2];
+lefl_bit_array_unit_t lines4_data[2];
 
 
 

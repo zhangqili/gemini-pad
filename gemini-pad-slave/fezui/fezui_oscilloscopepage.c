@@ -10,10 +10,10 @@
 lefl_page_t oscilloscopepage={oscilloscopepage_logic,oscilloscopepage_draw,oscilloscopepage_load};
 void oscilloscopepage_logic(lefl_page_t *page)
 {
-    lefl_loop_array_push_back(analog_historys+0, (uint16_t)advanced_keys[0].raw);
-    lefl_loop_array_push_back(analog_historys+1, (uint16_t)advanced_keys[1].raw);
-    lefl_loop_array_push_back(analog_historys+2, (uint16_t)advanced_keys[2].raw);
-    lefl_loop_array_push_back(analog_historys+3, (uint16_t)advanced_keys[3].raw);
+    lefl_loop_array_push_back(analog_historys+0, (uint16_t)Keyboard_AdvancedKeys[0].raw);
+    lefl_loop_array_push_back(analog_historys+1, (uint16_t)Keyboard_AdvancedKeys[1].raw);
+    lefl_loop_array_push_back(analog_historys+2, (uint16_t)Keyboard_AdvancedKeys[2].raw);
+    lefl_loop_array_push_back(analog_historys+3, (uint16_t)Keyboard_AdvancedKeys[3].raw);
 }
 void oscilloscopepage_draw(lefl_page_t *page)
 {

@@ -75,19 +75,19 @@ void draw_pad()
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+40+60, 59, 6, 4);
-    if(advanced_keys[0].key.state)
+    if(Keyboard_AdvancedKeys[0].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*0, 6+32, 19, 19);
-    if(advanced_keys[1].key.state)
+    if(Keyboard_AdvancedKeys[1].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*1, 6+32, 19, 19);
-    if(advanced_keys[2].key.state)
+    if(Keyboard_AdvancedKeys[2].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*2, 6+32, 19, 19);
-    if(advanced_keys[3].key.state)
+    if(Keyboard_AdvancedKeys[3].key.state)
         u8g2_DrawBox(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
     else
         u8g2_DrawFrame(&(fezui.u8g2), (uint8_t)deltax+44+20*3, 6+32, 19, 19);
@@ -178,7 +178,7 @@ void keyconfigpage_load(lefl_page_t *page)
                 lefl_cursor_set(&selectedkey, 26, 0, 1, 64);
                 if(keyconfigmenu.selected_index<MAIN_KEY_NUM)
                 {
-                    switch (advanced_keys[keyconfigmenu.selected_index].mode)
+                    switch (Keyboard_AdvancedKeys[keyconfigmenu.selected_index].mode)
                     {
                         case LEFL_KEY_ANALOG_NORMAL_MODE:
                             current_menu = &keyconfig_analog_normal_mode_menu;

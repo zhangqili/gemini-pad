@@ -9,18 +9,24 @@
 #include "usart.h"
 #include "usb_device.h"
 #include "analog.h"
-#include "usbd_hid.h"
+#include "usbd_custom_hid_if.h"
 #include "gpio.h"
 #include "keyboard.h"
 
-subKeyBoard keyBoardHIDsub = {0,0,0,0,0,0,0,0};
+#define KEY1_BINDING            KEY_Z
+#define KEY2_BINDING            KEY_X
+#define KEY3_BINDING            KEY_C
+#define KEY4_BINDING            KEY_V
+#define KNOB_BINDING            KEY_ESC
+#define WHEEL_BINDING           KEY_ENTER
+
+uint8_t Keyboard_ReportBuffer[18];
+lefl_bit_array_t Keyboard_KeyArray;
+
 uint8_t Keyboard_EC11Flag=0;
-uint8_t Keyboard_EC11FlagFilter=0;
 uint8_t Keyboard_WheelFlag=0;
-//K1, K2, K3, K4, SHIFT, ALPHA, KNOB, WHEEL
-uint8_t Keyboard_Keys[10]={1};
-uint8_t Keyboard_PreviousKeys[10]={1};
-uint8_t Keyboard_KeySignalEdgeFlag=0;;
+//SHIFT, ALPHA, KNOB, WHEEL, KNOB Rotation direction, WHEEL Rotation direction
+lefl_key_t Keyboard_Keys[6];
 
 void Keyboard_Scan()
 {
@@ -28,10 +34,10 @@ void Keyboard_Scan()
     //Keyboard_Keys[1]=KEY2;
     //Keyboard_Keys[2]=KEY3;
     //Keyboard_Keys[3]=KEY4;
-    Keyboard_Keys[4]=SHIFT;
-    Keyboard_Keys[5]=ALPHA;
-    Keyboard_Keys[6]=KNOB;
-    Keyboard_Keys[8]=WHEEL;
+    lefl_key_update(Keyboard_Keys+0,SHIFT);
+    lefl_key_update(Keyboard_Keys+1,ALPHA);
+    lefl_key_update(Keyboard_Keys+2,KNOB);
+    lefl_key_update(Keyboard_Keys+3,WHEEL);
     if(Keyboard_EC11Flag)
     {
         Keyboard_EC11Flag--;
@@ -44,91 +50,70 @@ void Keyboard_Scan()
 
 void Keyboard_SendReport()
 {
-    //keyBoardHIDsub.KEYCODE1=rand()%2?KEY1_BINDING:0;
-    //keyBoardHIDsub.KEYCODE2=rand()%2?KEY2_BINDING:0;
-    //keyBoardHIDsub.KEYCODE3=rand()%2?KEY3_BINDING:0;
-    //keyBoardHIDsub.KEYCODE4=rand()%2?KEY4_BINDING:0;
-    keyBoardHIDsub.KEYCODE1=advanced_keys[0].key.state?KEY1_BINDING:0;
-    keyBoardHIDsub.KEYCODE2=advanced_keys[1].key.state?KEY2_BINDING:0;
-    keyBoardHIDsub.KEYCODE3=advanced_keys[2].key.state?KEY3_BINDING:0;
-    keyBoardHIDsub.KEYCODE4=advanced_keys[3].key.state?KEY4_BINDING:0;
-    //keyBoardHIDsub.KEYCODE1=keys[0]?keys[4]?0:0x35:keyBoardHIDsub.KEYCODE1;//`
-    //keyBoardHIDsub.MODIFIER=keys[0]?keys[4]?0:0x80:keyBoardHIDsub.MODIFIER;
-    //keyBoardHIDsub.KEYCODE2=keys[1]?keys[5]?0:0x2b:keyBoardHIDsub.KEYCODE2;//Tab
-    //keyBoardHIDsub.KEYCODE3=keys[2]?keys[6]?0:0x3b:keyBoardHIDsub.KEYCODE3;//F2
-    //keyBoardHIDsub.KEYCODE4=keys[3]?keys[7]?0:0x3b:keyBoardHIDsub.KEYCODE4;//Shift+F2
-    //keyBoardHIDsub.MODIFIER=keys[3]?keys[7]?0:0x02:keyBoardHIDsub.MODIFIER;
-    keyBoardHIDsub.KEYCODE5=Keyboard_Keys[6]?keyBoardHIDsub.KEYCODE5:0x29;
-    keyBoardHIDsub.KEYCODE5=Keyboard_Keys[8]?keyBoardHIDsub.KEYCODE5:0x28;
-    keyBoardHIDsub.KEYCODE5=(Keyboard_Keys[8]==1&&Keyboard_Keys[6]==1)?0:keyBoardHIDsub.KEYCODE5;
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY1_BINDING, !(rand()%16));
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY2_BINDING, !(rand()%16));
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY3_BINDING, !(rand()%16));
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY4_BINDING, !(rand()%16));
+    /*
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY1_BINDING, Keyboard_AdvancedKeys[0].key.state);
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY2_BINDING, Keyboard_AdvancedKeys[1].key.state);
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY3_BINDING, Keyboard_AdvancedKeys[2].key.state);
+    lefl_bit_array_set(&Keyboard_KeyArray, KEY4_BINDING, Keyboard_AdvancedKeys[3].key.state);
+    */
+    lefl_bit_array_set(&Keyboard_KeyArray, KNOB_BINDING, Keyboard_Keys[2].state);
+    lefl_bit_array_set(&Keyboard_KeyArray, WHEEL_BINDING, Keyboard_Keys[3].state);
+
     if(Keyboard_EC11Flag)
     {
-        keyBoardHIDsub.KEYCODE6=Keyboard_Keys[7]?0x52:0x51;
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_UP_ARROW, Keyboard_Keys[4].state);
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_DOWN_ARROW, !Keyboard_Keys[4].state);
+    }
+    else
+    {
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_UP_ARROW, false);
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_DOWN_ARROW, false);
     }
     if(Keyboard_WheelFlag)
     {
-      keyBoardHIDsub.KEYCODE6=Keyboard_Keys[9]?0x4F:0x50;
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_LEFT_ARROW, Keyboard_Keys[5].state);
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_RIGHT_ARROW, !Keyboard_Keys[5].state);
     }
-    if(!(Keyboard_EC11Flag||Keyboard_WheelFlag))
+    else
     {
-      keyBoardHIDsub.KEYCODE6=0;
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_LEFT_ARROW, false);
+        lefl_bit_array_set(&Keyboard_KeyArray, KEY_RIGHT_ARROW, false);
     }
 
-    USBD_HID_SendReport(&hUsbDeviceFS,(uint8_t*)&keyBoardHIDsub,sizeof(keyBoardHIDsub));
-}
-
-void Keyboard_CheckSignalEdge()
-{
-    for(uint8_t i=0;i<10;i++)
-    {
-        if(Keyboard_Keys[i]!=Keyboard_PreviousKeys[i])
-            Keyboard_KeySignalEdgeFlag=1;
-        Keyboard_PreviousKeys[i]=Keyboard_Keys[i];
-    }
+    USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
     if(htim == &htim2)
     {
+        Keyboard_WheelFlag=8;
         if(htim->Instance->CR1==0x01)
         {
-          Keyboard_WheelFlag=10;
-          Keyboard_Keys[9]=1;
+            lefl_key_update(Keyboard_Keys+5, false);
         }
         if(htim->Instance->CR1==0x11)
         {
-          Keyboard_WheelFlag=10;
-          Keyboard_Keys[9]=0;
+            lefl_key_update(Keyboard_Keys+5, true);
         }
     }
 
     if(htim == &htim3)
     {
+        Keyboard_EC11Flag=8;
         if(htim->Instance->CR1==0x01)
         {
-          Keyboard_EC11Flag=10;
-          Keyboard_Keys[7]=0;
+            lefl_key_update(Keyboard_Keys+4, true);
         }
         if(htim->Instance->CR1==0x11)
         {
-          Keyboard_EC11Flag=10;
-          Keyboard_Keys[7]=1;
+            lefl_key_update(Keyboard_Keys+4, false);
         }
     }
 
 }
 
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
-    Keyboard_EC11Flag=10;
-    if(GPIO_Pin == GPIO_PIN_6)
-    {
-        Keyboard_Keys[7]=1;
-    }
-    if(GPIO_Pin == GPIO_PIN_7)
-    {
-        Keyboard_Keys[7]=0;
-    }
-}

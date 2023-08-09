@@ -27,8 +27,8 @@ void Communication_Pack()
     Communication_Add8(USART1, PROTOCOL_KEYS0,Keyboard_AdvancedKeys[0].key.state<<3|Keyboard_AdvancedKeys[1].key.state<<2|Keyboard_AdvancedKeys[2].key.state<<1|Keyboard_AdvancedKeys[3].key.state|Keyboard_Keys[0].state<<7|Keyboard_Keys[1].state<<6|Keyboard_Keys[2].state<<5|Keyboard_Keys[3].state<<4);
 
     //Communication_Add(PROTOCOL_KEYS0,Keyboard_Keys[0]<<3|Keyboard_Keys[1]<<2|Keyboard_Keys[2]<<1|Keyboard_Keys[3]|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
-    Communication_Add8(USART1, PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[4].state?BIT(3):BIT(2)):0)|
-                                      (Keyboard_WheelFlag?(Keyboard_Keys[5].state?BIT(1):BIT(0)):0));
+    Communication_Add8(USART1, PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[4].state?BIT(2):BIT(3)):0)|
+                                      (Keyboard_WheelFlag?(Keyboard_Keys[5].state?BIT(0):BIT(1)):0));
     //Communication_Add(PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[7]?BIT(3):BIT(2)):0));
 
     //Communication_Add(PROTOCOL_ANALOG1,(uint8_t)(analog_keys[0].upper_bound/16.0));

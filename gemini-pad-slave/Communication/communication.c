@@ -52,8 +52,8 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                       key_buffer[3]=(USART1_RX_Buffer[i+1]&BIT(0));
                       key_buffer[4]=(USART1_RX_Buffer[i+1]&BIT(7));
                       key_buffer[5]=(USART1_RX_Buffer[i+1]&BIT(6));
-                      key_buffer[6]=!(USART1_RX_Buffer[i+1]&BIT(5));
-                      key_buffer[7]=!(USART1_RX_Buffer[i+1]&BIT(4));
+                      key_buffer[6]=(USART1_RX_Buffer[i+1]&BIT(5));
+                      key_buffer[7]=(USART1_RX_Buffer[i+1]&BIT(4));
                       i+=2;
                       break;
                   case PROTOCOL_KEYS1:

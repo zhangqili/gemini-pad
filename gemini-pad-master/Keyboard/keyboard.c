@@ -50,16 +50,16 @@ void Keyboard_Scan()
 
 void Keyboard_SendReport()
 {
+    /*
     lefl_bit_array_set(&Keyboard_KeyArray, KEY1_BINDING, !(rand()%16));
     lefl_bit_array_set(&Keyboard_KeyArray, KEY2_BINDING, !(rand()%16));
     lefl_bit_array_set(&Keyboard_KeyArray, KEY3_BINDING, !(rand()%16));
     lefl_bit_array_set(&Keyboard_KeyArray, KEY4_BINDING, !(rand()%16));
-    /*
+    */
     lefl_bit_array_set(&Keyboard_KeyArray, KEY1_BINDING, Keyboard_AdvancedKeys[0].key.state);
     lefl_bit_array_set(&Keyboard_KeyArray, KEY2_BINDING, Keyboard_AdvancedKeys[1].key.state);
     lefl_bit_array_set(&Keyboard_KeyArray, KEY3_BINDING, Keyboard_AdvancedKeys[2].key.state);
     lefl_bit_array_set(&Keyboard_KeyArray, KEY4_BINDING, Keyboard_AdvancedKeys[3].key.state);
-    */
     lefl_bit_array_set(&Keyboard_KeyArray, KNOB_BINDING, Keyboard_Keys[2].state);
     lefl_bit_array_set(&Keyboard_KeyArray, WHEEL_BINDING, Keyboard_Keys[3].state);
 

@@ -9,7 +9,7 @@
 #include "usart.h"
 #include "usb_device.h"
 #include "analog.h"
-#include "usbd_custom_hid_if.h"
+#include "usbd_hid.h"
 #include "gpio.h"
 #include "keyboard.h"
 
@@ -84,7 +84,7 @@ void Keyboard_SendReport()
         lefl_bit_array_set(&Keyboard_KeyArray, KEY_RIGHT_ARROW, false);
     }
 
-    USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+    USBD_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,17);
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)

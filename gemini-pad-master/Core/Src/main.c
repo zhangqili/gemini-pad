@@ -37,7 +37,7 @@
 #include "flash_address.h"
 #include "MB85RC16.h"
 #include "communication.h"
-#include "usbd_custom_hid_if.h"
+#include "usbd_hid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -150,7 +150,7 @@ int main(void)
     {
         case CMD_CALIBRATION_START:
             memset(Keyboard_ReportBuffer,0,sizeof(Keyboard_ReportBuffer)/sizeof(uint8_t));
-            USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+            USBD_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,17);
             cmd_buffer=CMD_NULL;
             HAL_TIM_Base_Stop_IT(&htim7);
             Analog_Init();

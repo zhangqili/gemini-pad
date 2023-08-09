@@ -132,28 +132,6 @@ void fezui_timer_handler()
     */
 }
 
-extern fezui_t fezui;
-
-void fezui_menu_update_selection(lefl_menu_t *menu)
-{
-    if (lefl_key_is_triggered(keys+4))
-    {
-        lefl_menu_index_increase(menu, 1);
-    }
-    if (lefl_key_is_triggered(keys+5))
-    {
-        lefl_menu_index_increase(menu, -1);
-    }
-    if (lefl_key_is_triggered(keys+6))
-    {
-        lefl_menu_index_increase(menu, 1);
-    }
-    if (lefl_key_is_triggered(keys+7))
-    {
-        lefl_menu_index_increase(menu, -1);
-    }
-}
-
 void Analog_Read()
 {
     for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)

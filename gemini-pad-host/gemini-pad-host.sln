@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "GeminiPad.WinUI (Package)", "GeminiPad.WinUI\GeminiPad.WinUI (Package)\GeminiPad.WinUI (Package).wapproj", "{34A1801A-39B3-46AD-84CB-FC048856F13F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeminiPad.WinUI", "GeminiPad.WinUI\GeminiPad.WinUI\GeminiPad.WinUI.csproj", "{638A76E0-2FB6-43B0-964F-D79722303A4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|ARM64.Build.0 = Debug|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x64.ActiveCfg = Debug|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x64.Build.0 = Debug|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x64.Deploy.0 = Debug|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x86.ActiveCfg = Debug|x86
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x86.Build.0 = Debug|x86
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Debug|x86.Deploy.0 = Debug|x86
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|ARM64.ActiveCfg = Release|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|ARM64.Build.0 = Release|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|ARM64.Deploy.0 = Release|ARM64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x64.ActiveCfg = Release|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x64.Build.0 = Release|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x64.Deploy.0 = Release|x64
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x86.ActiveCfg = Release|x86
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x86.Build.0 = Release|x86
+		{34A1801A-39B3-46AD-84CB-FC048856F13F}.Release|x86.Deploy.0 = Release|x86
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|ARM64.Build.0 = Debug|ARM64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|x64.ActiveCfg = Debug|x64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|x64.Build.0 = Debug|x64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|x86.ActiveCfg = Debug|x86
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Debug|x86.Build.0 = Debug|x86
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|ARM64.ActiveCfg = Release|ARM64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|ARM64.Build.0 = Release|ARM64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|x64.ActiveCfg = Release|x64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|x64.Build.0 = Release|x64
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|x86.ActiveCfg = Release|x86
+		{638A76E0-2FB6-43B0-964F-D79722303A4E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFF40DAC-5F7C-4564-9F4E-B509A28E7283}
+	EndGlobalSection
+EndGlobal

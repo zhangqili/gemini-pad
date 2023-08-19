@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "dQuoqiDYV5nyL4PHlstjlaTqkmtM9ulC1uH++qLC5b4H80ZKASuUB2r2otSX2o1QBlJWAj/IjMemILNTULs7HQ==",
+  "success": true,
+  "projectFilePath": "D:\\projects\\gemini-pad\\gemini-pad-host\\GeminiPad.WinUI\\GeminiPad.WinUI (Package)\\GeminiPad.WinUI (Package).wapproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\xq123\\.nuget\\packages\\microsoft.ui.xaml\\2.8.5\\microsoft.ui.xaml.2.8.5.nupkg.sha512",
+    "C:\\Users\\xq123\\.nuget\\packages\\microsoft.web.webview2\\1.0.1264.42\\microsoft.web.webview2.1.0.1264.42.nupkg.sha512",
+    "C:\\Users\\xq123\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.22621.755\\microsoft.windows.sdk.buildtools.10.0.22621.755.nupkg.sha512",
+    "C:\\Users\\xq123\\.nuget\\packages\\microsoft.windowsappsdk\\1.3.230602002\\microsoft.windowsappsdk.1.3.230602002.nupkg.sha512"
+  ],
+  "logs": []
+}

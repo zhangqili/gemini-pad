@@ -22,11 +22,11 @@ static fezui_scrollview_t scrollview =
 
 static float target_ordinate=0;
 
-void statisticpage_logic(lefl_page_t *page)
+void statisticpage_logic(void *page)
 {
     lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
 }
-void statisticpage_draw(lefl_page_t *page)
+void statisticpage_draw(void *page)
 {
 
 
@@ -81,12 +81,12 @@ void statisticpage_draw(lefl_page_t *page)
     fezui_draw_scrollview(&fezui, 0, 0, 128, 64, &scrollview);
 }
 
-void statisticpage_load(lefl_page_t *page)
+void statisticpage_load(void *page)
 {
-    keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);});
-    keys[3].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[4].key_cb=lambda(void,(lefl_key_t*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;});
-    keys[5].key_cb=lambda(void,(lefl_key_t*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;});
-    keys[6].key_cb=lambda(void,(lefl_key_t*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;});
-    keys[7].key_cb=lambda(void,(lefl_key_t*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;});
+    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(keys + 3, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 4, KEY_DOWN, lambda(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
+    lefl_key_attach(keys + 5, KEY_DOWN, lambda(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
+    lefl_key_attach(keys + 6, KEY_DOWN, lambda(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
+    lefl_key_attach(keys + 7, KEY_DOWN, lambda(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
 }

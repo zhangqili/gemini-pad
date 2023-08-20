@@ -104,7 +104,7 @@ void keyconfigpage_init()
     lefl_menu_init(&keyconfig_analog_speed_mode_menu, keyconfig_analog_speed_mode_menu_items, sizeof(keyconfig_analog_speed_mode_menu_items)/sizeof(const char*), NULL);
 }
 
-void keyconfigpage_logic(lefl_page_t *page)
+void keyconfigpage_logic(void *page)
 {
     lefl_animation_tick(&keyconfiganimationx);
     lefl_animation_tick(&keyconfiganimationy);
@@ -120,7 +120,7 @@ void keyconfigpage_logic(lefl_page_t *page)
     lefl_cursor_move(&selectedkey, &targetselectedkey);
 }
 
-void keyconfigpage_draw(lefl_page_t *page)
+void keyconfigpage_draw(void *page)
 {
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_5x8_mr);
     for(uint8_t i=0;i<keyconfigmenu.len;i++)
@@ -143,11 +143,16 @@ void keyconfigpage_draw(lefl_page_t *page)
     }
 }
 
-void keyconfigpage_load(lefl_page_t *page)
+void keyconfigpage_load(void *page)
 {
     keyconfiganimationy.from = 64;
     keyconfiganimationy.to = keyconfigmenu.selected_index*ROW_HEIGHT;
-    keys[2].key_cb=lambda(void,(lefl_key_t*k)
+    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k)
+        {
+            lefl_link_frame_go_back(&mainframe);
+        }));
+    /*
+    keys[2].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -158,7 +163,7 @@ void keyconfigpage_load(lefl_page_t *page)
                 lefl_link_frame_go_back(&mainframe);
             }
         });
-    keys[3].key_cb=lambda(void,(lefl_key_t*k)
+    keys[3].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -199,7 +204,7 @@ void keyconfigpage_load(lefl_page_t *page)
                 }
             }
         });
-    keys[4].key_cb=lambda(void,(lefl_key_t*k)
+    keys[4].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -211,7 +216,7 @@ void keyconfigpage_load(lefl_page_t *page)
             }
         });
 
-    keys[5].key_cb=lambda(void,(lefl_key_t*k)
+    keys[5].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -222,7 +227,7 @@ void keyconfigpage_load(lefl_page_t *page)
                 lefl_menu_index_increase(&keyconfigmenu, -1);
             }
         });
-    keys[6].key_cb=lambda(void,(lefl_key_t*k)
+    keys[6].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -233,7 +238,7 @@ void keyconfigpage_load(lefl_page_t *page)
                 lefl_menu_index_increase(&keyconfigmenu, 1);
             }
         });
-    keys[7].key_cb=lambda(void,(lefl_key_t*k)
+    keys[7].key_cb=lambda(void,(void*k)
         {
             if(configing)
             {
@@ -247,6 +252,7 @@ void keyconfigpage_load(lefl_page_t *page)
     lefl_animation_begin(&keyconfiganimationy);
     lefl_animation_begin(&keyconfiganimationx);
     lefl_cursor_set(&target_cursor, 0,32-4,26,ROW_HEIGHT);
+    */
 }
 
 lefl_page_t keyconfigpage={keyconfigpage_logic,keyconfigpage_draw,keyconfigpage_load};

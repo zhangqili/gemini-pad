@@ -55,6 +55,11 @@ void fezui_init()
     lefl_bit_array_init(lines+2, lines3_data, sizeof(lines3_data)*8);
     lefl_bit_array_init(lines+3, lines4_data, sizeof(lines4_data)*8);
 
+    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[0]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[1]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[2]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[3]++;key_triggered_count++;}));
+
     menupage_init();
     settingspage_init();
     calibrationpage_init();
@@ -67,10 +72,6 @@ void fezui_init()
 
 void fezui_timer_handler()
 {
-    //for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
-    //{
-    //    lefl_advanced_key_update_state(advanced_keys+i, key_buffer[i]);
-    //}
     for (uint8_t i = MAIN_KEY_NUM; i < KEY_NUM; i++)
     {
         lefl_key_update(keys+i-4, key_buffer[i]);
@@ -79,21 +80,16 @@ void fezui_timer_handler()
     lefl_link_frame_logic(&mainframe);
     lefl_cursor_move(&cursor, &target_cursor);
 
-    uint8_t n=0;
     for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
     {
-        if (lefl_advanced_key_is_triggered(Keyboard_AdvancedKeys+i))
-        {
-            fezui_keytotalcounts[i]++;
-            n++;
-        }
         lefl_bit_array_shift(lines+i, 1);
         if (Keyboard_AdvancedKeys[i].key.state)
         {
             lefl_bit_array_set(lines+i, 0, true);
         }
     }
-    lefl_loop_array_push_back(&KPS_queue, n);
+    lefl_loop_array_push_back(&KPS_queue, key_triggered_count);
+    key_triggered_count=0;
 
     fezui_kps = 0;
     for (uint8_t i = 0; i < REFRESH_RATE; i++)

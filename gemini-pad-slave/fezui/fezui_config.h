@@ -35,59 +35,64 @@ void fezui_save_counts();
 extern lefl_link_frame_t mainframe;
 
 extern lefl_page_t homepage;
-void homepage_logic(lefl_page_t *page);
-void homepage_draw(lefl_page_t *page);
-void homepage_load(lefl_page_t *page);
+void homepage_logic(void *page);
+void homepage_draw(void *page);
+void homepage_load(void *page);
 
 extern lefl_page_t menupage;
 void menupage_init();
-void menupage_logic(lefl_page_t *page);
-void menupage_draw(lefl_page_t *page);
-void menupage_load(lefl_page_t *page);
-void main_menu_cb(lefl_menu_t *menu);
+void menupage_logic(void *page);
+void menupage_draw(void *page);
+void menupage_load(void *page);
+void main_menu_cb(void *menu);
 
 extern lefl_page_t settingspage;
 void settingspage_init();
-void settingspage_logic(lefl_page_t *page);
-void settingspage_draw(lefl_page_t *page);
-void settingspage_load(lefl_page_t *page);
-void settings_menu_cb(lefl_menu_t *menu);
+void settingspage_logic(void *page);
+void settingspage_draw(void *page);
+void settingspage_load(void *page);
+void settings_menu_cb(void *menu);
 
 extern lefl_page_t oscilloscopepage;
-void oscilloscopepage_logic(lefl_page_t *page);
-void oscilloscopepage_draw(lefl_page_t *page);
-void oscilloscopepage_load(lefl_page_t *page);
+void oscilloscopepage_logic(void *page);
+void oscilloscopepage_draw(void *page);
+void oscilloscopepage_load(void *page);
 
 extern lefl_page_t keyselectpage;
-void keyselectpage_logic(lefl_page_t *page);
-void keyselectpage_draw(lefl_page_t *page);
-void keyselectpage_load(lefl_page_t *page);
+void keyselectpage_logic(void *page);
+void keyselectpage_draw(void *page);
+void keyselectpage_load(void *page);
 
 extern lefl_page_t keyconfigpage;
 void keyconfigpage_init();
-void keyconfigpage_logic(lefl_page_t *page);
-void keyconfigpage_draw(lefl_page_t *page);
+void keyconfigpage_logic(void *page);
+void keyconfigpage_draw(void *page);
 
+extern lefl_page_t panelpage;
+void panelpage_logic(void *page);
+void panelpage_draw(void *page);
+void panelpage_load(void *page);
 
 extern lefl_page_t debugpage;
-void debugpage_logic(lefl_page_t *page);
-void debugpage_draw(lefl_page_t *page);
-void debugpage_load(lefl_page_t *page);
+void debugpage_logic(void *page);
+void debugpage_draw(void *page);
+void debugpage_load(void *page);
 
 extern lefl_page_t calibrationpage;
 void calibrationpage_init();
-void calibrationpage_logic(lefl_page_t *page);
-void calibrationpage_draw(lefl_page_t *page);
-void calibrationpage_load(lefl_page_t *page);
+void calibrationpage_logic(void *page);
+void calibrationpage_draw(void *page);
+void calibrationpage_load(void *page);
 
 extern lefl_page_t statisticpage;
-void statisticpage_logic(lefl_page_t *page);
-void statisticpage_draw(lefl_page_t *page);
-void statisticpage_load(lefl_page_t *page);
+void statisticpage_logic(void *page);
+void statisticpage_draw(void *page);
+void statisticpage_load(void *page);
 
 extern lefl_page_t aboutpage;
-void aboutpage_logic(lefl_page_t *page);
-void aboutpage_draw(lefl_page_t *page);
-void aboutpage_load(lefl_page_t *page);
+void aboutpage_logic(void *page);
+void aboutpage_draw(void *page);
+void aboutpage_load(void *page);
+
 
 #endif /* FEZUI_CONFIG_H_ */

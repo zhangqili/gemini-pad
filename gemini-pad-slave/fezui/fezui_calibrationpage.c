@@ -56,7 +56,7 @@ void calibrationpage_init()
     lefl_menu_init(&calibrationmenu, calibrationmenu_items, sizeof(calibrationmenu_items)/sizeof(const char*), NULL);
 }
 
-void calibrationpage_logic(lefl_page_t *page)
+void calibrationpage_logic(void *page)
 {
     if(cmd_buffer!=CMD_NULL)
     {
@@ -73,7 +73,7 @@ void calibrationpage_logic(lefl_page_t *page)
             9);
 }
 
-void calibrationpage_draw(lefl_page_t *page)
+void calibrationpage_draw(void *page)
 {
     switch(calibrationstate)
     {
@@ -119,17 +119,15 @@ void calibrationpage_draw(lefl_page_t *page)
     }
 }
 
-void calibrationpage_load(lefl_page_t *page)
+void calibrationpage_load(void *page)
 {
     calibrationstate=0;
-    keys[6].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[7].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
-    keys[3].key_cb=lambda(void,(lefl_key_t*k){Communication_Add8(USART1, PROTOCOL_CMD, CMD_CALIBRATION_START);
-                                                Communication_USART1_Transmit();
-                                                calibrationstate=CMD_CALIBRATION_START;});
-    keys[4].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, 1);});
-    keys[5].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, -1);});
-    keys[6].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, 1);});
-    keys[7].key_cb=lambda(void,(lefl_key_t*k){lefl_menu_index_increase(&calibrationmenu, -1);});
+    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(keys + 3, KEY_DOWN, lambda(void,(void*k){Communication_Add8(USART1, PROTOCOL_CMD, CMD_CALIBRATION_START);
+                                                            Communication_USART1_Transmit();
+                                                            calibrationstate=CMD_CALIBRATION_START;}));
+    lefl_key_attach(keys + 4, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
+    lefl_key_attach(keys + 5, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
+    lefl_key_attach(keys + 6, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
+    lefl_key_attach(keys + 7, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
 }

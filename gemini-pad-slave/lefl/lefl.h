@@ -15,12 +15,13 @@ extern "C" {
 #include "stdbool.h"
 #include "math.h"
 
-#define lambda(return_type, function_body) \
+#define LAMBDA(return_type, function_body) \
 ({ \
       return_type $this function_body \
           $this; \
 })
 
+#define ROUND(x) ((size_t)((x)+0.5))
     /*
      * lefl_cursor.c
      */
@@ -69,7 +70,7 @@ extern "C" {
         int8_t y;
         void (*keyboard_cb)(void* keyboard);
     } lefl_keyboard_t;
-    extern char* ansi_104_keymap[6][17];
+    extern const char *hid_usage_id_name[232];
 
     void lefl_keyboard_x_increase(lefl_keyboard_t* keyboard, int8_t delta);
     void lefl_keyboard_y_increase(lefl_keyboard_t* keyboard, int8_t delta);

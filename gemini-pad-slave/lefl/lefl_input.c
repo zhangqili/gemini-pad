@@ -46,12 +46,12 @@ void lefl_advanced_key_update(lefl_advanced_key_t* advanced_key,float value)
         advanced_key->value=value;
         if (advanced_key->key.state)
         {
-            if (advanced_key->value - advanced_key->minimum - advanced_key->schmitt_parameter >= advanced_key->trigger_distance)
+            if (advanced_key->value - advanced_key->minimum >= advanced_key->trigger_distance)
             {
                 if (advanced_key->value > advanced_key->maximum)
                     advanced_key->maximum = advanced_key->value;
             }
-            if (advanced_key->maximum - advanced_key->value - advanced_key->schmitt_parameter >= advanced_key->release_distance)
+            if (advanced_key->maximum - advanced_key->value >= advanced_key->release_distance)
             {
                 advanced_key->minimum = advanced_key->value;
                 state = false;
@@ -59,12 +59,12 @@ void lefl_advanced_key_update(lefl_advanced_key_t* advanced_key,float value)
         }
         else
         {
-            if (advanced_key->value - advanced_key->minimum - advanced_key->schmitt_parameter >= advanced_key->trigger_distance)
+            if (advanced_key->value - advanced_key->minimum >= advanced_key->trigger_distance)
             {
                 advanced_key->maximum = advanced_key->value;
                 state = true;
             }
-            if (advanced_key->maximum - advanced_key->value - advanced_key->schmitt_parameter >= advanced_key->release_distance)
+            if (advanced_key->maximum - advanced_key->value >= advanced_key->release_distance)
             {
                 if (advanced_key->value < advanced_key->minimum)
                     advanced_key->minimum = advanced_key->value;

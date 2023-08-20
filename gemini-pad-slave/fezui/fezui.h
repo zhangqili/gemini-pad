@@ -133,6 +133,32 @@ void fezui_draw_rolling_number(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
 //void fezui_rolling_number_set(fezui_rolling_number_t* rolling_number, u8g2_long_t num);
 #define fezui_rolling_number_set(rolling_number, num) (rolling_number)->number=(num);
 void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rolling_number);
+
+typedef struct __fezui_progressbar_t
+{
+    float value;
+    float max;
+    float min;
+    fezui_orientation_t orientation;
+    bool is_indeterminate;
+} fezui_progressbar_t;
+
+void fezui_draw_progressbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h,fezui_progressbar_t* bar);
+void fezui_progressbar_update(fezui_t *fezui_ptr, fezui_progressbar_t* bar);
+
+typedef struct __fezui_scrolling_text_t
+{
+    char* text;
+    float offset;
+    float speed;
+    u8g2_int_t w;
+    u8g2_int_t content_width;
+    const uint8_t *font;
+} fezui_scrolling_text_t;
+
+void fezui_draw_scrolling_text(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, fezui_scrolling_text_t* text);
+void fezui_scrolling_text_update(fezui_scrolling_text_t* text);
+void fezui_scrolling_text_init(fezui_scrolling_text_t* text,u8g2_int_t w,float speed, const uint8_t *font,char* str);
 /*
  * fezui_dialog.c
  */

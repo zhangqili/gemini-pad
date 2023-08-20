@@ -47,6 +47,6 @@ extern lefl_bit_array_unit_t lines2_data[4];
 extern lefl_bit_array_unit_t lines3_data[4];
 extern lefl_bit_array_unit_t lines4_data[4];
 extern lefl_loop_array_t KPS_queue;
-
+extern const char *hid_usage_names[108];
 
 #endif /* FEZUI_VAR_H_ */

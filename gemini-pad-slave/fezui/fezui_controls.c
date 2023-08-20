@@ -234,3 +234,60 @@ void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rol
     }
     u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);
 }
+
+void fezui_draw_progressbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h,fezui_progressbar_t* bar)
+{
+    u8g2_DrawFrame(&(fezui_ptr->u8g2), x, y, w, h);
+    if(bar->orientation == ORIENTATION_HORIZAIONTAL)
+    {
+        u8g2_DrawBox(&(fezui_ptr->u8g2), x, y, ROUND((bar->value-bar->min)/(bar->max-bar->min)*w), h);
+    }
+    else
+    {
+        u8g2_DrawBox(&(fezui_ptr->u8g2), x, y+h-ROUND((bar->value-bar->min)/(bar->max-bar->min)*h), w, ROUND((bar->value-bar->min)/(bar->max-bar->min)*h));
+    }
+}
+
+void fezui_progressbar_update(fezui_t *fezui_ptr, fezui_progressbar_t* bar)
+{
+
+}
+
+void fezui_draw_scrolling_text(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, fezui_scrolling_text_t* text)
+{
+    const uint8_t *temp_font=(fezui_ptr->u8g2).font;
+    u8g2_SetFont(&(fezui_ptr->u8g2), text->font);
+    uint8_t font_height = u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2));
+    u8g2_SetClipWindow(&(fezui_ptr->u8g2),x,y-font_height,x+text->w,y+1);
+    u8g2_DrawStr(&(fezui_ptr->u8g2), x-(u8g2_int_t)(text->offset), y, text->text);
+    u8g2_SetMaxClipWindow(&(fezui_ptr->u8g2));
+    u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);
+}
+
+void fezui_scrolling_text_update(fezui_scrolling_text_t* text)
+{
+    if(text->content_width<text->w)
+    {
+        text->offset = 0;
+    }
+    else
+    {
+        text->offset += text->speed;
+        if(text->offset>text->content_width)
+            text->offset = - text->w;
+    }
+}
+
+void u8g2_read_font_info(u8g2_font_info_t *font_info, const uint8_t *font);
+void fezui_scrolling_text_init(fezui_scrolling_text_t* text,u8g2_int_t w, float speed, const uint8_t *font,char* str)
+{
+    u8g2_font_info_t font_info;
+    text->text = str;
+    text->w = w;
+    text->font = font;
+    text->speed = speed;
+    u8g2_read_font_info(&font_info, font);
+    text->content_width = strlen(str)*font_info.max_char_width;
+}
+
+

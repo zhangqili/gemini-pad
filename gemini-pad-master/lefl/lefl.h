@@ -15,7 +15,7 @@ extern "C" {
 #include "stdbool.h"
 #include "math.h"
 
-#define lambda(return_type, function_body) \
+#define LAMBDA(return_type, function_body) \
 ({ \
       return_type $this function_body \
           $this; \

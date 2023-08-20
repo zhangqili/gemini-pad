@@ -36,7 +36,7 @@ void aboutpage_draw(void *page)
 
 void aboutpage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
     lefl_key_attach(keys + 3, KEY_DOWN, NULL);
     lefl_key_attach(keys + 4, KEY_DOWN, NULL);
     lefl_key_attach(keys + 5, KEY_DOWN, NULL);

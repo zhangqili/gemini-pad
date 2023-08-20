@@ -55,15 +55,17 @@ void fezui_init()
     lefl_bit_array_init(lines+2, lines3_data, sizeof(lines3_data)*8);
     lefl_bit_array_init(lines+3, lines4_data, sizeof(lines4_data)*8);
 
-    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[0]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[1]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[2]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_DOWN, lambda(void,(void*k){fezui_keytotalcounts[3]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[0]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[1]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[2]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[3]++;key_triggered_count++;}));
 
     menupage_init();
     settingspage_init();
     calibrationpage_init();
     keyconfigpage_init();
+    advancedconfigpage_init();
+    keylistpage_init();
 
     Analog_Read();
     fezui_read_counts();
@@ -126,6 +128,52 @@ void fezui_timer_handler()
 
     UI_FPS++;
     */
+}
+
+
+void keyid_prase(uint16_t id,char* str,uint16_t str_len)
+{
+    bool key_found = false;
+    memset(str,0,str_len);
+    lefl_bit_array_t temp_bit_array;
+    lefl_bit_array_init(&temp_bit_array, (size_t*)((uint8_t*)(&id)+1), 8);
+    for (uint8_t i = 0; i < 8;i++)
+    {
+        if(lefl_bit_array_get(&temp_bit_array, i))
+        {
+            if(key_found)
+            {
+                strcat(str, " + ");
+                strcat(str, hid_usage_names[i]);
+            }
+            else
+            {
+                strcat(str, hid_usage_names[i]);
+                key_found=true;
+            }
+        }
+    }
+
+    if(id&0xFF)
+    {
+        if(key_found)
+        {
+            strcat(str, " + ");
+            strcat(str, hid_usage_names[(id&0xFF)+8]);
+        }
+        else
+        {
+            strcat(str, hid_usage_names[(id&0xFF)+8]);
+            key_found=true;
+        }
+    }
+    else
+    {
+        if(!key_found)
+        {
+            strcat(str, "None");
+        }
+    }
 }
 
 void Analog_Read()

@@ -22,11 +22,12 @@
 #define HISTORY_LENGTH        65
 
 #define _SCREEN_REST_ON
-#define _FPS_ON
+//#define _FPS_ON
 
 #define roll()                rand()%2;
 
 
+void keyid_prase(uint16_t id,char* str,uint16_t str_len);
 void Analog_Read();
 void fezui_read_counts();
 void fezui_save_counts();
@@ -63,10 +64,23 @@ void keyselectpage_logic(void *page);
 void keyselectpage_draw(void *page);
 void keyselectpage_load(void *page);
 
+extern lefl_page_t keylistpage;
+void keylistpage_init();
+void keylistpage_logic(void *page);
+void keylistpage_draw(void *page);
+void keylistpage_load(void *page);
+extern lefl_key_t* current_target_key;
+
 extern lefl_page_t keyconfigpage;
 void keyconfigpage_init();
 void keyconfigpage_logic(void *page);
 void keyconfigpage_draw(void *page);
+
+extern lefl_page_t advancedconfigpage;
+void advancedconfigpage_init();
+void advancedconfigpage_logic(void *page);
+void advancedconfigpage_draw(void *page);
+extern lefl_advanced_key_t* current_config_advanced_key;
 
 extern lefl_page_t panelpage;
 void panelpage_logic(void *page);

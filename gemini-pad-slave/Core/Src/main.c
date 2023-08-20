@@ -159,8 +159,8 @@ int main(void)
     }
     u8g2_SetDrawColor(&(fezui.u8g2),1);
     lefl_link_frame_draw(&mainframe);
-    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
-    u8g2_DrawStr(&(fezui.u8g2),64,10,comstr);
+    //u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
+    //u8g2_DrawStr(&(fezui.u8g2),64,10,comstr);
 #ifdef _SCREEN_REST_ON
     if(fezui.invert)
     {

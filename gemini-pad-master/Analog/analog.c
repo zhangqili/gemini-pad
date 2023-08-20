@@ -214,6 +214,9 @@ void Analog_Save()
         Keyboard_AdvancedKeys[i].schmitt_parameter=0.01,
         Keyboard_AdvancedKeys[i].trigger_speed=0.01,
         Keyboard_AdvancedKeys[i].release_speed=-0.01,
+        Keyboard_AdvancedKeys[i].key.state=false;
+        Keyboard_AdvancedKeys[i].value=0.0;
+        Keyboard_AdvancedKeys[i].raw=0.0;
         MB85RC16_WriteByte (i*64+KEY1_CONFIG_ADDRESS,       Keyboard_AdvancedKeys[i].mode);
         MB85RC16_WriteFloat(i*64+KEY1_CONFIG_ADDRESS+1,     Keyboard_AdvancedKeys[i].trigger_distance);
         MB85RC16_WriteFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*1, Keyboard_AdvancedKeys[i].release_distance);

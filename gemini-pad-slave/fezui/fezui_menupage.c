@@ -52,7 +52,6 @@ void menupage_draw(void *page)
         u8g2_DrawStr(&(fezui.u8g2),5 + (int16_t)menu_offset,ITEM_HEIGHT*(i+1),mainmenu.items[i]);
     }
     fezui_draw_cursor(&fezui, &cursor);
-
 }
 
 void main_menu_cb(void *menu)
@@ -83,11 +82,11 @@ void menupage_load(void *page)
     Communication_USART1_Transmit();
     lefl_animation_begin(&menuanimation);
 
-    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
-    lefl_key_attach(keys + 3, KEY_DOWN, lambda(void,(void*k){lefl_menu_click(&mainmenu);}));
-    lefl_key_attach(keys + 4, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
-    lefl_key_attach(keys + 5, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
-    lefl_key_attach(keys + 6, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
-    lefl_key_attach(keys + 7, KEY_DOWN, lambda(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
+    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(keys + 3, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&mainmenu);}));
+    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
+    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
+    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
+    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
 }
 

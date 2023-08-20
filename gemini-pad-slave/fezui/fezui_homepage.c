@@ -133,8 +133,8 @@ void homepage_draw(void *page)
     fezui_draw_rolling_number(&fezui, 15, MARGIN_UP-1, &kps_num);
     fezui_draw_rolling_number(&fezui, 15+32, MARGIN_UP-1, &max_kps_num);
 
-    //sprintf(fezui_tempstr,"%.0f",advanced_keys[0].raw);
-    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_tempstr);
+    sprintf(fezui_buffer,"%d",sizeof(lefl_advanced_key_t));
+    u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     if(keys[0].state)

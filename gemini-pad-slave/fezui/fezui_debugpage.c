@@ -65,11 +65,11 @@ void debugpage_draw(void *page)
 
 void debugpage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
     lefl_key_attach(keys + 3, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 4, KEY_DOWN, lambda(void,(void*k){fezui_slider_increase(&slider, 1);target_abscissa+=10;if(target_abscissa+64>scrollview.content_height)target_abscissa=scrollview.content_height-64;rolling_number.number++;}));
-    lefl_key_attach(keys + 5, KEY_DOWN, lambda(void,(void*k){fezui_slider_increase(&slider, -1);target_abscissa-=10;if(target_abscissa<0)target_abscissa=0;rolling_number.number--;}));
-    lefl_key_attach(keys + 6, KEY_DOWN, lambda(void,(void*k){fezui_slider_increase(&slider, 1);target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;rolling_number.number++;}));
-    lefl_key_attach(keys + 7, KEY_DOWN, lambda(void,(void*k){fezui_slider_increase(&slider, -1);target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;rolling_number.number--;}));
+    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_abscissa+=10;if(target_abscissa+64>scrollview.content_height)target_abscissa=scrollview.content_height-64;rolling_number.number++;}));
+    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_abscissa-=10;if(target_abscissa<0)target_abscissa=0;rolling_number.number--;}));
+    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;rolling_number.number++;}));
+    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;rolling_number.number--;}));
 }
 

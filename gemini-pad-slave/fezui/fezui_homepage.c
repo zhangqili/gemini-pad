@@ -67,9 +67,9 @@ fezui_rolling_number_t max_kps_num=
     .digit=2
 };
 
-void homepage_logic(lefl_page_t *page)
+void homepage_logic(void *page)
 {
-    if((lefl_key_is_triggered(keys+0)&&keys[1].state)||(lefl_key_is_triggered(keys+1)&&keys[0].state))
+    if(keys[1].state&&keys[0].state)
     {
         lefl_link_frame_navigate(&mainframe, &menupage);
         lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);
@@ -89,7 +89,7 @@ void homepage_logic(lefl_page_t *page)
     fezui_rolling_number_update(&fezui, &kps_num);
     fezui_rolling_number_update(&fezui, &max_kps_num);
 }
-void homepage_draw(lefl_page_t *page)
+void homepage_draw(void *page)
 {
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+0);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
@@ -149,17 +149,16 @@ void homepage_draw(lefl_page_t *page)
     u8g2_DrawVLine(&(fezui.u8g2),96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
 }
 
-void homepage_load(lefl_page_t *page)
+void homepage_load(void *page)
 {
     Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_START);
     Communication_USART1_Transmit();
-    keys[0].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[1].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[2].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[3].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[4].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[5].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[6].key_cb=lambda(void,(lefl_key_t*k){;});
-    keys[7].key_cb=lambda(void,(lefl_key_t*k){;});
-
+    lefl_key_attach(keys + 0, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 1, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 2, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 3, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 4, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 5, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 6, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 7, KEY_DOWN, NULL);
 }

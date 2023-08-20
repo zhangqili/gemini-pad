@@ -20,7 +20,7 @@ static fezui_scrollview_t scrollview = { .content_height = 64, .content_width =
 
 lefl_page_t keyselectpage = { keyselectpage_logic, keyselectpage_draw,
         keyselectpage_load };
-void keyselectpage_logic(lefl_page_t *page)
+void keyselectpage_logic(void *page)
 {
 
     Cursor_TargetX = 0;
@@ -45,7 +45,7 @@ void keyselectpage_logic(lefl_page_t *page)
     }
     lefl_easing_pid(&(scrollview.abscissa), target_abscissa);
 }
-void keyselectpage_draw(lefl_page_t *page)
+void keyselectpage_draw(void *page)
 {
     uint16_t delta_x = 0;
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_mr);
@@ -76,21 +76,15 @@ void keyselectpage_draw(lefl_page_t *page)
     fezui_draw_scrollview(&fezui, 0, 0, 128, 64, &scrollview);
 }
 
-void keyselectpage_load(lefl_page_t *page)
+void keyselectpage_load(void *page)
 {
     Cursor_X = 0;
     scrollview.abscissa = 0;
-    keys[2].key_cb = lambda(void,
-            (lefl_key_t*k){lefl_link_frame_go_back(&mainframe);});
-    keys[3].key_cb =
-            lambda(void,
-                    (lefl_key_t*k){lefl_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);});
-    keys[4].key_cb = lambda(void,
-            (lefl_key_t*k){lefl_keyboard_x_increase(&keyboard, 1);});
-    keys[5].key_cb = lambda(void,
-            (lefl_key_t*k){lefl_keyboard_x_increase(&keyboard, -1);});
-    keys[6].key_cb = lambda(void,
-            (lefl_key_t*k){lefl_keyboard_y_increase(&keyboard, 1);});
-    keys[7].key_cb = lambda(void,
-            (lefl_key_t*k){lefl_keyboard_y_increase(&keyboard, -1);});
+    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void, (void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(keys + 3, KEY_DOWN, lambda(void,
+            (void*k){lefl_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);}));
+    lefl_key_attach(keys + 4, KEY_DOWN, lambda(void, (void*k){lefl_keyboard_x_increase(&keyboard, 1);}));
+    lefl_key_attach(keys + 5, KEY_DOWN, lambda(void, (void*k){lefl_keyboard_x_increase(&keyboard, -1);}));
+    lefl_key_attach(keys + 6, KEY_DOWN, lambda(void, (void*k){lefl_keyboard_y_increase(&keyboard, 1);}));
+    lefl_key_attach(keys + 7, KEY_DOWN, lambda(void, (void*k){lefl_keyboard_y_increase(&keyboard, -1);}));
 }

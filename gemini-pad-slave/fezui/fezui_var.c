@@ -14,26 +14,10 @@ fezui_t fezui =
     .invert=1
 };
 
+uint8_t key_triggered_count = 0;
 uint8_t key_buffer[KEY_NUM] = {0};
 uint8_t cmd_buffer = 0;
-lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM]=
-{
-    {
-
-    }
-    ,
-    {
-
-    }
-    ,
-    {
-
-    }
-    ,
-    {
-
-    }
-};
+lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
 lefl_key_t keys[KEY_NUM-MAIN_KEY_NUM];
 
 uint32_t fezui_keytotalcounts[MAIN_KEY_NUM]={0};
@@ -91,10 +75,10 @@ lefl_cursor_t cursor={0,0,128,64};
 lefl_cursor_t target_cursor={0,0,0,0};
 
 lefl_bit_array_t lines[4];
-lefl_bit_array_unit_t lines1_data[2];
-lefl_bit_array_unit_t lines2_data[2];
-lefl_bit_array_unit_t lines3_data[2];
-lefl_bit_array_unit_t lines4_data[2];
+lefl_bit_array_unit_t lines1_data[4];
+lefl_bit_array_unit_t lines2_data[4];
+lefl_bit_array_unit_t lines3_data[4];
+lefl_bit_array_unit_t lines4_data[4];
 
 
 

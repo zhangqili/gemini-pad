@@ -11,11 +11,11 @@
 
 lefl_page_t aboutpage={aboutpage_logic,aboutpage_draw,aboutpage_load};
 
-void aboutpage_logic(lefl_page_t *page)
+void aboutpage_logic(void *page)
 {
 
 }
-void aboutpage_draw(lefl_page_t *page)
+void aboutpage_draw(void *page)
 {
     u8g2_DrawLine(&(fezui.u8g2), 15, 15, 20, 18);
     u8g2_DrawLine(&(fezui.u8g2), 15, 22, 20, 18);
@@ -34,14 +34,15 @@ void aboutpage_draw(lefl_page_t *page)
     u8g2_DrawLine(&(fezui.u8g2), 42, 21, 50, 32);
 }
 
-void aboutpage_load(lefl_page_t *page)
+void aboutpage_load(void *page)
 {
-    keys[2].key_cb=lambda(void,(lefl_key_t*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);});
-    keys[3].key_cb=NULL;
-    keys[4].key_cb=NULL;
-    keys[5].key_cb=NULL;
-    keys[6].key_cb=NULL;
-    keys[7].key_cb=NULL;
+    lefl_key_attach(keys + 2, KEY_DOWN, lambda(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(keys + 3, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 4, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 5, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 6, KEY_DOWN, NULL);
+    lefl_key_attach(keys + 7, KEY_DOWN, NULL);
+
 }
 
 

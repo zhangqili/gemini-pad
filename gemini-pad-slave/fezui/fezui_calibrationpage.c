@@ -122,12 +122,12 @@ void calibrationpage_draw(void *page)
 void calibrationpage_load(void *page)
 {
     calibrationstate=0;
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k){Communication_Add8(USART1, PROTOCOL_CMD, CMD_CALIBRATION_START);
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Communication_Add8(USART1, PROTOCOL_CMD, CMD_CALIBRATION_START);
                                                             Communication_USART1_Transmit();
                                                             calibrationstate=CMD_CALIBRATION_START;}));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, 1);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&calibrationmenu, -1);}));
 }

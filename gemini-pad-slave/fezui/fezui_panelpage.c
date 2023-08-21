@@ -148,21 +148,91 @@ static void selection_update(int8_t x)
     }
 }
 
-void panelpage_load(void *page)
+static void wheel_cb(void *k)
 {
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k)
+    if(SHIFT_STATE)
     {
         if (selection<4)
         {
-            current_config_advanced_key = Keyboard_AdvancedKeys + selection;
-            lefl_link_frame_navigate(&mainframe,&advancedconfigpage);
+            current_target_id = &Keyboard_Advanced_SHIFT_IDs[selection];
+            sprintf(current_key_name,"KEY%d S",selection+1);
+            lefl_link_frame_navigate(&mainframe,&keyconfigpage);
         }
-    }));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(1);}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-1);}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(4);}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-4);}));
+        else if(selection==4)
+        {
+            current_target_knob_press_id = &Keyboard_SHIFT_IDs[KEY_WHEEL_INDEX];
+            current_target_knob_clockwise_id = &Keyboard_SHIFT_IDs[KEY_WHEEL_CLOCKWISE_INDEX];
+            current_target_knob_anticlockwise_id = &Keyboard_SHIFT_IDs[KEY_WHEEL_ANTICLOCKWISE_INDEX];
+            sprintf(current_knob_name,"WHEEL S");
+            lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+        }
+        else if(selection==5)
+        {
+            current_target_knob_press_id = &Keyboard_SHIFT_IDs[KEY_KNOB_INDEX];
+            current_target_knob_clockwise_id = &Keyboard_SHIFT_IDs[KEY_KNOB_CLOCKWISE_INDEX];
+            current_target_knob_anticlockwise_id = &Keyboard_SHIFT_IDs[KEY_KNOB_ANTICLOCKWISE_INDEX];
+            sprintf(current_knob_name,"KNOB S");
+            lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+        }
+        return;
+    }
+    if(ALPHA_STATE)
+    {
+        if (selection<4)
+        {
+            current_target_id = &Keyboard_Advanced_ALPHA_IDs[selection];
+            sprintf(current_key_name,"KEY%d A",selection+1);
+            lefl_link_frame_navigate(&mainframe,&keyconfigpage);
+        }
+        else if(selection==4)
+        {
+            current_target_knob_press_id = &Keyboard_ALPHA_IDs[KEY_WHEEL_INDEX];
+            current_target_knob_clockwise_id = &Keyboard_ALPHA_IDs[KEY_WHEEL_CLOCKWISE_INDEX];
+            current_target_knob_anticlockwise_id = &Keyboard_ALPHA_IDs[KEY_WHEEL_ANTICLOCKWISE_INDEX];
+            sprintf(current_knob_name,"WHEEL A");
+            lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+        }
+        else if(selection==5)
+        {
+            current_target_knob_press_id = &Keyboard_ALPHA_IDs[KEY_KNOB_INDEX];
+            current_target_knob_clockwise_id = &Keyboard_ALPHA_IDs[KEY_KNOB_CLOCKWISE_INDEX];
+            current_target_knob_anticlockwise_id = &Keyboard_ALPHA_IDs[KEY_KNOB_ANTICLOCKWISE_INDEX];
+            sprintf(current_knob_name,"KNOB A");
+            lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+        }
+        return;
+    }
+    if (selection<4)
+    {
+        current_config_advanced_key = Keyboard_AdvancedKeys + selection;
+        lefl_link_frame_navigate(&mainframe,&advancedconfigpage);
+    }
+    else if(selection==4)
+    {
+        current_target_knob_press_id = &KEY_WHEEL.id;
+        current_target_knob_clockwise_id = &KEY_WHEEL_CLOCKWISE.id;
+        current_target_knob_anticlockwise_id = &KEY_WHEEL_ANTICLOCKWISE.id;
+        sprintf(current_knob_name,"WHEEL");
+        lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+    }
+    else if(selection==5)
+    {
+        current_target_knob_press_id = &KEY_KNOB.id;
+        current_target_knob_clockwise_id =  &KEY_KNOB_CLOCKWISE.id;
+        current_target_knob_anticlockwise_id = &KEY_KNOB_ANTICLOCKWISE.id;
+        sprintf(current_knob_name,"KNOB");
+        lefl_link_frame_navigate(&mainframe,&knobconfigpage);
+    }
+}
+
+void panelpage_load(void *page)
+{
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, wheel_cb);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){selection_update(1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){selection_update(-1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){selection_update(4);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){selection_update(-4);}));
 }
 
 lefl_page_t panelpage={panelpage_logic,panelpage_draw,panelpage_load};

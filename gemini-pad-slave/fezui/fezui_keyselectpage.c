@@ -329,11 +329,11 @@ void keyselectpage_load(void *page)
 {
     Cursor_X = 0;
     scrollview.abscissa = 0;
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void, (void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,
             (void*k){lefl_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);}));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, 1);}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, -1);}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void, (void*k){lefl_keyboard_y_increase(&keyboard, 1);}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void, (void*k){lefl_keyboard_y_increase(&keyboard, -1);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, 1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, -1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_y_increase(&keyboard, 1);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_y_increase(&keyboard, -1);}));
 }

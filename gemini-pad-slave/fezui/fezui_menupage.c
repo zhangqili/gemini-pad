@@ -78,15 +78,16 @@ void main_menu_cb(void *menu)
 
 void menupage_load(void *page)
 {
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_FLAG_CLEAR);
     Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_STOP);
     Communication_USART1_Transmit();
     lefl_animation_begin(&menuanimation);
 
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&mainmenu);}));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&mainmenu);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));
 }
 

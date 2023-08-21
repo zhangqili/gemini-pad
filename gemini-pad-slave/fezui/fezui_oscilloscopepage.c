@@ -25,10 +25,10 @@ void oscilloscopepage_draw(void *page)
 
 void oscilloscopepage_load(void *page)
 {
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, NULL);
 }

@@ -59,6 +59,7 @@
 uint32_t count=0;
 uint8_t cmd_buffer;
 bool sendreport=true;
+bool sendreport_ready=false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -115,7 +116,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   lefl_bit_array_init(&Keyboard_KeyArray, (size_t*)(Keyboard_ReportBuffer+2), 120);
-
+  Keyboard_Init();
 
   HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED);
   HAL_TIM_PWM_Start(&htim17,TIM_CHANNEL_1);
@@ -158,16 +159,11 @@ int main(void)
                 Analog_Init();
                 HAL_TIM_Base_Start_IT(&htim7);
                 break;
-            case CMD_REPORT_START:
-                sendreport=true;
-                cmd_buffer=CMD_NULL;
-                break;
-            case CMD_REPORT_STOP:
-                sendreport=false;
-                cmd_buffer=CMD_NULL;
-                break;
             case CMD_ANALOG_READ:
                 Analog_Recovery();
+                break;
+            case CMD_ID_READ:
+                Keyboard_ID_Recovery();
                 break;
             default:
                 break;

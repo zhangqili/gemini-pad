@@ -14,8 +14,15 @@ extern const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m");
 extern fezui_t fezui;
 extern uint8_t key_triggered_count;
 extern uint8_t key_buffer[KEY_NUM];
+
 extern lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
 extern lefl_key_t Keyboard_Keys[KEY_NUM-MAIN_KEY_NUM];
+
+extern uint16_t Keyboard_Advanced_SHIFT_IDs[MAIN_KEY_NUM];
+extern uint16_t Keyboard_SHIFT_IDs[KEY_NUM-MAIN_KEY_NUM];
+extern uint16_t Keyboard_Advanced_ALPHA_IDs[MAIN_KEY_NUM];
+extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM-MAIN_KEY_NUM];
+
 #define KEY_SHIFT               Keyboard_Keys[0]
 #define KEY_ALPHA               Keyboard_Keys[1]
 #define KEY_KNOB                Keyboard_Keys[2]
@@ -24,6 +31,18 @@ extern lefl_key_t Keyboard_Keys[KEY_NUM-MAIN_KEY_NUM];
 #define KEY_KNOB_ANTICLOCKWISE  Keyboard_Keys[5]
 #define KEY_WHEEL_CLOCKWISE     Keyboard_Keys[6]
 #define KEY_WHEEL_ANTICLOCKWISE Keyboard_Keys[7]
+#define SHIFT_STATE             (Keyboard_Keys[0].state)
+#define ALPHA_STATE             (Keyboard_Keys[1].state)
+
+
+#define KEY_SHIFT_INDEX               0
+#define KEY_ALPHA_INDEX               1
+#define KEY_KNOB_INDEX                2
+#define KEY_WHEEL_INDEX               3
+#define KEY_KNOB_CLOCKWISE_INDEX      4
+#define KEY_KNOB_ANTICLOCKWISE_INDEX  5
+#define KEY_WHEEL_CLOCKWISE_INDEX     6
+#define KEY_WHEEL_ANTICLOCKWISE_INDEX 7
 
 extern uint32_t fezui_keytotalcounts[MAIN_KEY_NUM];
 extern uint32_t fezui_keyinitcounts[MAIN_KEY_NUM];

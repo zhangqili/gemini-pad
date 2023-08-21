@@ -11,6 +11,7 @@
 #include "flash_address.h"
 #include "MB85RC16.h"
 #include "display.h"
+#include "communication.h"
 
 
 uint8_t tempuint;
@@ -55,10 +56,10 @@ void fezui_init()
     lefl_bit_array_init(lines+2, lines3_data, sizeof(lines3_data)*8);
     lefl_bit_array_init(lines+3, lines4_data, sizeof(lines4_data)*8);
 
-    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[0]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[1]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[2]++;key_triggered_count++;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[3]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[0]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[1]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[2]++;key_triggered_count++;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_keytotalcounts[3]++;key_triggered_count++;}));
 
     menupage_init();
     settingspage_init();
@@ -66,8 +67,10 @@ void fezui_init()
     keyconfigpage_init();
     advancedconfigpage_init();
     keylistpage_init();
+    knobconfigpage_init();
 
     Analog_Read();
+    Keyboard_ID_Recovery();
     fezui_read_counts();
     lefl_link_frame_navigate(&mainframe, &homepage);
 }
@@ -115,6 +118,11 @@ void fezui_timer_handler()
         //tempuint=keys[0].state+(keys[1].state<<1)+(keys[2].state<<2)+(keys[3].state<<3)+(keys[4].state<<4)+(keys[5].state<<5)+(keys[6].state<<6)+(keys[7].state<<7);
 
         fezui_rest_countdown = SCREEN_REST_TIME;
+    }
+    if(Keyboard_Keys[1].state&&Keyboard_Keys[0].state)
+    {
+        Communication_Add8(USART1, PROTOCOL_CMD,CMD_FLAG_CLEAR);
+        Communication_USART1_Transmit();
     }
     /*
     u8g2_ClearBuffer(&(fezui.u8g2));
@@ -172,6 +180,43 @@ void keyid_prase(uint16_t id,char* str,uint16_t str_len)
         if(!key_found)
         {
             strcat(str, "None");
+        }
+    }
+}
+
+
+void Keyboard_ID_Save()
+{
+    if(eeprom_enable)
+    {
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs[i]);
+            MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs[i]);
+        }
+        for (uint16_t i = 0; i < KEY_NUM - MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_WriteWord(KEY_NORMAL_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_Keys[i].id);
+            MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_SHIFT_IDs[i]);
+            MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_ALPHA_IDs[i]);
+        }
+    }
+}
+
+void Keyboard_ID_Recovery()
+{
+    if(eeprom_enable)
+    {
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs+i);
+            MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs+i);
+        }
+        for (uint16_t i = 0; i < KEY_NUM - MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_ReadWord(KEY_NORMAL_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,&(Keyboard_Keys[i].id));
+            MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_SHIFT_IDs+i);
+            MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_ALPHA_IDs+i);
         }
     }
 }

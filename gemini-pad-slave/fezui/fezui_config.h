@@ -27,6 +27,8 @@
 #define roll()                rand()%2;
 
 
+void Keyboard_ID_Save();
+void Keyboard_ID_Recovery();
 void keyid_prase(uint16_t id,char* str,uint16_t str_len);
 void Analog_Read();
 void Analog_Save();
@@ -70,12 +72,22 @@ void keylistpage_init();
 void keylistpage_logic(void *page);
 void keylistpage_draw(void *page);
 void keylistpage_load(void *page);
-extern lefl_key_t* current_target_key;
+extern uint16_t* current_target_id;
 
 extern lefl_page_t keyconfigpage;
 void keyconfigpage_init();
 void keyconfigpage_logic(void *page);
 void keyconfigpage_draw(void *page);
+extern char current_key_name[32];
+
+extern lefl_page_t knobconfigpage;
+void knobconfigpage_init();
+void knobconfigpage_logic(void *page);
+void knobconfigpage_draw(void *page);
+extern char current_knob_name[16];
+extern uint16_t* current_target_knob_press_id;
+extern uint16_t* current_target_knob_clockwise_id;
+extern uint16_t* current_target_knob_anticlockwise_id;
 
 extern lefl_page_t advancedconfigpage;
 void advancedconfigpage_init();

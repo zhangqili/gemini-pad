@@ -65,11 +65,11 @@ void debugpage_draw(void *page)
 
 void debugpage_load(void *page)
 {
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_abscissa+=10;if(target_abscissa+64>scrollview.content_height)target_abscissa=scrollview.content_height-64;rolling_number.number++;}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_abscissa-=10;if(target_abscissa<0)target_abscissa=0;rolling_number.number--;}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;rolling_number.number++;}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;rolling_number.number--;}));
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_abscissa+=10;if(target_abscissa+64>scrollview.content_height)target_abscissa=scrollview.content_height-64;rolling_number.number++;}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_abscissa-=10;if(target_abscissa<0)target_abscissa=0;rolling_number.number--;}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, 1);target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;rolling_number.number++;}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){fezui_slider_increase(&slider, -1);target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;rolling_number.number--;}));
 }
 

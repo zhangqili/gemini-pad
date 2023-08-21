@@ -229,8 +229,8 @@ extern "C" {
      * lefl_input.c
      */
     typedef enum {
-        KEY_UP,
-        KEY_DOWN,
+        KEY_EVENT_UP,
+        KEY_EVENT_DOWN,
         EVENT_NUM
     } KEY_EVENT;
     typedef void (*lefl_key_cb_t)(void*);

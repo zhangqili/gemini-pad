@@ -31,8 +31,16 @@
 
 extern uint8_t Keyboard_ReportBuffer[18];
 extern lefl_bit_array_t Keyboard_KeyArray;
-extern uint8_t Keyboard_EC11Flag;
-extern uint8_t Keyboard_WheelFlag;
+extern uint8_t Keyboard_EC11_Flag;
+extern uint8_t Keyboard_Wheel_Flag;
+extern bool Keyboard_SHIFT_Flag;
+extern bool Keyboard_ALPHA_Flag;
+
+extern uint16_t Keyboard_Advanced_SHIFT_IDs[KEY_NUM];
+extern uint16_t Keyboard_SHIFT_IDs[8];
+extern uint16_t Keyboard_Advanced_ALPHA_IDs[KEY_NUM];
+extern uint16_t Keyboard_ALPHA_IDs[8];
+
 extern lefl_key_t Keyboard_Keys[8];
 #define KEY_SHIFT               Keyboard_Keys[0]
 #define KEY_ALPHA               Keyboard_Keys[1]
@@ -43,11 +51,18 @@ extern lefl_key_t Keyboard_Keys[8];
 #define KEY_WHEEL_CLOCKWISE     Keyboard_Keys[6]
 #define KEY_WHEEL_ANTICLOCKWISE Keyboard_Keys[7]
 
-/*
-key buffer
-K1 K2 K3 K4 SHIFT ALPHA KNOB KNOB_S WHEEL WHEEL_S
-*/
 
+#define KEY_SHIFT_INDEX               0
+#define KEY_ALPHA_INDEX               1
+#define KEY_KNOB_INDEX                2
+#define KEY_WHEEL_INDEX               3
+#define KEY_KNOB_CLOCKWISE_INDEX      4
+#define KEY_KNOB_ANTICLOCKWISE_INDEX  5
+#define KEY_WHEEL_CLOCKWISE_INDEX     6
+#define KEY_WHEEL_ANTICLOCKWISE_INDEX 7
+
+void Keyboard_Init();
+void Keyboard_ID_Recovery();
 void Keyboard_Scan();
 void Keyboard_SendReport();
 

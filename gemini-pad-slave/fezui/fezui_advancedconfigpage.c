@@ -67,7 +67,7 @@ void keyconfig_digital_mode_menu_cb(void* m)
     switch (((lefl_menu_t*)m)->selected_index)
     {
         case 0:
-            current_target_key = &(current_config_advanced_key->key);
+            current_target_id = &(current_config_advanced_key->key.id);
             lefl_link_frame_navigate(&mainframe, &keylistpage);
             break;
         case 1:
@@ -87,7 +87,7 @@ void keyconfig_analog_normal_mode_menu_cb(void* m)
     switch (((lefl_menu_t*)m)->selected_index)
     {
         case 0:
-            current_target_key = &(current_config_advanced_key->key);
+            current_target_id = &(current_config_advanced_key->key.id);
             lefl_link_frame_navigate(&mainframe, &keylistpage);
             break;
         case 1:
@@ -128,7 +128,7 @@ void keyconfig_analog_rapid_mode_menu_cb(void* m)
     switch (((lefl_menu_t*)m)->selected_index)
     {
         case 0:
-            current_target_key = &(current_config_advanced_key->key);
+            current_target_id = &(current_config_advanced_key->key.id);
             lefl_link_frame_navigate(&mainframe, &keylistpage);
             break;
         case 1:
@@ -179,7 +179,7 @@ void keyconfig_analog_speed_mode_menu_cb(void* m)
     switch (((lefl_menu_t*)m)->selected_index)
     {
         case 0:
-            current_target_key = &(current_config_advanced_key->key);
+            current_target_id = &(current_config_advanced_key->key.id);
             lefl_link_frame_navigate(&mainframe, &keylistpage);
             break;
         case 1:
@@ -433,7 +433,7 @@ void advancedconfigpage_load(void *page)
 {
     keyid_prase(current_config_advanced_key->key.id, binding_text, 128);
     fezui_scrolling_text_init(&scrolling_text, 78, 0.2, u8g2_font_4x6_mr, binding_text);
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing||mode_switching)
         {
@@ -448,7 +448,7 @@ void advancedconfigpage_load(void *page)
             lefl_link_frame_go_back(&mainframe);
         }
     }));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing||mode_switching)
         {
@@ -459,7 +459,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_click(current_menu);
         }
     }));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -474,7 +474,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, 1);
         }
     }));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -489,7 +489,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, -1);
         }
     }));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -504,7 +504,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, 1);
         }
     }));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {

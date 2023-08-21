@@ -23,7 +23,7 @@ static fezui_scrollview_t scrollview = { .content_height = ROW_HEIGHT*sizeof(hid
 
 lefl_menu_t keylist;
 static float target_ordinate=0;
-lefl_key_t* current_target_key;
+uint16_t* current_target_id;
 
 lefl_page_t keylistpage = { keylistpage_logic, keylistpage_draw, keylistpage_load };
 
@@ -37,7 +37,7 @@ void keylist_cb(void *m)
     }
     else
     {
-        current_target_key->id = (current_target_key->id & 0xFF00 ) | ((((lefl_menu_t*)m)->selected_index-8)&0xFF);
+        *current_target_id = (*current_target_id & 0xFF00 ) | ((((lefl_menu_t*)m)->selected_index-8)&0xFF);
     }
 }
 
@@ -82,18 +82,18 @@ void keylistpage_draw(void *page)
     //sprintf(fezui_buffer,"%d",current_target_key->id&0xFF);
     //u8g2_DrawStr(&(fezui.u8g2), 64, 32, fezui_buffer);
 
-    u8g2_DrawBox(&(fezui.u8g2),116,ROW_HEIGHT*((current_target_key->id&0xFF)+8) + 1 - (u8g2_int_t)scrollview.ordinate,6,6);
+    u8g2_DrawBox(&(fezui.u8g2),116,ROW_HEIGHT*(((*current_target_id)&0xFF)+8) + 1 - (u8g2_int_t)scrollview.ordinate,6,6);
     fezui_draw_scrollview(&fezui, 0, 0, WIDTH, HEIGHT, &scrollview);
     fezui_draw_cursor(&fezui, &cursor);
 }
 
 void keylistpage_load(void *page)
 {
-    lefl_bit_array_init(&head_key_usage, (size_t*)((uint8_t*)(&(current_target_key->id))+1), 8);
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&keylist);}));
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, 1);}));
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, -1);}));
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, 1);}));
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, -1);}));
+    lefl_bit_array_init(&head_key_usage, (size_t*)(((uint8_t*)current_target_id)+1), 8);
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&keylist);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, 1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, -1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, 1);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&keylist, -1);}));
 }

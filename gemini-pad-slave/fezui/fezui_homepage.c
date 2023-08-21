@@ -91,6 +91,7 @@ void homepage_logic(void *page)
 }
 void homepage_draw(void *page)
 {
+    uint8_t color = u8g2_GetDrawColor(&(fezui.u8g2));
 
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+0);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
@@ -110,8 +111,10 @@ void homepage_draw(void *page)
         tempu|=((Keyboard_AdvancedKeys[i].key.id>>8)&0xFF);
     }
     sprintf(fezui_buffer,"%#x",tempu);
-    */
     u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
+    */
+    //sprintf(fezui_buffer,"%#x",((KEY_KNOB.id>>8)&0xFF));
+    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
 
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
 
@@ -147,28 +150,41 @@ void homepage_draw(void *page)
 
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
-    if(Keyboard_Keys[0].state)
-        u8g2_DrawButtonUTF8(&(fezui.u8g2), 67, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "S");
-    if(Keyboard_Keys[1].state)
-        u8g2_DrawButtonUTF8(&(fezui.u8g2), 67 + MARGIN_UP, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "A");
 
     u8g2_DrawHLine(&(fezui.u8g2),0,MARGIN_UP,128);
     u8g2_DrawHLine(&(fezui.u8g2),0,CHART_HEIGHT+MARGIN_UP,128);
     u8g2_DrawVLine(&(fezui.u8g2),64,MARGIN_UP,CHART_HEIGHT+MARGIN_DOWN);
     u8g2_DrawVLine(&(fezui.u8g2),32,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
     u8g2_DrawVLine(&(fezui.u8g2),96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
+
+    u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
+    if(KEY_SHIFT.state)
+    {
+        u8g2_DrawBox(&(fezui.u8g2), 65 , 1 ,MARGIN_UP-2, MARGIN_UP-2);
+        u8g2_SetDrawColor(&(fezui.u8g2), 2);
+        u8g2_DrawStr(&(fezui.u8g2), 68 ,MARGIN_UP-2,"S");
+
+    }
+    if(KEY_ALPHA.state)
+    {
+        u8g2_DrawBox(&(fezui.u8g2), 65 + MARGIN_UP - 2, 1 ,MARGIN_UP-2, MARGIN_UP-2);
+        u8g2_SetDrawColor(&(fezui.u8g2), 2);
+        u8g2_DrawStr(&(fezui.u8g2), 68 + MARGIN_UP - 2 , MARGIN_UP-2,"A");
+    }
+
+    u8g2_SetDrawColor(&(fezui.u8g2), color);
 }
 
 void homepage_load(void *page)
 {
     Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_START);
     Communication_USART1_Transmit();
-    lefl_key_attach(Keyboard_Keys + 0, KEY_DOWN, NULL);
-    lefl_key_attach(Keyboard_Keys + 1, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, NULL);
-    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, NULL);
+    lefl_key_attach(Keyboard_Keys + 0, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(Keyboard_Keys + 1, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_EVENT_DOWN, NULL);
 }

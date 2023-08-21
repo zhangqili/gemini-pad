@@ -7,13 +7,13 @@ void lefl_key_update(lefl_key_t* key,bool state)
 {
     if((!(key->state))&&state)
     {
-        if(key->key_cb[KEY_DOWN])
-            key->key_cb[KEY_DOWN](key);
+        if(key->key_cb[KEY_EVENT_DOWN])
+            key->key_cb[KEY_EVENT_DOWN](key);
     }
     if((key->state)&&(!state))
     {
-        if(key->key_cb[KEY_UP])
-            key->key_cb[KEY_UP](key);
+        if(key->key_cb[KEY_EVENT_UP])
+            key->key_cb[KEY_EVENT_UP](key);
     }
     key->state=state;
 }

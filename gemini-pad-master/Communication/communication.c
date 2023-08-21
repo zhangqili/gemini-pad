@@ -15,7 +15,8 @@ COM_CREATE(USART1)
 
 uint16_t USART1_TX_Count=0;
 uint16_t USART1_RX_Count=0;
-
+extern bool sendreport;
+extern bool sendreport_ready;
 extern uint8_t cmd_buffer;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
@@ -32,8 +33,8 @@ void Communication_Pack()
 
     //Communication_Add(PROTOCOL_KEYS0,Keyboard_Keys[0]<<3|Keyboard_Keys[1]<<2|Keyboard_Keys[2]<<1|Keyboard_Keys[3]|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
     Communication_Add8(USART1, PROTOCOL_KEYS1,(
-            KEY_SHIFT.state<<7|
-            KEY_ALPHA.state<<6|
+            Keyboard_SHIFT_Flag<<7|
+            Keyboard_ALPHA_Flag<<6|
             KEY_KNOB.state<<5|
             KEY_WHEEL.state<<4|
             KEY_KNOB_CLOCKWISE.state<<3|
@@ -53,7 +54,6 @@ void Communication_Pack()
     Communication_Add8(PROTOCOL_ANALOG3,(uint8_t)(ADC_Value_List[2]/16));
     Communication_Add8(PROTOCOL_ANALOG4,(uint8_t)(ADC_Value_List[3]/16));
     */
-    //Communication_Add8(USART1, PROTOCOL_DEBUG,(uint8_t)(ADC1_Values[1]/16));
     /*
     Communication_Add8(PROTOCOL_ANALOG1,(uint8_t)(advanced_keys[0].value<0?0:(advanced_keys[0].value>1.0?255:advanced_keys[0].value*255)));
     Communication_Add8(PROTOCOL_ANALOG2,(uint8_t)(advanced_keys[1].value<0?0:(advanced_keys[1].value>1.0?255:advanced_keys[1].value*255)));
@@ -65,8 +65,9 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG2_RAW,Keyboard_AdvancedKeys[1].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
+    Communication_Add8(USART1, PROTOCOL_DEBUG,((KEY_KNOB.id>>8) & 0xFF));
 
-    Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
+    //Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);
 }
 
@@ -89,7 +90,22 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                   switch(USART1_RX_Buffer[i])
                   {
                       case PROTOCOL_CMD:
-                          cmd_buffer=USART1_RX_Buffer[i+1];
+                          switch (USART1_RX_Buffer[i+1])
+                          {
+                              case CMD_FLAG_CLEAR:
+                                  Keyboard_SHIFT_Flag=false;
+                                  Keyboard_ALPHA_Flag=false;
+                                  break;
+                              case CMD_REPORT_START:
+                                  sendreport_ready=true;
+                                  break;
+                              case CMD_REPORT_STOP:
+                                  sendreport=false;
+                                  break;
+                              default:
+                                  cmd_buffer=USART1_RX_Buffer[i+1];
+                                  break;
+                          }
                           i+=2;
                           break;
                       default:

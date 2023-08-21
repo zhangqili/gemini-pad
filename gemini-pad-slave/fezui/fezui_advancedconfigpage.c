@@ -7,6 +7,8 @@
 
 #include "fezui.h"
 #include "fezui_var.h"
+#include "communication.h"
+
 
 #define ROW_HEIGHT 16
 #define SPERATOR_X 80
@@ -431,7 +433,7 @@ void advancedconfigpage_load(void *page)
 {
     keyid_prase(current_config_advanced_key->key.id, binding_text, 128);
     fezui_scrolling_text_init(&scrolling_text, 78, 0.2, u8g2_font_4x6_mr, binding_text);
-    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing||mode_switching)
         {
@@ -440,10 +442,13 @@ void advancedconfigpage_load(void *page)
         }
         else
         {
+            Analog_Save();
+            Communication_Add8(USART1, PROTOCOL_CMD, CMD_ANALOG_READ);
+            Communication_USART1_Transmit();
             lefl_link_frame_go_back(&mainframe);
         }
     }));
-    lefl_key_attach(keys + 3, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing||mode_switching)
         {
@@ -454,7 +459,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_click(current_menu);
         }
     }));
-    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -469,7 +474,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, 1);
         }
     }));
-    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -484,7 +489,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, -1);
         }
     }));
-    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {
@@ -499,7 +504,7 @@ void advancedconfigpage_load(void *page)
             lefl_menu_index_increase(current_menu, 1);
         }
     }));
-    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if(configing)
         {

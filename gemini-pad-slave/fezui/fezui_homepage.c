@@ -69,7 +69,7 @@ fezui_rolling_number_t max_kps_num=
 
 void homepage_logic(void *page)
 {
-    if(keys[1].state&&keys[0].state)
+    if(Keyboard_Keys[1].state&&Keyboard_Keys[0].state)
     {
         lefl_link_frame_navigate(&mainframe, &menupage);
         lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);
@@ -91,6 +91,7 @@ void homepage_logic(void *page)
 }
 void homepage_draw(void *page)
 {
+
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE1+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+0);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE2+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+1);
     fezui_draw_flowingwater(&(fezui),MARGIN_LEFT,TILE3+MARGIN_UP,HALF_WIDTH,TILE_WIDTH,lines+2);
@@ -101,6 +102,17 @@ void homepage_draw(void *page)
     u8g2_DrawStr(&(fezui.u8g2),0,MARGIN_UP-1,"KPS:");
     u8g2_DrawStr(&(fezui.u8g2),32,MARGIN_UP-1,"MAX:");
     u8g2_DrawStr(&(fezui.u8g2),95,MARGIN_UP-1,"FPS:");
+
+    /*
+    uint8_t tempu = 0;
+    for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
+    {
+        tempu|=((Keyboard_AdvancedKeys[i].key.id>>8)&0xFF);
+    }
+    sprintf(fezui_buffer,"%#x",tempu);
+    */
+    u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
+
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
 
     //sprintf(fezui_buffer, "%5ld", fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
@@ -133,13 +145,11 @@ void homepage_draw(void *page)
     fezui_draw_rolling_number(&fezui, 15, MARGIN_UP-1, &kps_num);
     fezui_draw_rolling_number(&fezui, 15+32, MARGIN_UP-1, &max_kps_num);
 
-    sprintf(fezui_buffer,"%d",sizeof(lefl_advanced_key_t));
-    u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
-    if(keys[0].state)
+    if(Keyboard_Keys[0].state)
         u8g2_DrawButtonUTF8(&(fezui.u8g2), 67, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "S");
-    if(keys[1].state)
+    if(Keyboard_Keys[1].state)
         u8g2_DrawButtonUTF8(&(fezui.u8g2), 67 + MARGIN_UP, MARGIN_UP-1, U8G2_BTN_INV, 2, 1, 1, "A");
 
     u8g2_DrawHLine(&(fezui.u8g2),0,MARGIN_UP,128);
@@ -153,12 +163,12 @@ void homepage_load(void *page)
 {
     Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_START);
     Communication_USART1_Transmit();
-    lefl_key_attach(keys + 0, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 1, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 2, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 3, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 4, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 5, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 6, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 7, KEY_DOWN, NULL);
+    lefl_key_attach(Keyboard_Keys + 0, KEY_DOWN, NULL);
+    lefl_key_attach(Keyboard_Keys + 1, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, NULL);
 }

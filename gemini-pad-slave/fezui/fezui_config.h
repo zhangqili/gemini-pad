@@ -29,6 +29,7 @@
 
 void keyid_prase(uint16_t id,char* str,uint16_t str_len);
 void Analog_Read();
+void Analog_Save();
 void fezui_read_counts();
 void fezui_save_counts();
 

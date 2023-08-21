@@ -3,7 +3,7 @@
  */
 #include "lefl.h"
 
-void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(lefl_menu_t* menu))
+void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(void* menu))
 {
     menu->items=items;
     menu->len=len;

@@ -9,12 +9,21 @@
 #define FEZUI_VAR_H_
 #include "fezui.h"
 
+extern bool eeprom_enable;
 extern const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m");
 extern fezui_t fezui;
 extern uint8_t key_triggered_count;
 extern uint8_t key_buffer[KEY_NUM];
 extern lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
-extern lefl_key_t keys[KEY_NUM-MAIN_KEY_NUM];
+extern lefl_key_t Keyboard_Keys[KEY_NUM-MAIN_KEY_NUM];
+#define KEY_SHIFT               Keyboard_Keys[0]
+#define KEY_ALPHA               Keyboard_Keys[1]
+#define KEY_KNOB                Keyboard_Keys[2]
+#define KEY_WHEEL               Keyboard_Keys[3]
+#define KEY_KNOB_CLOCKWISE      Keyboard_Keys[4]
+#define KEY_KNOB_ANTICLOCKWISE  Keyboard_Keys[5]
+#define KEY_WHEEL_CLOCKWISE     Keyboard_Keys[6]
+#define KEY_WHEEL_ANTICLOCKWISE Keyboard_Keys[7]
 
 extern uint32_t fezui_keytotalcounts[MAIN_KEY_NUM];
 extern uint32_t fezui_keyinitcounts[MAIN_KEY_NUM];
@@ -30,6 +39,7 @@ extern lefl_array_elm_t KPS_queue_data[REFRESH_RATE];
 extern uint8_t UI_KPSMaximumPerSecond;
 extern uint8_t fezui_rest_countdown;
 extern uint8_t fezui_debug;
+extern float fezui_debug_float;
 extern uint8_t cmd_buffer;
 
 extern uint32_t fezui_run_time;

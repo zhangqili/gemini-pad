@@ -24,11 +24,22 @@ void Communication_Pack()
 {
     USART1_TX_Length=0;
     //Communication_Add(1,2);
-    Communication_Add8(USART1, PROTOCOL_KEYS0,Keyboard_AdvancedKeys[0].key.state<<3|Keyboard_AdvancedKeys[1].key.state<<2|Keyboard_AdvancedKeys[2].key.state<<1|Keyboard_AdvancedKeys[3].key.state|Keyboard_Keys[0].state<<7|Keyboard_Keys[1].state<<6|Keyboard_Keys[2].state<<5|Keyboard_Keys[3].state<<4);
+    Communication_Add8(USART1, PROTOCOL_KEYS0,
+            Keyboard_AdvancedKeys[0].key.state<<3|
+            Keyboard_AdvancedKeys[1].key.state<<2|
+            Keyboard_AdvancedKeys[2].key.state<<1|
+            Keyboard_AdvancedKeys[3].key.state);
 
     //Communication_Add(PROTOCOL_KEYS0,Keyboard_Keys[0]<<3|Keyboard_Keys[1]<<2|Keyboard_Keys[2]<<1|Keyboard_Keys[3]|Keyboard_Keys[4]<<7|Keyboard_Keys[5]<<6|Keyboard_Keys[6]<<5|Keyboard_Keys[8]<<4);
-    Communication_Add8(USART1, PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[4].state?BIT(2):BIT(3)):0)|
-                                      (Keyboard_WheelFlag?(Keyboard_Keys[5].state?BIT(0):BIT(1)):0));
+    Communication_Add8(USART1, PROTOCOL_KEYS1,(
+            KEY_SHIFT.state<<7|
+            KEY_ALPHA.state<<6|
+            KEY_KNOB.state<<5|
+            KEY_WHEEL.state<<4|
+            KEY_KNOB_CLOCKWISE.state<<3|
+            KEY_KNOB_ANTICLOCKWISE.state<<2|
+            KEY_WHEEL_CLOCKWISE.state<<1|
+            KEY_WHEEL_ANTICLOCKWISE.state<<0));
     //Communication_Add(PROTOCOL_KEYS1,(Keyboard_EC11Flag?(Keyboard_Keys[7]?BIT(3):BIT(2)):0));
 
     //Communication_Add(PROTOCOL_ANALOG1,(uint8_t)(analog_keys[0].upper_bound/16.0));
@@ -42,7 +53,7 @@ void Communication_Pack()
     Communication_Add8(PROTOCOL_ANALOG3,(uint8_t)(ADC_Value_List[2]/16));
     Communication_Add8(PROTOCOL_ANALOG4,(uint8_t)(ADC_Value_List[3]/16));
     */
-    Communication_Add8(USART1, PROTOCOL_DEBUG,(uint8_t)(ADC1_Values[1]/16));
+    //Communication_Add8(USART1, PROTOCOL_DEBUG,(uint8_t)(ADC1_Values[1]/16));
     /*
     Communication_Add8(PROTOCOL_ANALOG1,(uint8_t)(advanced_keys[0].value<0?0:(advanced_keys[0].value>1.0?255:advanced_keys[0].value*255)));
     Communication_Add8(PROTOCOL_ANALOG2,(uint8_t)(advanced_keys[1].value<0?0:(advanced_keys[1].value>1.0?255:advanced_keys[1].value*255)));
@@ -55,6 +66,7 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
 
+    Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);
 }
 

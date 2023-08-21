@@ -55,10 +55,10 @@ void settings_menu_cb(void *menu)
 }
 void settingspage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(keys + 3, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&settingsmenu);}));
-    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, 1);}));
-    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, -1);}));
-    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, 1);}));
-    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, -1);}));
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&settingsmenu);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, 1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, -1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, 1);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&settingsmenu, -1);}));
 }

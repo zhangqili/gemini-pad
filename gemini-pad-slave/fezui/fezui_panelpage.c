@@ -64,7 +64,7 @@ void panelpage_draw(void *page)
 
     u8g2_DrawFrame(&(fezui.u8g2), 32*0+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     u8g2_DrawFrame(&(fezui.u8g2), 32*1+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
-    if(keys[0].state)
+    if(Keyboard_Keys[0].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*2+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
@@ -72,7 +72,7 @@ void panelpage_draw(void *page)
     {
         u8g2_DrawFrame(&(fezui.u8g2), 32*2+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
-    if(keys[1].state)
+    if(Keyboard_Keys[1].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*3+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
@@ -81,31 +81,31 @@ void panelpage_draw(void *page)
         u8g2_DrawFrame(&(fezui.u8g2), 32*3+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
 
-    if(keys[2].state)
+    if(Keyboard_Keys[2].state)
     {
 
         u8g2_DrawBox(&(fezui.u8g2), 32*1+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
 
-    if(keys[3].state)
+    if(Keyboard_Keys[3].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*0+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, 32-MARGIN_TILE*2);
     }
 
-    if(keys[4].state)
+    if(Keyboard_Keys[4].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*0+MARGIN_TILE, 32+MARGIN_TILE, (32-MARGIN_TILE*2)/2, 32-MARGIN_TILE*2);
     }
-    if(keys[5].state)
+    if(Keyboard_Keys[5].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*0+16+MARGIN_TILE, 32+MARGIN_TILE, (32-MARGIN_TILE*2)/2, 32-MARGIN_TILE*2);
     }
 
-    if(keys[6].state)
+    if(Keyboard_Keys[6].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*1+MARGIN_TILE, 32+MARGIN_TILE, 32-MARGIN_TILE*2, (32-MARGIN_TILE*2)/2);
     }
-    if(keys[7].state)
+    if(Keyboard_Keys[7].state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 32*1+MARGIN_TILE, 32+16, 32-MARGIN_TILE*2, (32-MARGIN_TILE*2)/2);
     }
@@ -150,8 +150,8 @@ static void selection_update(int8_t x)
 
 void panelpage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
-    lefl_key_attach(keys + 3, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, LAMBDA(void,(void*k)
     {
         if (selection<4)
         {
@@ -159,10 +159,10 @@ void panelpage_load(void *page)
             lefl_link_frame_navigate(&mainframe,&advancedconfigpage);
         }
     }));
-    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k){selection_update(1);}));
-    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-1);}));
-    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k){selection_update(4);}));
-    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-4);}));
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(1);}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-1);}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(4);}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){selection_update(-4);}));
 }
 
 lefl_page_t panelpage={panelpage_logic,panelpage_draw,panelpage_load};

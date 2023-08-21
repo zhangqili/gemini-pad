@@ -76,7 +76,7 @@ void fezui_timer_handler()
 {
     for (uint8_t i = MAIN_KEY_NUM; i < KEY_NUM; i++)
     {
-        lefl_key_update(keys+i-4, key_buffer[i]);
+        lefl_key_update(Keyboard_Keys+i-4, key_buffer[i]);
     }
 
     lefl_link_frame_logic(&mainframe);
@@ -110,7 +110,7 @@ void fezui_timer_handler()
     }
     fezui_save_counts();
 
-    if (KPS_history_max || keys[0].state||keys[1].state||keys[2].state||keys[3].state||keys[4].state||keys[5].state||keys[6].state||keys[7].state)
+    if (KPS_history_max || Keyboard_Keys[0].state||Keyboard_Keys[1].state||Keyboard_Keys[2].state||Keyboard_Keys[3].state||Keyboard_Keys[4].state||Keyboard_Keys[5].state||Keyboard_Keys[6].state||Keyboard_Keys[7].state)
     {
         //tempuint=keys[0].state+(keys[1].state<<1)+(keys[2].state<<2)+(keys[3].state<<3)+(keys[4].state<<4)+(keys[5].state<<5)+(keys[6].state<<6)+(keys[7].state<<7);
 
@@ -178,35 +178,68 @@ void keyid_prase(uint16_t id,char* str,uint16_t str_len)
 
 void Analog_Read()
 {
-    for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+    if(eeprom_enable)
     {
-        MB85RC16_ReadByte (i*64+KEY1_CONFIG_ADDRESS,       &(Keyboard_AdvancedKeys[i].mode));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1,     &(Keyboard_AdvancedKeys[i].trigger_distance));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*1, &(Keyboard_AdvancedKeys[i].release_distance));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*2, &(Keyboard_AdvancedKeys[i].schmitt_parameter));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*3, &(Keyboard_AdvancedKeys[i].trigger_speed));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*4, &(Keyboard_AdvancedKeys[i].release_speed));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*5, &(Keyboard_AdvancedKeys[i].upper_deadzone));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*6, &(Keyboard_AdvancedKeys[i].lower_deadzone));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*7, &(Keyboard_AdvancedKeys[i].range));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*8, &(Keyboard_AdvancedKeys[i].upper_bound));
-        MB85RC16_ReadFloat(i*64+KEY1_CONFIG_ADDRESS+1+4*9, &(Keyboard_AdvancedKeys[i].lower_bound));
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_ReadWord (i*64+ADVANCED_KEY_CONFIG_ADDRESS,       &(Keyboard_AdvancedKeys[i].key.id));
+            MB85RC16_ReadByte (i*64+ADVANCED_KEY_CONFIG_ADDRESS+2,     &(Keyboard_AdvancedKeys[i].mode));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3,     &(Keyboard_AdvancedKeys[i].trigger_distance));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*1, &(Keyboard_AdvancedKeys[i].release_distance));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*2, &(Keyboard_AdvancedKeys[i].schmitt_parameter));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*3, &(Keyboard_AdvancedKeys[i].trigger_speed));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*4, &(Keyboard_AdvancedKeys[i].release_speed));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*5, &(Keyboard_AdvancedKeys[i].upper_deadzone));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*6, &(Keyboard_AdvancedKeys[i].lower_deadzone));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*7, &(Keyboard_AdvancedKeys[i].range));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*8, &(Keyboard_AdvancedKeys[i].upper_bound));
+            MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*9, &(Keyboard_AdvancedKeys[i].lower_bound));
+        }
+    }
+}
+
+
+void Analog_Save()
+{
+    if(eeprom_enable)
+    {
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_WriteWord (i*64+ADVANCED_KEY_CONFIG_ADDRESS,       Keyboard_AdvancedKeys[i].key.id);
+            MB85RC16_WriteByte (i*64+ADVANCED_KEY_CONFIG_ADDRESS+2,     Keyboard_AdvancedKeys[i].mode);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3,     Keyboard_AdvancedKeys[i].trigger_distance);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*1, Keyboard_AdvancedKeys[i].release_distance);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*2, Keyboard_AdvancedKeys[i].schmitt_parameter);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*3, Keyboard_AdvancedKeys[i].trigger_speed);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*4, Keyboard_AdvancedKeys[i].release_speed);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*5, Keyboard_AdvancedKeys[i].upper_deadzone);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*6, Keyboard_AdvancedKeys[i].lower_deadzone);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*7, Keyboard_AdvancedKeys[i].range);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*8, Keyboard_AdvancedKeys[i].upper_bound);
+            MB85RC16_WriteFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*9, Keyboard_AdvancedKeys[i].lower_bound);
+        }
     }
 }
 
 void fezui_save_counts()
 {
-    for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+    if(eeprom_enable)
     {
-        MB85RC16_WriteLong(KEY_COUNTS_ADDRESS+i*4, fezui_keytotalcounts[i]);
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_WriteLong(KEY_COUNTS_ADDRESS+i*4, fezui_keytotalcounts[i]);
+        }
     }
 }
 
 void fezui_read_counts()
 {
-    for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+    if(eeprom_enable)
     {
-        MB85RC16_ReadLong(KEY_COUNTS_ADDRESS+i*4, fezui_keyinitcounts+i);
-        fezui_keytotalcounts[i]=fezui_keyinitcounts[i];
+        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        {
+            MB85RC16_ReadLong(KEY_COUNTS_ADDRESS+i*4, fezui_keyinitcounts+i);
+            fezui_keytotalcounts[i]=fezui_keyinitcounts[i];
+        }
     }
 }

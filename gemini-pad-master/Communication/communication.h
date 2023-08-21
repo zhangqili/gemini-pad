@@ -109,6 +109,7 @@ typedef enum
     PROTOCOL_CMD,
     //0xF0
     PROTOCOL_DEBUG=0xF0,
+    PROTOCOL_DEBUG_FLOAT=0xF1,
 } USART_PROTOCOL;
 
 
@@ -123,12 +124,12 @@ typedef enum
     CMD_READ_CONFIG,
     CMD_REPORT_START,
     CMD_REPORT_STOP,
-    CMD_NA_08,
+    CMD_ANALOG_READ,
     CMD_NA_09,
     CMD_NA_0A,
     CMD_NA_0B,
-    CMD_NA_0C,
-    CMD_NA_0D,
+    CMD_EEPROM_DISABLE,
+    CMD_EEPROM_ENABLE,
     CMD_NA_0E,
     CMD_NA_0F,
 } USART_CMD;

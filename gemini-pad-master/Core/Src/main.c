@@ -146,26 +146,33 @@ int main(void)
     RGB_Set(RGB_Colors[2].r,RGB_Colors[2].g,RGB_Colors[2].b,2);
     RGB_Set(RGB_Colors[3].r,RGB_Colors[3].g,RGB_Colors[3].b,3);
     //HAL_Delay(1);
-    switch (cmd_buffer)
+    if(cmd_buffer)
     {
-        case CMD_CALIBRATION_START:
-            memset(Keyboard_ReportBuffer,0,sizeof(Keyboard_ReportBuffer)/sizeof(uint8_t));
-            USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-            cmd_buffer=CMD_NULL;
-            HAL_TIM_Base_Stop_IT(&htim7);
-            Analog_Init();
-            HAL_TIM_Base_Start_IT(&htim7);
-            break;
-        case CMD_REPORT_START:
-            sendreport=true;
-            cmd_buffer=CMD_NULL;
-            break;
-        case CMD_REPORT_STOP:
-            sendreport=false;
-            cmd_buffer=CMD_NULL;
-            break;
-        default:
-            break;
+        switch (cmd_buffer)
+        {
+            case CMD_CALIBRATION_START:
+                memset(Keyboard_ReportBuffer,0,sizeof(Keyboard_ReportBuffer)/sizeof(uint8_t));
+                USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+                cmd_buffer=CMD_NULL;
+                HAL_TIM_Base_Stop_IT(&htim7);
+                Analog_Init();
+                HAL_TIM_Base_Start_IT(&htim7);
+                break;
+            case CMD_REPORT_START:
+                sendreport=true;
+                cmd_buffer=CMD_NULL;
+                break;
+            case CMD_REPORT_STOP:
+                sendreport=false;
+                cmd_buffer=CMD_NULL;
+                break;
+            case CMD_ANALOG_READ:
+                Analog_Recovery();
+                break;
+            default:
+                break;
+        }
+        cmd_buffer=0;
     }
     /* USER CODE END WHILE */
 
@@ -240,6 +247,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if(sendreport)
         Keyboard_SendReport();
     Communication_Pack();
+    if(eeprom_buzy)
+    {
+        Communication_Add8(USART1,PROTOCOL_CMD,CMD_EEPROM_DISABLE);
+    }
+    else
+    {
+        Communication_Add8(USART1,PROTOCOL_CMD,CMD_EEPROM_ENABLE);
+    }
     Communication_USART1_Transmit();
     /*
 	RGB_Colors[0].r=(uint8_t)(255.0*Analog_Values[0]);

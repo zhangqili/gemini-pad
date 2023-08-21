@@ -45,21 +45,20 @@ void statisticpage_draw(void *page)
 
     u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*5-(u8g2_int_t)(scrollview.ordinate),"  KEY4");
 
-    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*6-(u8g2_int_t)(scrollview.ordinate),"  KEY4");
 
 
-    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*8-(u8g2_int_t)(scrollview.ordinate),"  Run time");
+    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*7-(u8g2_int_t)(scrollview.ordinate),"  Run time");
 
     sprintf(fezui_buffer,"%02ldh%02ldm%02lds",fezui_run_time/3600,fezui_run_time/60%60,fezui_run_time%60);
-    u8g2_DrawStr(&(fezui.u8g2),WIDTH-KEY_WIDTH*10,ROW_HEIGHT*8-(u8g2_int_t)(scrollview.ordinate),fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-KEY_WIDTH*10,ROW_HEIGHT*7-(u8g2_int_t)(scrollview.ordinate),fezui_buffer);
 
-    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*9-(u8g2_int_t)(scrollview.ordinate),"  Temperature");
+    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*8-(u8g2_int_t)(scrollview.ordinate),"  Temperature");
 
     //double temp = (((( ((int32_t)(((((((fezui_temp_raw))) << ((((((0x00000000UL))))) >> (((3U)) - 1UL))) >> (((0x00000000UL)) >> (((3U)) - 1UL))) * ((3324))) / (3000.0)) - (int32_t) *((uint16_t*) (0x1FFF75A8UL)))) * (int32_t)((130L) - (30L))) / (double)((int32_t)*((uint16_t*) (0x1FFF75CAUL)) - (int32_t)*((uint16_t*)(0x1FFF75A8UL)))) + (30L));
     //sprintf(fezui_buffer,"%4.2lfC", temp);
     sprintf(fezui_buffer,"%2ldC",__HAL_ADC_CALC_TEMPERATURE(3324,fezui_temp_raw,ADC_RESOLUTION_12B));
     //sprintf(fezui_buffer,"%d",fezui_temp_raw);
-    u8g2_DrawStr(&(fezui.u8g2),WIDTH-KEY_WIDTH*4,ROW_HEIGHT*9-(u8g2_int_t)(scrollview.ordinate),fezui_buffer);
+    u8g2_DrawStr(&(fezui.u8g2),WIDTH-KEY_WIDTH*4,ROW_HEIGHT*8-(u8g2_int_t)(scrollview.ordinate),fezui_buffer);
 
 //    /u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
 
@@ -83,10 +82,10 @@ void statisticpage_draw(void *page)
 
 void statisticpage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
-    lefl_key_attach(keys + 3, KEY_DOWN, NULL);
-    lefl_key_attach(keys + 4, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
-    lefl_key_attach(keys + 5, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
-    lefl_key_attach(keys + 6, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
-    lefl_key_attach(keys + 7, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_WHEEL, KEY_DOWN, NULL);
+    lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
+    lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
+    lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
+    lefl_key_attach(&KEY_WHEEL_ANTICLOCKWISE, KEY_DOWN, LAMBDA(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));
 }

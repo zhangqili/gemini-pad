@@ -278,8 +278,6 @@ extern "C" {
     float lefl_advanced_key_normalize(lefl_advanced_key_t* key, float value);
     void lefl_advanced_key_set_range(lefl_advanced_key_t* key, float upper, float lower);
     void lefl_advanced_key_set_deadzone(lefl_advanced_key_t* key, float upper, float lower);
-
-
     /*
      * lefl_color.c
      */

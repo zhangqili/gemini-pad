@@ -28,6 +28,8 @@ extern float Analog_Values[KEY_NUM];
 
 extern lefl_advanced_key_t Keyboard_AdvancedKeys[KEY_NUM];
 
+extern bool eeprom_buzy;
+
 void Analog_Scan();
 void Analog_Init();
 void Analog_Average();

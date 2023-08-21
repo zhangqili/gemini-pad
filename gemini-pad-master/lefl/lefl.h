@@ -21,6 +21,7 @@ extern "C" {
           $this; \
 })
 
+#define ROUND(x) ((size_t)((x)+0.5))
     /*
      * lefl_cursor.c
      */
@@ -49,10 +50,10 @@ extern "C" {
         const char* *items;
         int8_t selected_index;
         uint8_t len;
-        void (*menu_cb)(struct __lefl_menu_t* menu);
+        void (*menu_cb)(void* menu);
     } lefl_menu_t;
 
-    void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(lefl_menu_t* menu));
+    void lefl_menu_init(lefl_menu_t* menu, const char* *items,uint8_t len,void (*cb)(void* menu));
     void lefl_menu_index_increase(lefl_menu_t* menu, int8_t delta);
     void lefl_menu_click(lefl_menu_t* menu);
     void fezui_menu_update_selection(lefl_menu_t* menu);
@@ -67,9 +68,9 @@ extern "C" {
     {
         int8_t x;
         int8_t y;
-        void (*keyboard_cb)(struct __lefl_keyboard_t* keyboard);
+        void (*keyboard_cb)(void* keyboard);
     } lefl_keyboard_t;
-    extern char* ansi_104_keymap[6][17];
+    extern const char *hid_usage_id_name[232];
 
     void lefl_keyboard_x_increase(lefl_keyboard_t* keyboard, int8_t delta);
     void lefl_keyboard_y_increase(lefl_keyboard_t* keyboard, int8_t delta);
@@ -80,9 +81,9 @@ extern "C" {
      */
     typedef struct __lefl_page_t
     {
-        void (*page_logic_cb)(struct __lefl_page_t* page);
-        void (*page_draw_cb)(struct __lefl_page_t* page);
-        void (*page_load_cb)(struct __lefl_page_t* page);
+        void (*page_logic_cb)(void* page);
+        void (*page_draw_cb)(void* page);
+        void (*page_load_cb)(void* page);
         struct __lefl_page_t* forward;
         struct __lefl_page_t* back;
     } lefl_page_t;
@@ -92,7 +93,7 @@ extern "C" {
         lefl_page_t* *pages;
         uint8_t index;
         uint8_t len;
-        void (*frame_cb)(struct __lefl_frame_t* frame);
+        void (*frame_cb)(void* frame);
     } lefl_frame_t;
 
     void lefl_frame_init(lefl_frame_t* frame, lefl_page_t* *data,uint8_t len);
@@ -106,7 +107,7 @@ extern "C" {
     typedef struct __lefl_link_frame_t
     {
         lefl_page_t* current_page;
-        void (*link_frame_cb)(struct __lefl_link_frame_t* frame);
+        void (*link_frame_cb)(void* frame);
     } lefl_link_frame_t;
 
     void lefl_link_frame_go_home(lefl_link_frame_t* frame);
@@ -227,16 +228,20 @@ extern "C" {
     /*
      * lefl_input.c
      */
-
+    typedef enum {
+        KEY_UP,
+        KEY_DOWN,
+        EVENT_NUM
+    } KEY_EVENT;
+    typedef void (*lefl_key_cb_t)(void*);
     typedef struct __lefl_key_t
     {
         uint16_t id;
         bool state;
-        bool trigger;
-        void (*key_cb)(struct __lefl_key_t* key);
+        lefl_key_cb_t key_cb[EVENT_NUM];
     } lefl_key_t;
     void lefl_key_update(lefl_key_t* key, bool state);
-    bool lefl_key_is_triggered(lefl_key_t* key);
+    void lefl_key_attach(lefl_key_t* key, KEY_EVENT e,lefl_key_cb_t cb);
 
     typedef enum
     {
@@ -271,7 +276,6 @@ extern "C" {
     void lefl_advanced_key_update_raw(lefl_advanced_key_t* key, float value);
     void lefl_advanced_key_update_state(lefl_advanced_key_t* key, bool state);
     float lefl_advanced_key_normalize(lefl_advanced_key_t* key, float value);
-    bool lefl_advanced_key_is_triggered(lefl_advanced_key_t* key);
     void lefl_advanced_key_set_range(lefl_advanced_key_t* key, float upper, float lower);
     void lefl_advanced_key_set_deadzone(lefl_advanced_key_t* key, float upper, float lower);
 

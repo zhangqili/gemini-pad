@@ -33,7 +33,16 @@ extern uint8_t Keyboard_ReportBuffer[18];
 extern lefl_bit_array_t Keyboard_KeyArray;
 extern uint8_t Keyboard_EC11Flag;
 extern uint8_t Keyboard_WheelFlag;
-extern lefl_key_t Keyboard_Keys[6];
+extern lefl_key_t Keyboard_Keys[8];
+#define KEY_SHIFT               Keyboard_Keys[0]
+#define KEY_ALPHA               Keyboard_Keys[1]
+#define KEY_KNOB                Keyboard_Keys[2]
+#define KEY_WHEEL               Keyboard_Keys[3]
+#define KEY_KNOB_CLOCKWISE      Keyboard_Keys[4]
+#define KEY_KNOB_ANTICLOCKWISE  Keyboard_Keys[5]
+#define KEY_WHEEL_CLOCKWISE     Keyboard_Keys[6]
+#define KEY_WHEEL_ANTICLOCKWISE Keyboard_Keys[7]
+
 /*
 key buffer
 K1 K2 K3 K4 SHIFT ALPHA KNOB KNOB_S WHEEL WHEEL_S

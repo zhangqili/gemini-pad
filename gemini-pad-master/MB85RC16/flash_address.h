@@ -10,6 +10,7 @@
 
 #include "keyboard.h"
 
+#define ADVANCED_KEY_CONFIG_ADDRESS   0x000
 #define KEY1_CONFIG_ADDRESS   0x000
 #define KEY2_CONFIG_ADDRESS   0x0F0
 #define KEY3_CONFIG_ADDRESS   0x0F0

@@ -7,8 +7,20 @@
 #include "fezui.h"
 #include "fezui_var.h"
 
-#define ROW_HEIGHT 8
 
+
+#define ROW_HEIGHT 16
+#define SPERATOR_X 80
+
+#define MAINBAR_X (SPERATOR_X+4)
+#define MAINBAR_Y (ROW_HEIGHT+4)
+#define MAINBAR_W (18)
+#define MAINBAR_H (40)
+
+#define SUBBAR_X (SPERATOR_X+24+4)
+#define SUBBAR_Y (ROW_HEIGHT+4)
+#define SUBBAR_W (18)
+#define SUBBAR_H (40)
 
 
 void keyconfigpage_init()
@@ -25,7 +37,7 @@ void keyconfigpage_draw(void *page)
 
 void keyconfigpage_load(void *page)
 {
-    lefl_key_attach(keys + 2, KEY_DOWN, LAMBDA(void,(void*k)
+    lefl_key_attach(&KEY_KNOB, KEY_DOWN, LAMBDA(void,(void*k)
         {
             lefl_link_frame_go_back(&mainframe);
         }));

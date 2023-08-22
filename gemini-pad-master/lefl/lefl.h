@@ -208,6 +208,7 @@ extern "C" {
 
     void lefl_bit_array_init(lefl_bit_array_t* arr, lefl_bit_array_unit_t *data, uint16_t len);
     void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b);
+    void lefl_bit_array_set_or(lefl_bit_array_t* arr, int16_t n,bool b);
     bool lefl_bit_array_get(lefl_bit_array_t* arr, int16_t n);
     void lefl_bit_array_shift(lefl_bit_array_t* arr, int16_t n);
 

@@ -65,7 +65,7 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG2_RAW,Keyboard_AdvancedKeys[1].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
-    Communication_Add8(USART1, PROTOCOL_DEBUG,((KEY_KNOB.id>>8) & 0xFF));
+    Communication_Add8(USART1, PROTOCOL_DEBUG,((Keyboard_Advanced_SHIFT_IDs[2]) & 0xFF));
 
     //Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);

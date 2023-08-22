@@ -45,8 +45,15 @@ void debugpage_logic(void *page)
 }
 void debugpage_draw(void *page)
 {
+
+    sprintf(fezui_buffer,"%#x",fezui_debug&0xFF);
+    u8g2_DrawStr(&(fezui.u8g2),64,16,fezui_buffer);
+
+    sprintf(fezui_buffer,"%#x",Keyboard_Advanced_SHIFT_IDs[2]);
+    u8g2_DrawStr(&(fezui.u8g2),64,32,fezui_buffer);
 	//fezui_veil(&(fezui), 0, 0, 128, 64, 4, 0);
 	//fezui_draw_dialog(&(fezui), 32, 16, 64, 32, NULL);
+    /*
 	fezui_draw_slider(&(fezui), 64-(u8g2_int_t)scrollview.abscissa, 16+2-(u8g2_int_t)scrollview.ordinate , 5, 20, &slider);
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_freedoomr10_mu);
     sprintf(fezui_buffer,"%f", targetnum);
@@ -57,6 +64,7 @@ void debugpage_draw(void *page)
     fezui_draw_scrollview(&fezui, 0, 0, 128, 64, &scrollview);
     //u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
     fezui_draw_rolling_number(&fezui, 96-(u8g2_int_t)scrollview.abscissa, 50- (u8g2_int_t)scrollview.ordinate, &rolling_number);
+    */
     //u8g2_DrawStr(&(fezui.u8g2), 96-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "1");
     //u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*1-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "2");
     //u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*2-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "3");

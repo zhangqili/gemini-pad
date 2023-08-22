@@ -60,6 +60,15 @@ void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b)
     }
 }
 
+void lefl_bit_array_set_or(lefl_bit_array_t* arr, int16_t n,bool b)
+{
+    if(n>=0&&n<arr->len)
+    {
+        arr->data[n/LEFL_BIT_ARRAY_UNIT_WIDTH]|=
+            (b<<(n%LEFL_BIT_ARRAY_UNIT_WIDTH));
+    }
+}
+
 bool lefl_bit_array_get(lefl_bit_array_t* arr, int16_t n)
 {
     if(n>=0&&n<arr->len)

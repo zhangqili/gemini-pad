@@ -35,9 +35,9 @@ void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint
         u8g2_uint_t h, lefl_loop_array_t *arr, lefl_bit_array_t *l)
 {
     uint8_t color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
-    uint8_t y1;
-    uint8_t y2;
-    for (int8_t i = 0; i < w - 1; i++)
+    u8g2_uint_t y1;
+    u8g2_uint_t y2;
+    for (u8g2_uint_t i = 0; i < w - 1; i++)
     {
         y1=lefl_loop_array_get(arr, i)/128;
         y2=lefl_loop_array_get(arr, i+1)/128;
@@ -57,6 +57,11 @@ void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint
         else
             u8g2_DrawLine(&(fezui_ptr->u8g2), x + w - i - 1, y + h-y1,x + w - i - 2,y+h-y2);
     }
+    y1=lefl_loop_array_get(arr, w-1)/128;
+    if (lefl_bit_array_get(l, w-1))
+    {
+        u8g2_DrawVLine(&(fezui_ptr->u8g2), x, y + h - y1, y1);
+    }
     u8g2_SetFont(&(fezui_ptr->u8g2), u8g2_font_micro_tr);
     u8g2_DrawBox(&(fezui_ptr->u8g2), x, y, 17, 7);
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
@@ -65,6 +70,48 @@ void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), color_backup);
     //u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
 }
+
+void fezui_draw_detailed_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, lefl_advanced_key_t* key, lefl_loop_array_t *arr, lefl_bit_array_t *l)
+{
+    uint8_t color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
+    u8g2_uint_t y1;
+    u8g2_uint_t y2;
+    u8g2_uint_t w=128;
+    u8g2_uint_t h=64;
+
+    for (u8g2_uint_t i = 0; i < w-1; i++)
+    {
+        y1=lefl_loop_array_get(arr, i)/64;
+        y2=lefl_loop_array_get(arr, i+1)/64;
+        if (y1 > h || y2 > h)
+            if (!lefl_bit_array_get(l, i))
+                u8g2_DrawLine(&(fezui_ptr->u8g2), x + w - i - 1, y + 1,x + w - i - 2,y+1);
+            else
+            {
+                u8g2_DrawVLine(&(fezui_ptr->u8g2), x + w - i - 1, y + i, h - 1);
+                u8g2_DrawLine(&(fezui_ptr->u8g2), x + w - i - 1, y + 1,x + w - i - 2,y+1);
+            }
+        else if (lefl_bit_array_get(l, i))
+        {
+            u8g2_DrawVLine(&(fezui_ptr->u8g2), x + w - i - 1, y + h - y1, y1);
+            u8g2_DrawLine(&(fezui_ptr->u8g2), x + w - i - 1, y + h - y1,x + w - i - 2,y+h-y2);
+        }
+        else
+            u8g2_DrawLine(&(fezui_ptr->u8g2), x + w - i - 1, y + h-y1,x + w - i - 2,y+h-y2);
+    }
+    if (lefl_bit_array_get(l, w-1))
+    {
+        u8g2_DrawVLine(&(fezui_ptr->u8g2), x , y + h - y1, y1);
+    }
+    u8g2_SetFont(&(fezui_ptr->u8g2), u8g2_font_micro_tr);
+    u8g2_DrawBox(&(fezui_ptr->u8g2), x, y, 17, 7);
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
+    sprintf(fezui_buffer, "%04d", lefl_loop_array_get(arr, 0));
+    u8g2_DrawStr(&(fezui_ptr->u8g2), x + 1, y + 6, fezui_buffer);
+    u8g2_SetDrawColor(&(fezui_ptr->u8g2), color_backup);
+    //u8g2_SetDrawColor(&(fezui_ptr->u8g2), !fezui_ptr->invert);
+}
+
 
 void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,
         u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max)

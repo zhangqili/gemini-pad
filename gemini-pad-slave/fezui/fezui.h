@@ -91,6 +91,7 @@ void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
 void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr,
         lefl_bit_array_t *l);
+void fezui_draw_detailed_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, lefl_advanced_key_t* key, lefl_loop_array_t *arr, lefl_bit_array_t *l);
 void fezui_draw_chart(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_loop_array_t *arr, uint8_t max);
 void fezui_veil(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w,

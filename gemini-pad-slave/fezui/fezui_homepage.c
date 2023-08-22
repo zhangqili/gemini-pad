@@ -113,8 +113,6 @@ void homepage_draw(void *page)
     sprintf(fezui_buffer,"%#x",tempu);
     u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
     */
-    //sprintf(fezui_buffer,"%#x",((KEY_KNOB.id>>8)&0xFF));
-    //u8g2_DrawStr(&(fezui.u8g2),64,MARGIN_UP-1,fezui_buffer);
 
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
 

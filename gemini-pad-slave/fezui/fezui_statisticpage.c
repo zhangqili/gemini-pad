@@ -31,7 +31,7 @@ void statisticpage_draw(void *page)
 
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_helvB08_tr);
-    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*7-(u8g2_int_t)(scrollview.ordinate),"- System");
+    u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*6-(u8g2_int_t)(scrollview.ordinate),"- System");
     u8g2_DrawStr(&(fezui.u8g2),0,ROW_HEIGHT*1-(u8g2_int_t)(scrollview.ordinate),"- Total hits");
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_5x8_mr);
@@ -59,8 +59,6 @@ void statisticpage_draw(void *page)
     sprintf(fezui_buffer,"%2ldC",__HAL_ADC_CALC_TEMPERATURE(3324,fezui_temp_raw,ADC_RESOLUTION_12B));
     //sprintf(fezui_buffer,"%d",fezui_temp_raw);
     u8g2_DrawStr(&(fezui.u8g2),WIDTH-KEY_WIDTH*4,ROW_HEIGHT*8-(u8g2_int_t)(scrollview.ordinate),fezui_buffer);
-
-//    /u8g2_SetFont(&(fezui.u8g2), led_seg_like_font);
 
 
     sprintf(fezui_buffer,"%8ld",fezui_keytotalcounts[0]);

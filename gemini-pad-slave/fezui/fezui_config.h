@@ -19,7 +19,7 @@
 #define KEY_NUM               12
 #define MAIN_KEY_NUM          4
 #define ITEM_HEIGHT           14
-#define HISTORY_LENGTH        65
+#define HISTORY_LENGTH        129
 
 #define _SCREEN_REST_ON
 //#define _FPS_ON

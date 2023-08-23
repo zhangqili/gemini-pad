@@ -66,6 +66,7 @@ extern lefl_color_rgb_t RGB_Colors[RGB_NUM];
 extern rgb_individual_config_t RGB_Configs[RGB_NUM];
 extern rgb_global_config_t RGB_GlobalConfig;
 extern uint8_t RGB_TargetConfig;
+extern lefl_loop_queue_t RGB_Argument_Queues[RGB_NUM];
 
 #ifdef USE_RGB
 void RGB_Init();

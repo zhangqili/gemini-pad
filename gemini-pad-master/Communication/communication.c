@@ -179,6 +179,17 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                             }
                             i+=2;
                             break;
+                        case PROTOCOL_RGB_SPEED:
+                            if(RGB_TargetConfig)
+                            {
+                                memcpy((uint8_t *)&(RGB_Configs[RGB_TargetConfig-1].speed),USART1_RX_Buffer+i+1,4);
+                            }
+                            else
+                            {
+                                memcpy((uint8_t *)&(RGB_GlobalConfig.speed),USART1_RX_Buffer+i+1,4);
+                            }
+                            i+=5;
+                            break;
                         default:
                             i+=2;
                             break;

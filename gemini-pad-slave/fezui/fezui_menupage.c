@@ -43,6 +43,8 @@ void menupage_logic(void *page)
             mainmenu.selected_index*ITEM_HEIGHT+3 ,
             strlen(mainmenu.items[mainmenu.selected_index])*6+6,
             ITEM_HEIGHT);
+    Communication_Add8(USART1, PROTOCOL_CMD,CMD_REPORT_STOP);
+    Communication_USART1_Transmit();
 }
 void menupage_draw(void *page)
 {

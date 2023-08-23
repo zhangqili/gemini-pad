@@ -7,9 +7,8 @@
 #include "fezui.h"
 #include "fezui_var.h"
 lefl_menu_t settingsmenu;
-const char* settingsmenu_items[] = {"Keys Configuration","Calibration","Debug","About"};
+const char* settingsmenu_items[] = {"Keys Configuration","RGB","Calibration","About"};
 lefl_page_t settingspage={settingspage_logic,settingspage_draw,settingspage_load};
-
 
 void settingspage_init()
 {
@@ -41,10 +40,10 @@ void settings_menu_cb(void *menu)
         lefl_link_frame_navigate(&mainframe, &panelpage);
         break;
     case 1:
-        lefl_link_frame_navigate(&mainframe, &calibrationpage);
+        lefl_link_frame_navigate(&mainframe, &rgbconfigpage);
         break;
     case 2:
-        lefl_link_frame_navigate(&mainframe, &debugpage);
+        lefl_link_frame_navigate(&mainframe, &calibrationpage);
         break;
     case 3:
         lefl_link_frame_navigate(&mainframe, &aboutpage);

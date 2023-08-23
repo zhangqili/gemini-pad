@@ -24,24 +24,22 @@ int16_t ADC2_Values[64]={0};
 int16_t ADC3_Values[64]={0};
 int16_t ADC4_Values[64]={0};
 
-int16_t ADC_Value_List[KEY_NUM]={0};
+int16_t ADC_Value_List[ADVANCED_KEY_NUM]={0};
 uint8_t ADC_Conversion_Flag=0;
 
-float ADC_Sums[KEY_NUM]={0.0};
-float ADC_Averages[KEY_NUM]={0.0};
+float ADC_Sums[ADVANCED_KEY_NUM]={0.0};
+float ADC_Averages[ADVANCED_KEY_NUM]={0.0};
 
-float Analog_Values[KEY_NUM]={0.0};
+float Analog_Values[ADVANCED_KEY_NUM]={0.0};
 
-lefl_advanced_key_t Keyboard_AdvancedKeys[KEY_NUM];
 
-bool eeprom_buzy = false;
 
 void Analog_Init()
 {
     RGB_Flash();
     for (uint16_t i = 0; i < ANALOG_INIT_SCAN_COUNT; i++)
     {
-        for (uint8_t j = 0; j < KEY_NUM; j++)
+        for (uint8_t j = 0; j < ADVANCED_KEY_NUM; j++)
         {
             HAL_ADC_Start(&hadc1);
             HAL_ADC_PollForConversion(&hadc1,1);
@@ -49,7 +47,7 @@ void Analog_Init()
         }
     }
 
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         Keyboard_AdvancedKeys[i].upper_bound=ADC_Sums[i]/(float)ANALOG_INIT_SCAN_COUNT;
         ADC_Sums[i]=0.0;
@@ -69,14 +67,14 @@ void Analog_Init()
     HAL_Delay(1000);
     for (uint16_t i = 0; i < ANALOG_INIT_SCAN_COUNT; i++)
     {
-        for (uint8_t j = 0; j < KEY_NUM; j++)
+        for (uint8_t j = 0; j < ADVANCED_KEY_NUM; j++)
         {
             HAL_ADC_Start(&hadc1);
             HAL_ADC_PollForConversion(&hadc1,1);
             ADC_Sums[j]+=HAL_ADC_GetValue(&hadc1);
         }
     }
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         Keyboard_AdvancedKeys[i].lower_bound=ADC_Sums[i]/(float)ANALOG_INIT_SCAN_COUNT;
         ADC_Sums[i]=0.0;
@@ -91,12 +89,12 @@ void Analog_Init()
     RGB_Set(RGB_Colors[1].r,RGB_Colors[1].g,RGB_Colors[1].b,1);
     RGB_Set(RGB_Colors[2].r,RGB_Colors[2].g,RGB_Colors[2].b,2);
     RGB_Set(RGB_Colors[3].r,RGB_Colors[3].g,RGB_Colors[3].b,3);
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         lefl_advanced_key_set_range(Keyboard_AdvancedKeys+i,Keyboard_AdvancedKeys[i].upper_bound,Keyboard_AdvancedKeys[i].lower_bound);
     }
 
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         lefl_advanced_key_set_deadzone(Keyboard_AdvancedKeys+i,0.01,0.1);
     }
@@ -155,7 +153,7 @@ void Analog_Average()
 
 void Analog_Check()
 {
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+i, ADC_Value_List[i]);
     }
@@ -165,7 +163,7 @@ void Analog_Check()
 void Analog_Recovery()
 {
     eeprom_buzy = true;
-    for (uint16_t i = 0; i < KEY_NUM; i++)
+    for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         MB85RC16_ReadWord (i*64+ADVANCED_KEY_CONFIG_ADDRESS,       &(Keyboard_AdvancedKeys[i].key.id));
         MB85RC16_ReadByte (i*64+ADVANCED_KEY_CONFIG_ADDRESS+2,     &(Keyboard_AdvancedKeys[i].mode));
@@ -187,7 +185,7 @@ void Analog_Recovery()
 void Analog_Save()
 {
     eeprom_buzy = true;
-    for (uint16_t i = 0; i < KEY_NUM; i++)
+    for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         Keyboard_AdvancedKeys[i].mode=LEFL_KEY_ANALOG_RAPID_MODE;
         Keyboard_AdvancedKeys[i].trigger_distance=0.03,

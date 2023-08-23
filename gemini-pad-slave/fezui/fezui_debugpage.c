@@ -46,7 +46,7 @@ void debugpage_logic(void *page)
 void debugpage_draw(void *page)
 {
 
-    sprintf(fezui_buffer,"%#x",fezui_debug&0xFF);
+    sprintf(fezui_buffer,"%#x",fezui_debug);
     u8g2_DrawStr(&(fezui.u8g2),64,16,fezui_buffer);
 
     sprintf(fezui_buffer,"%#x",Keyboard_Advanced_SHIFT_IDs[2]);

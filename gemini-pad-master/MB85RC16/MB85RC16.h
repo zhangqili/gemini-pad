@@ -21,6 +21,8 @@
 #define MB85RC16_SetAddress(a)  MB85RC16_I2CAddressAdapt(a,0);\
                                 HAL_I2C_Master_Transmit(&FRAM_HI2C, fram_address, fram_buf, 1, 10);
 
+extern bool eeprom_buzy;
+
 uint8_t MB85RC16_ReadArray (uint16_t framAddr, uint8_t length, uint8_t value[]);
 uint8_t MB85RC16_WriteArray (uint16_t framAddr, uint8_t length, uint8_t value[]);
 uint8_t MB85RC16_ReadByte (uint16_t framAddr, uint8_t *value);

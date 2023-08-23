@@ -16,7 +16,6 @@
 #include "fezui_var.h"
 
 #define ROW_HEIGHT 8
-#define BIT(a) (1<<a)
 
 static fezui_scrollview_t scrollview = { .content_height = ROW_HEIGHT*sizeof(hid_usage_names)/sizeof(const char*), .content_width =
         128, .abscissa = 0, .ordinate = 0 };

@@ -36,8 +36,8 @@ static fezui_scrollview_t scrollview =
 };
 static float target_ordinate=0;
 
-bool configing = false;
-bool mode_switching = false;
+static bool configing = false;
+static bool mode_switching = false;
 static float* target_property;
 static float advancedconfigpage_interval;
 
@@ -450,9 +450,13 @@ void advancedconfigpage_load(void *page)
     }));
     lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
-        if(configing||mode_switching)
+        if(configing)
         {
-
+            configing = false;
+        }
+        if(mode_switching)
+        {
+            mode_switching = false;
         }
         else
         {

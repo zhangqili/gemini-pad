@@ -152,14 +152,14 @@ void rgbconfigpage_draw(void *page)
         sprintf(fezui_buffer,"%d", RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.b);
         u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(fezui_buffer)*font_width, ROW_HEIGHT*4-1, fezui_buffer);
 
-        sprintf(fezui_buffer,"%0.0f", RGB_Configs[rgb_key_select_menu.selected_index-1].speed*100);
+        sprintf(fezui_buffer,"%0.0f", RGB_Configs[rgb_key_select_menu.selected_index-1].speed*1000);
         u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(fezui_buffer)*font_width, ROW_HEIGHT*8-1, fezui_buffer);
     }
     else
     {
         u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(rgb_global_mode_items[RGB_GlobalConfig.mode])*font_width, ROW_HEIGHT*1-1, rgb_global_mode_items[RGB_GlobalConfig.mode]);
 
-        sprintf(fezui_buffer,"%0.0f",RGB_GlobalConfig.speed*100);
+        sprintf(fezui_buffer,"%0.0f",RGB_GlobalConfig.speed*1000);
         u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(fezui_buffer)*font_width, ROW_HEIGHT*8-1, fezui_buffer);
     }
     sprintf(fezui_buffer,"%d",target_rgb->r);
@@ -211,6 +211,27 @@ void rgbconfigpage_draw(void *page)
     u8g2_DrawVLine(&(fezui.u8g2), SPERATOR_X, 0, 64);
 }
 
+void usart_rgb_set()
+{
+    Communication_Add8(USART1, PROTOCOL_SET_TARGET_RGB, rgb_key_select_menu.selected_index);
+    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
+    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
+    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
+    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
+    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
+    if(rgb_key_select_menu.selected_index)
+    {
+        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_Configs[rgb_key_select_menu.selected_index-1].mode);
+        Communication_Add32(USART1, PROTOCOL_RGB_SPEED, RGB_Configs[rgb_key_select_menu.selected_index-1].speed);
+    }
+    else
+    {
+        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_GlobalConfig.mode);
+        Communication_Add32(USART1, PROTOCOL_RGB_SPEED, RGB_GlobalConfig.speed);
+    }
+    Communication_USART1_Transmit();
+}
+
 void key_up_cb(void *k)
 {
     if(key_selected)
@@ -223,77 +244,50 @@ void key_up_cb(void *k)
                     if(rgb_key_select_menu.selected_index)
                     {
                         VAR_LOOP_INCREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].mode,RGB_MODE_STATIC,RGB_MODE_REACT_TRIGGER,1)
-                        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_Configs[rgb_key_select_menu.selected_index-1].mode);
-                        Communication_USART1_Transmit();
                     }
                     else
                     {
                         VAR_LOOP_INCREMENT(RGB_GlobalConfig.mode,RGB_GLOBAL_MODE_OFF,RGB_GLOBAL_MODE_RIPPLE,1)
-                        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_GlobalConfig.mode);
-                        Communication_USART1_Transmit();
                     }
                     break;
                 case 1:
                     VAR_LOOP_INCREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.r,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_USART1_Transmit();
                     break;
                 case 2:
                     VAR_LOOP_INCREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.g,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_USART1_Transmit();
                     break;
                 case 3:
                     VAR_LOOP_INCREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.b,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_USART1_Transmit();
                     break;
                 case 4:
                     VAR_LOOP_INCREMENT(target_hsv->h,0,360,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 5:
                     VAR_LOOP_INCREMENT(target_hsv->s,0,100,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 6:
                     VAR_LOOP_INCREMENT(target_hsv->v,0,100,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 7:
                     if(rgb_key_select_menu.selected_index)
                     {
-                        RGB_Configs[rgb_key_select_menu.selected_index-1].speed+=0.01;
+                        RGB_Configs[rgb_key_select_menu.selected_index-1].speed+=0.001;
                     }
                     else
                     {
-                        RGB_GlobalConfig.speed+=0.01;
+                        RGB_GlobalConfig.speed+=0.001;
                     }
                     break;
                 default:
                     break;
             }
+            usart_rgb_set();
         }
         else
         {
@@ -303,8 +297,6 @@ void key_up_cb(void *k)
     else
     {
         lefl_menu_index_increase(&rgb_key_select_menu, 1);
-        Communication_Add8(USART1, PROTOCOL_SET_TARGET_RGB, rgb_key_select_menu.selected_index);
-        Communication_USART1_Transmit();
         set_target_color();
     }
 }
@@ -322,77 +314,50 @@ void key_down_cb(void *k)
                     if(rgb_key_select_menu.selected_index)
                     {
                         VAR_LOOP_DECREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].mode,RGB_MODE_STATIC,RGB_MODE_REACT_TRIGGER,1)
-                        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_Configs[rgb_key_select_menu.selected_index-1].mode);
-                        Communication_USART1_Transmit();
                     }
                     else
                     {
                         VAR_LOOP_INCREMENT(RGB_GlobalConfig.mode,RGB_GLOBAL_MODE_OFF,RGB_GLOBAL_MODE_RIPPLE,1)
-                        Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_GlobalConfig.mode);
-                        Communication_USART1_Transmit();
                     }
                     break;
                 case 1:
                     VAR_LOOP_DECREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.r,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_USART1_Transmit();
                     break;
                 case 2:
                     VAR_LOOP_DECREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.g,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_USART1_Transmit();
                     break;
                 case 3:
                     VAR_LOOP_DECREMENT(RGB_Configs[rgb_key_select_menu.selected_index-1].rgb.b,0,255,1)
                     lefl_rgb_to_hsv(target_hsv, target_rgb);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_USART1_Transmit();
                     break;
                 case 4:
                     VAR_LOOP_DECREMENT(target_hsv->h,0,360,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 5:
                     VAR_LOOP_DECREMENT(target_hsv->s,0,100,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 6:
                     VAR_LOOP_DECREMENT(target_hsv->v,0,100,1)
                     lefl_hsv_to_rgb(target_rgb, target_hsv);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_R, target_rgb->r);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_G, target_rgb->g);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_RGB_B, target_rgb->b);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_S, target_hsv->s);
-                    Communication_Add8(USART1, PROTOCOL_COLOR_HSV_V, target_hsv->v);
-                    Communication_USART1_Transmit();
                     break;
                 case 7:
                     if(rgb_key_select_menu.selected_index)
                     {
-                        RGB_Configs[rgb_key_select_menu.selected_index-1].speed-=0.01;
+                        RGB_Configs[rgb_key_select_menu.selected_index-1].speed-=0.001;
                     }
                     else
                     {
-                        RGB_GlobalConfig.speed-=0.01;
+                        RGB_GlobalConfig.speed-=0.001;
                     }
                     break;
                 default:
                     break;
             }
+            usart_rgb_set();
         }
         else
         {
@@ -402,8 +367,6 @@ void key_down_cb(void *k)
     else
     {
         lefl_menu_index_increase(&rgb_key_select_menu, -1);
-        Communication_Add8(USART1, PROTOCOL_SET_TARGET_RGB, rgb_key_select_menu.selected_index);
-        Communication_USART1_Transmit();
         set_target_color();
     }
 }

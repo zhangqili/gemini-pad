@@ -125,3 +125,27 @@ lefl_stack_elm_t lefl_stack_pop(lefl_stack_t* stack, lefl_stack_elm_t *t)
     }
     return *t;
 }
+
+void lefl_loop_queue_init(lefl_loop_queue_t* q, lefl_loop_queue_elm_t*data, uint16_t len)
+{
+    q->data = data;
+    q->front = 0;
+    q->rear = 0;
+    q->len = len;
+}
+
+lefl_loop_queue_elm_t lefl_loop_queue_dequeue(lefl_loop_queue_t* q)
+{
+    if(q->front==q->rear)
+        return 0.0;
+    q->front = (q->front+1)%(q->len);
+    return q->data[(q->front+q->len-1)%(q->len)];
+}
+
+void lefl_loop_queue_enqueue(lefl_loop_queue_t* q, lefl_loop_queue_elm_t t)
+{
+    if(((q->rear+1)%(q->len))==q->front)
+        return;
+    q->data[q->rear]=t;
+    q->rear = (q->rear+1)%(q->len);
+}

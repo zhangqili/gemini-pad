@@ -52,11 +52,10 @@ void flag_clear(void*e)
 
 void Keyboard_Init()
 {
-
-    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[0].argument=0.0;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[1].argument=0.0;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[2].argument=0.0;}));
-    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[3].argument=0.0;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_loop_queue_enqueue(RGB_Argument_Queues+0, 0.0);}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_loop_queue_enqueue(RGB_Argument_Queues+1, 0.0);}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_loop_queue_enqueue(RGB_Argument_Queues+2, 0.0);}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_loop_queue_enqueue(RGB_Argument_Queues+3, 0.0);}));
 
     lefl_key_attach(&KEY_SHIFT, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Keyboard_SHIFT_Flag = !Keyboard_SHIFT_Flag;}));
     lefl_key_attach(&KEY_ALPHA, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Keyboard_ALPHA_Flag = !Keyboard_ALPHA_Flag;}));

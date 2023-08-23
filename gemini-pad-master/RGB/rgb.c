@@ -19,10 +19,22 @@ rgb_global_config_t RGB_GlobalConfig;
 rgb_individual_config_t RGB_Configs[RGB_NUM];
 lefl_color_rgb_t RGB_Colors[RGB_NUM];
 uint8_t RGB_TargetConfig;
+lefl_loop_queue_t RGB_Argument_Queues[RGB_NUM];
+#define ARGUMENT_BUFFER_LENGTH 16
+static lefl_loop_queue_elm_t RGB0_Argument_Buffer[ARGUMENT_BUFFER_LENGTH];
+static lefl_loop_queue_elm_t RGB1_Argument_Buffer[ARGUMENT_BUFFER_LENGTH];
+static lefl_loop_queue_elm_t RGB2_Argument_Buffer[ARGUMENT_BUFFER_LENGTH];
+static lefl_loop_queue_elm_t RGB3_Argument_Buffer[ARGUMENT_BUFFER_LENGTH];
+static lefl_loop_queue_elm_t RGB4_Argument_Buffer[ARGUMENT_BUFFER_LENGTH];
 
 #ifdef USE_RGB
 void RGB_Init()
 {
+    lefl_loop_queue_init(RGB_Argument_Queues + 0, RGB0_Argument_Buffer, ARGUMENT_BUFFER_LENGTH);
+    lefl_loop_queue_init(RGB_Argument_Queues + 1, RGB1_Argument_Buffer, ARGUMENT_BUFFER_LENGTH);
+    lefl_loop_queue_init(RGB_Argument_Queues + 2, RGB2_Argument_Buffer, ARGUMENT_BUFFER_LENGTH);
+    lefl_loop_queue_init(RGB_Argument_Queues + 3, RGB3_Argument_Buffer, ARGUMENT_BUFFER_LENGTH);
+    lefl_loop_queue_init(RGB_Argument_Queues + 4, RGB4_Argument_Buffer, ARGUMENT_BUFFER_LENGTH);
     for (uint16_t i = 0; i < 400; i++) {
         RGB_Buffer[i] = NONE_PULSE;
     }
@@ -97,40 +109,51 @@ void RGB_Update()
             }
             for (int8_t i = 0; i < 4; i++)
             {
-                RGB_Configs[i].argument+=RGB_Configs[i].speed;
+                lefl_loop_queue_foreach(RGB_Argument_Queues+i,j)
+                {
+                    RGB_Argument_Queues[i].data[j] += RGB_GlobalConfig.speed;
+                    if(RGB_Argument_Queues[i].data[j]>6.0f)
+                    {
+                        lefl_loop_queue_dequeue(RGB_Argument_Queues+i);
+                    }
+                }
                 for (int8_t j = 0; j < 4; j++)
                 {
-                    tempf = (1.0f-fabsf(i+RGB_Configs[i].argument-j));
-                    tempf = tempf > 0 ? tempf : 0;
-                    //printf("%f\n",1.0 - fabsf(i+RGB_Configs[i].argument-j));
-                    //printf("%.2f\t",tempf*((float)(RGB_Configs[i].rgb.r)));
-                    tempint = RGB_Colors[j].r;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.r))))>>1;
-                    RGB_Colors[j].r=tempint<256?tempint:255;
-                    //printf("%d\t",tempr);
+                    lefl_loop_queue_foreach(RGB_Argument_Queues+i,k)
+                    {
+                        tempf = (1.0f-fabsf(i+RGB_Argument_Queues[i].data[k]-j));
+                        tempf = tempf > 0 ? tempf : 0;
+                        //printf("%f\n",1.0 - fabsf(i+RGB_Configs[i].argument-j));
+                        //printf("%.2f\t",tempf*((float)(RGB_Configs[i].rgb.r)));
+                        tempint = RGB_Colors[j].r;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.r))))>>1;
+                        RGB_Colors[j].r=tempint<256?tempint:255;
+                        //printf("%d\t",tempr);
 
-                    tempint = RGB_Colors[j].g;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.g))))>>1;
-                    RGB_Colors[j].g=tempint<256?tempint:255;
+                        tempint = RGB_Colors[j].g;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.g))))>>1;
+                        RGB_Colors[j].g=tempint<256?tempint:255;
 
-                    tempint = RGB_Colors[j].b;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.b))))>>1;
-                    RGB_Colors[j].b=tempint<256?tempint:255;
+                        tempint = RGB_Colors[j].b;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.b))))>>1;
+                        RGB_Colors[j].b=tempint<256?tempint:255;
 
-                    tempf = (1.0f-fabsf(i-RGB_Configs[i].argument-j));
-                    tempf = tempf > 0 ? tempf : 0;
+                        tempf = (1.0f-fabsf(i-RGB_Argument_Queues[i].data[k]-j));
+                        tempf = tempf > 0 ? tempf : 0;
 
-                    tempint = RGB_Colors[j].r;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.r))))>>1;
-                    RGB_Colors[j].r=tempint<256?tempint:255;
+                        tempint = RGB_Colors[j].r;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.r))))>>1;
+                        RGB_Colors[j].r=tempint<256?tempint:255;
 
-                    tempint = RGB_Colors[j].g;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.g))))>>1;
-                    RGB_Colors[j].g=tempint<256?tempint:255;
+                        tempint = RGB_Colors[j].g;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.g))))>>1;
+                        RGB_Colors[j].g=tempint<256?tempint:255;
 
-                    tempint = RGB_Colors[j].b;
-                    tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.b))))>>1;
-                    RGB_Colors[j].b=tempint<256?tempint:255;
+                        tempint = RGB_Colors[j].b;
+                        tempint += ((uint8_t)(tempf*((float)(RGB_Configs[i].rgb.b))))>>1;
+                        RGB_Colors[j].b=tempint<256?tempint:255;
+
+                    }
                 }
             }
             break;

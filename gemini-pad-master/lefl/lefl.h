@@ -221,6 +221,20 @@ extern "C" {
     lefl_stack_elm_t lefl_stack_pop(lefl_stack_t* stack, lefl_stack_elm_t *t);
 
 
+    typedef float lefl_loop_queue_elm_t;
+
+    typedef struct __lefl_loop_queue_t
+    {
+        lefl_loop_queue_elm_t *data;
+        int16_t front;
+        int16_t rear;
+        int16_t len;
+    } lefl_loop_queue_t;
+
+    void lefl_loop_queue_init(lefl_loop_queue_t* q, lefl_loop_queue_elm_t*data, uint16_t len);
+    lefl_loop_queue_elm_t lefl_loop_queue_dequeue(lefl_loop_queue_t* q);
+    void lefl_loop_queue_enqueue(lefl_loop_queue_t* q, lefl_loop_queue_elm_t t);
+#define lefl_loop_queue_foreach(q,i) for(uint16_t (i)=(q)->front;(i)!=(q)->rear;(i)=(i+1)%(q)->len)
     /*
      * lefl_input.c
      */

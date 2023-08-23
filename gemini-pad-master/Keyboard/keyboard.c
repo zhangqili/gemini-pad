@@ -11,6 +11,7 @@
 #include "analog.h"
 #include "usbd_custom_hid_if.h"
 #include "gpio.h"
+#include "rgb.h"
 #include "keyboard.h"
 #include "MB85RC16.h"
 
@@ -26,16 +27,17 @@ lefl_bit_array_t Keyboard_KeyArray;
 
 uint8_t Keyboard_EC11_Flag=0;
 uint8_t Keyboard_Wheel_Flag=0;
-uint16_t Keyboard_Advanced_SHIFT_IDs[KEY_NUM];
-uint16_t Keyboard_SHIFT_IDs[8];
-uint16_t Keyboard_Advanced_ALPHA_IDs[KEY_NUM];
-uint16_t Keyboard_ALPHA_IDs[8];
+uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
+uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
+uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
+uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
 bool Keyboard_SHIFT_Flag=false;
 bool Keyboard_ALPHA_Flag=false;
 extern bool sendreport;
 extern bool sendreport_ready;
 //SHIFT, ALPHA, KNOB, WHEEL, KNOB Rotation direction, WHEEL Rotation direction
-lefl_key_t Keyboard_Keys[8];
+lefl_key_t Keyboard_Keys[KEY_NUM];
+lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];
 
 void flag_clear(void*e)
 {
@@ -50,9 +52,15 @@ void flag_clear(void*e)
 
 void Keyboard_Init()
 {
+
+    lefl_key_attach(&(Keyboard_AdvancedKeys[0].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[0].argument=0.0;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[1].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[1].argument=0.0;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[2].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[2].argument=0.0;}));
+    lefl_key_attach(&(Keyboard_AdvancedKeys[3].key), KEY_EVENT_DOWN, LAMBDA(void,(void*k){RGB_Configs[3].argument=0.0;}));
+
     lefl_key_attach(&KEY_SHIFT, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Keyboard_SHIFT_Flag = !Keyboard_SHIFT_Flag;}));
     lefl_key_attach(&KEY_ALPHA, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Keyboard_ALPHA_Flag = !Keyboard_ALPHA_Flag;}));
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         lefl_key_attach(&(Keyboard_AdvancedKeys[i].key), KEY_EVENT_UP, flag_clear);
     }
@@ -107,13 +115,13 @@ void Keyboard_SendReport()
     memset(Keyboard_ReportBuffer,0,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
     if(Keyboard_SHIFT_Flag)
     {
-        for (uint8_t i = 0; i < KEY_NUM; i++)
+        for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             Keyboard_ReportBuffer[0]|= Keyboard_AdvancedKeys[i].key.state?((Keyboard_Advanced_SHIFT_IDs[i]>>8) & 0xFF):0;
             lefl_bit_array_set_or(&Keyboard_KeyArray, Keyboard_Advanced_SHIFT_IDs[i] & 0xFF, Keyboard_AdvancedKeys[i].key.state);
         }
 
-        for (uint8_t i = 2; i < 8; i++)
+        for (uint8_t i = 2; i < KEY_NUM; i++)
         {
             Keyboard_ReportBuffer[0]|= Keyboard_Keys[i].state?((Keyboard_SHIFT_IDs[i]>>8) & 0xFF):0;
             lefl_bit_array_set_or(&Keyboard_KeyArray, Keyboard_SHIFT_IDs[i] & 0xFF, Keyboard_Keys[i].state);
@@ -124,13 +132,13 @@ void Keyboard_SendReport()
     }
     if(Keyboard_ALPHA_Flag)
     {
-        for (uint8_t i = 0; i < KEY_NUM; i++)
+        for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             Keyboard_ReportBuffer[0]|= Keyboard_AdvancedKeys[i].key.state?((Keyboard_Advanced_ALPHA_IDs[i]>>8) & 0xFF):0;
             lefl_bit_array_set_or(&Keyboard_KeyArray, Keyboard_Advanced_ALPHA_IDs[i] & 0xFF, Keyboard_AdvancedKeys[i].key.state);
         }
 
-        for (uint8_t i = 2; i < 8; i++)
+        for (uint8_t i = 2; i < KEY_NUM; i++)
         {
             Keyboard_ReportBuffer[0]|= Keyboard_Keys[i].state?((Keyboard_ALPHA_IDs[i]>>8) & 0xFF):0;
             lefl_bit_array_set_or(&Keyboard_KeyArray, Keyboard_ALPHA_IDs[i] & 0xFF, Keyboard_Keys[i].state);
@@ -154,7 +162,7 @@ void Keyboard_SendReport()
         }
     }
     */
-    for (uint8_t i = 0; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         Keyboard_ReportBuffer[0]|= Keyboard_AdvancedKeys[i].key.state?((Keyboard_AdvancedKeys[i].key.id>>8) & 0xFF):0;
         lefl_bit_array_set_or(&Keyboard_KeyArray, Keyboard_AdvancedKeys[i].key.id & 0xFF, Keyboard_AdvancedKeys[i].key.state);
@@ -177,16 +185,16 @@ void Keyboard_SendReport()
 void Keyboard_ID_Save()
 {
     eeprom_buzy = true;
-    for (uint16_t i = 0; i < KEY_NUM; i++)
+    for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs[i]);
         MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs[i]);
     }
-    for (uint16_t i = 0; i < 8; i++)
+    for (uint16_t i = 0; i < KEY_NUM; i++)
     {
-        MB85RC16_WriteWord(KEY_NORMAL_ID_ADDRESS+(i+KEY_NUM)*2,Keyboard_Keys[i].id);
-        MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+(i+KEY_NUM)*2,Keyboard_SHIFT_IDs[i]);
-        MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+(i+KEY_NUM)*2,Keyboard_ALPHA_IDs[i]);
+        MB85RC16_WriteWord(KEY_NORMAL_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_Keys[i].id);
+        MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_SHIFT_IDs[i]);
+        MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_ALPHA_IDs[i]);
     }
     eeprom_buzy = false;
 }
@@ -194,16 +202,16 @@ void Keyboard_ID_Save()
 void Keyboard_ID_Recovery()
 {
     eeprom_buzy = true;
-    for (uint16_t i = 0; i < KEY_NUM; i++)
+    for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs+i);
         MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs+i);
     }
-    for (uint16_t i = 0; i < 8; i++)
+    for (uint16_t i = 0; i < KEY_NUM; i++)
     {
-        MB85RC16_ReadWord(KEY_NORMAL_ID_ADDRESS+(i+KEY_NUM)*2,&(Keyboard_Keys[i].id));
-        MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+(i+KEY_NUM)*2,Keyboard_SHIFT_IDs+i);
-        MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+(i+KEY_NUM)*2,Keyboard_ALPHA_IDs+i);
+        MB85RC16_ReadWord(KEY_NORMAL_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,&(Keyboard_Keys[i].id));
+        MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_SHIFT_IDs+i);
+        MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_ALPHA_IDs+i);
     }
     eeprom_buzy = false;
 }

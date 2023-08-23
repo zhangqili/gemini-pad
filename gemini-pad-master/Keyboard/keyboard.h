@@ -11,7 +11,8 @@
 #include "lefl.h"
 #include "usb_hid_keys.h"
 
-#define KEY_NUM                 4
+#define ADVANCED_KEY_NUM        4
+#define KEY_NUM                 8
 #define KEY1                    (!HAL_GPIO_ReadPin(KEY1_GPIO_Port,KEY1_Pin))
 #define KEY2                    (!HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin))
 #define KEY3                    (!HAL_GPIO_ReadPin(KEY3_GPIO_Port,KEY3_Pin))
@@ -36,12 +37,13 @@ extern uint8_t Keyboard_Wheel_Flag;
 extern bool Keyboard_SHIFT_Flag;
 extern bool Keyboard_ALPHA_Flag;
 
-extern uint16_t Keyboard_Advanced_SHIFT_IDs[KEY_NUM];
-extern uint16_t Keyboard_SHIFT_IDs[8];
-extern uint16_t Keyboard_Advanced_ALPHA_IDs[KEY_NUM];
-extern uint16_t Keyboard_ALPHA_IDs[8];
+extern uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
+extern uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
+extern uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
+extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
 
-extern lefl_key_t Keyboard_Keys[8];
+extern lefl_key_t Keyboard_Keys[KEY_NUM];
+extern lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];
 #define KEY_SHIFT               Keyboard_Keys[0]
 #define KEY_ALPHA               Keyboard_Keys[1]
 #define KEY_KNOB                Keyboard_Keys[2]

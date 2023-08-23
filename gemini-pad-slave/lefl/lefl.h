@@ -13,15 +13,10 @@ extern "C" {
 #include "stdint.h"
 #include "stddef.h"
 #include "stdbool.h"
+#include "string.h"
 #include "math.h"
+#include "lefl_macro.h"
 
-#define LAMBDA(return_type, function_body) \
-({ \
-      return_type $this function_body \
-          $this; \
-})
-
-#define ROUND(x) ((size_t)((x)+0.5))
     /*
      * lefl_cursor.c
      */
@@ -208,6 +203,7 @@ extern "C" {
 
     void lefl_bit_array_init(lefl_bit_array_t* arr, lefl_bit_array_unit_t *data, uint16_t len);
     void lefl_bit_array_set(lefl_bit_array_t* arr, int16_t n,bool b);
+    void lefl_bit_array_set_or(lefl_bit_array_t* arr, int16_t n,bool b);
     bool lefl_bit_array_get(lefl_bit_array_t* arr, int16_t n);
     void lefl_bit_array_shift(lefl_bit_array_t* arr, int16_t n);
 
@@ -278,6 +274,8 @@ extern "C" {
     float lefl_advanced_key_normalize(lefl_advanced_key_t* key, float value);
     void lefl_advanced_key_set_range(lefl_advanced_key_t* key, float upper, float lower);
     void lefl_advanced_key_set_deadzone(lefl_advanced_key_t* key, float upper, float lower);
+
+
     /*
      * lefl_color.c
      */
@@ -288,6 +286,8 @@ extern "C" {
         uint8_t b;
     } lefl_color_rgb_t;
 
+    typedef lefl_color_rgb_t lefl_color_t;
+
     typedef struct __lefl_color_hsv_t
     {
         uint16_t h;
@@ -297,6 +297,10 @@ extern "C" {
 
     void lefl_rgb_to_hsv(lefl_color_hsv_t *hsv, lefl_color_rgb_t *rgb);
     void lefl_hsv_to_rgb(lefl_color_rgb_t *rgb, lefl_color_hsv_t *hsv);
+    void lefl_color_get_rgb(lefl_color_t*color, lefl_color_rgb_t*rgb);
+    void lefl_color_set_rgb(lefl_color_t*color, lefl_color_rgb_t*rgb);
+    void lefl_color_get_hsv(lefl_color_t*color, lefl_color_hsv_t*hsv);
+    void lefl_color_set_hsv(lefl_color_t*color, lefl_color_hsv_t*hsv);
 #ifdef __cplusplus
 }
 #endif

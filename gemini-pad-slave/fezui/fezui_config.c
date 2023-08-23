@@ -12,6 +12,7 @@
 #include "MB85RC16.h"
 #include "display.h"
 #include "communication.h"
+#include "rgb.h"
 
 
 uint8_t tempuint;
@@ -68,24 +69,25 @@ void fezui_init()
     advancedconfigpage_init();
     keylistpage_init();
     knobconfigpage_init();
+    rgbconfigpage_init();
 
     Analog_Read();
     Keyboard_ID_Recovery();
+    RGB_Recovery();
     fezui_read_counts();
     lefl_link_frame_navigate(&mainframe, &homepage);
 }
 
 void fezui_timer_handler()
 {
-    for (uint8_t i = MAIN_KEY_NUM; i < KEY_NUM; i++)
+    for (uint8_t i = 0; i < KEY_NUM; i++)
     {
-        lefl_key_update(Keyboard_Keys+i-4, key_buffer[i]);
+        lefl_key_update(Keyboard_Keys+i, key_buffer[i+ADVANCED_KEY_NUM]);
     }
-
     lefl_link_frame_logic(&mainframe);
     lefl_cursor_move(&cursor, &target_cursor);
 
-    for (uint8_t i = 0; i < MAIN_KEY_NUM; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         lefl_bit_array_shift(lines+i, 1);
         if (Keyboard_AdvancedKeys[i].key.state)
@@ -189,16 +191,16 @@ void Keyboard_ID_Save()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs[i]);
             MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs[i]);
         }
-        for (uint16_t i = 0; i < KEY_NUM - MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < KEY_NUM; i++)
         {
-            MB85RC16_WriteWord(KEY_NORMAL_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_Keys[i].id);
-            MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_SHIFT_IDs[i]);
-            MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_ALPHA_IDs[i]);
+            MB85RC16_WriteWord(KEY_NORMAL_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_Keys[i].id);
+            MB85RC16_WriteWord(KEY_SHIFT_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_SHIFT_IDs[i]);
+            MB85RC16_WriteWord(KEY_ALPHA_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_ALPHA_IDs[i]);
         }
     }
 }
@@ -207,16 +209,16 @@ void Keyboard_ID_Recovery()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+i*2,Keyboard_Advanced_SHIFT_IDs+i);
             MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+i*2,Keyboard_Advanced_ALPHA_IDs+i);
         }
-        for (uint16_t i = 0; i < KEY_NUM - MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < KEY_NUM; i++)
         {
-            MB85RC16_ReadWord(KEY_NORMAL_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,&(Keyboard_Keys[i].id));
-            MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_SHIFT_IDs+i);
-            MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+(i+MAIN_KEY_NUM)*2,Keyboard_ALPHA_IDs+i);
+            MB85RC16_ReadWord(KEY_NORMAL_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,&(Keyboard_Keys[i].id));
+            MB85RC16_ReadWord(KEY_SHIFT_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_SHIFT_IDs+i);
+            MB85RC16_ReadWord(KEY_ALPHA_ID_ADDRESS+(i+ADVANCED_KEY_NUM)*2,Keyboard_ALPHA_IDs+i);
         }
     }
 }
@@ -225,7 +227,7 @@ void Analog_Read()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_ReadWord (i*64+ADVANCED_KEY_CONFIG_ADDRESS,       &(Keyboard_AdvancedKeys[i].key.id));
             MB85RC16_ReadByte (i*64+ADVANCED_KEY_CONFIG_ADDRESS+2,     &(Keyboard_AdvancedKeys[i].mode));
@@ -248,7 +250,7 @@ void Analog_Save()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_WriteWord (i*64+ADVANCED_KEY_CONFIG_ADDRESS,       Keyboard_AdvancedKeys[i].key.id);
             MB85RC16_WriteByte (i*64+ADVANCED_KEY_CONFIG_ADDRESS+2,     Keyboard_AdvancedKeys[i].mode);
@@ -270,7 +272,7 @@ void fezui_save_counts()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_WriteLong(KEY_COUNTS_ADDRESS+i*4, fezui_keytotalcounts[i]);
         }
@@ -281,7 +283,7 @@ void fezui_read_counts()
 {
     if(eeprom_enable)
     {
-        for (uint16_t i = 0; i < MAIN_KEY_NUM; i++)
+        for (uint16_t i = 0; i < ADVANCED_KEY_NUM; i++)
         {
             MB85RC16_ReadLong(KEY_COUNTS_ADDRESS+i*4, fezui_keyinitcounts+i);
             fezui_keytotalcounts[i]=fezui_keyinitcounts[i];

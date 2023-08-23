@@ -19,16 +19,12 @@ extern int16_t ADC1_Values[64];
 extern int16_t ADC2_Values[64];
 extern int16_t ADC3_Values[64];
 extern int16_t ADC4_Values[64];
-extern int16_t ADC_Value_List[KEY_NUM];
+extern int16_t ADC_Value_List[ADVANCED_KEY_NUM];
 
-extern float ADC_Sums[KEY_NUM];
-extern float ADC_Averages[KEY_NUM];
+extern float ADC_Sums[ADVANCED_KEY_NUM];
+extern float ADC_Averages[ADVANCED_KEY_NUM];
 
-extern float Analog_Values[KEY_NUM];
-
-extern lefl_advanced_key_t Keyboard_AdvancedKeys[KEY_NUM];
-
-extern bool eeprom_buzy;
+extern float Analog_Values[ADVANCED_KEY_NUM];
 
 void Analog_Scan();
 void Analog_Init();

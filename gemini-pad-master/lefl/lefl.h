@@ -13,15 +13,10 @@ extern "C" {
 #include "stdint.h"
 #include "stddef.h"
 #include "stdbool.h"
+#include "string.h"
 #include "math.h"
+#include "lefl_macro.h"
 
-#define LAMBDA(return_type, function_body) \
-({ \
-      return_type $this function_body \
-          $this; \
-})
-
-#define ROUND(x) ((size_t)((x)+0.5))
     /*
      * lefl_cursor.c
      */
@@ -291,6 +286,8 @@ extern "C" {
         uint8_t b;
     } lefl_color_rgb_t;
 
+    typedef lefl_color_rgb_t lefl_color_t;
+
     typedef struct __lefl_color_hsv_t
     {
         uint16_t h;
@@ -300,6 +297,10 @@ extern "C" {
 
     void lefl_rgb_to_hsv(lefl_color_hsv_t *hsv, lefl_color_rgb_t *rgb);
     void lefl_hsv_to_rgb(lefl_color_rgb_t *rgb, lefl_color_hsv_t *hsv);
+    void lefl_color_get_rgb(lefl_color_t*color, lefl_color_rgb_t*rgb);
+    void lefl_color_set_rgb(lefl_color_t*color, lefl_color_rgb_t*rgb);
+    void lefl_color_get_hsv(lefl_color_t*color, lefl_color_hsv_t*hsv);
+    void lefl_color_set_hsv(lefl_color_t*color, lefl_color_hsv_t*hsv);
 #ifdef __cplusplus
 }
 #endif

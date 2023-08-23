@@ -9,7 +9,7 @@
 #define RGB_H_
 
 #include "lefl.h"
-#include "keyboard.h"
+#include "fezui_var.h"
 
 #define RGB_NUM                 (ADVANCED_KEY_NUM+1)
 #define ONE_PULSE               (61)
@@ -20,7 +20,7 @@
 
 #define RGB_Start() HAL_TIM_PWM_Start_DMA(&htim8,TIM_CHANNEL_3,RGB_Buffer,RGB_BUFFER_LENGTH);
 
-#define USE_RGB
+//#define USE_RGB
 //#define RGB_Start() HAL_TIMEx_PWMN_Start_DMA(&htim8,TIM_CHANNEL_3,RGB_buffer,RGB_BUFFER_LENGTH);
 
 typedef enum __rgb_mode_t
@@ -65,7 +65,6 @@ extern uint32_t RGB_Buffer[RGB_BUFFER_LENGTH];
 extern lefl_color_rgb_t RGB_Colors[RGB_NUM];
 extern rgb_individual_config_t RGB_Configs[RGB_NUM];
 extern rgb_global_config_t RGB_GlobalConfig;
-extern uint8_t RGB_TargetConfig;
 
 #ifdef USE_RGB
 void RGB_Init();

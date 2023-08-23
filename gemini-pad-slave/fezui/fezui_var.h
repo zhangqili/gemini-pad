@@ -13,15 +13,15 @@ extern bool eeprom_enable;
 extern const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m");
 extern fezui_t fezui;
 extern uint8_t key_triggered_count;
-extern uint8_t key_buffer[KEY_NUM];
+extern uint8_t key_buffer[ADVANCED_KEY_NUM+KEY_NUM];
 
-extern lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
-extern lefl_key_t Keyboard_Keys[KEY_NUM-MAIN_KEY_NUM];
+extern lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];
+extern lefl_key_t Keyboard_Keys[KEY_NUM];
 
-extern uint16_t Keyboard_Advanced_SHIFT_IDs[MAIN_KEY_NUM];
-extern uint16_t Keyboard_SHIFT_IDs[KEY_NUM-MAIN_KEY_NUM];
-extern uint16_t Keyboard_Advanced_ALPHA_IDs[MAIN_KEY_NUM];
-extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM-MAIN_KEY_NUM];
+extern uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
+extern uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
+extern uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
+extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
 
 #define KEY_SHIFT               Keyboard_Keys[0]
 #define KEY_ALPHA               Keyboard_Keys[1]
@@ -44,8 +44,8 @@ extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM-MAIN_KEY_NUM];
 #define KEY_WHEEL_CLOCKWISE_INDEX     6
 #define KEY_WHEEL_ANTICLOCKWISE_INDEX 7
 
-extern uint32_t fezui_keytotalcounts[MAIN_KEY_NUM];
-extern uint32_t fezui_keyinitcounts[MAIN_KEY_NUM];
+extern uint32_t fezui_keytotalcounts[ADVANCED_KEY_NUM];
+extern uint32_t fezui_keyinitcounts[ADVANCED_KEY_NUM];
 extern uint32_t fezui_fps;
 extern uint8_t fezui_kps;
 extern uint8_t KPS_history_max;

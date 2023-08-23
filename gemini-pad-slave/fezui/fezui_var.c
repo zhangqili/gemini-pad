@@ -16,18 +16,18 @@ fezui_t fezui =
 
 bool eeprom_enable = true;
 uint8_t key_triggered_count = 0;
-uint8_t key_buffer[KEY_NUM] = {0};
+uint8_t key_buffer[ADVANCED_KEY_NUM+KEY_NUM] = {0};
 uint8_t cmd_buffer = 0;
 
-lefl_advanced_key_t Keyboard_AdvancedKeys[MAIN_KEY_NUM];
-lefl_key_t Keyboard_Keys[KEY_NUM-MAIN_KEY_NUM];
-uint16_t Keyboard_Advanced_SHIFT_IDs[MAIN_KEY_NUM];
-uint16_t Keyboard_SHIFT_IDs[KEY_NUM-MAIN_KEY_NUM];
-uint16_t Keyboard_Advanced_ALPHA_IDs[MAIN_KEY_NUM];
-uint16_t Keyboard_ALPHA_IDs[KEY_NUM-MAIN_KEY_NUM];
+lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];
+lefl_key_t Keyboard_Keys[KEY_NUM];
+uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
+uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
+uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
+uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
 
-uint32_t fezui_keytotalcounts[MAIN_KEY_NUM]={0};
-uint32_t fezui_keyinitcounts[MAIN_KEY_NUM]={0};
+uint32_t fezui_keytotalcounts[ADVANCED_KEY_NUM]={0};
+uint32_t fezui_keyinitcounts[ADVANCED_KEY_NUM]={0};
 
 lefl_loop_array_t KPS_history;
 lefl_array_elm_t KPS_history_data[KPS_HISTORY_LENGTH];

@@ -10,6 +10,7 @@
 #include "analog.h"
 #include "string.h"
 #include "lefl.h"
+#include "rgb.h"
 
 COM_CREATE(USART1)
 
@@ -65,7 +66,7 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG2_RAW,Keyboard_AdvancedKeys[1].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
-    Communication_Add8(USART1, PROTOCOL_DEBUG,((Keyboard_Advanced_SHIFT_IDs[2]) & 0xFF));
+    Communication_Add8(USART1, PROTOCOL_DEBUG,ADC_Conversion_Count);
 
     //Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);
@@ -76,46 +77,116 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
 {
     if(RESET != __HAL_UART_GET_FLAG(huart, UART_FLAG_IDLE))
     {
-      __HAL_UART_CLEAR_IDLEFLAG(huart);
-      HAL_UART_DMAStop(huart);
+        __HAL_UART_CLEAR_IDLEFLAG(huart);
+        HAL_UART_DMAStop(huart);
 
-      if(huart->Instance==USART1)
-      {
-          USART1_RX_Length = BUFFER_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
-          //if(USART1_RX_Buffer[0]==1&&USART1_RX_Buffer[1]==2&&USART1_RX_Buffer[USART1_RX_Length-2]==3&&USART1_RX_Buffer[USART1_RX_Length-1]==4)
-          if(USART1_RX_Buffer[USART1_RX_Length-1]==USART1_RX_Length)
-          {
-              for(uint8_t i = 0;i<USART1_RX_Length-1;)
-              {
-                  switch(USART1_RX_Buffer[i])
-                  {
-                      case PROTOCOL_CMD:
-                          switch (USART1_RX_Buffer[i+1])
-                          {
-                              case CMD_FLAG_CLEAR:
-                                  Keyboard_SHIFT_Flag=false;
-                                  Keyboard_ALPHA_Flag=false;
-                                  break;
-                              case CMD_REPORT_START:
-                                  sendreport_ready=true;
-                                  break;
-                              case CMD_REPORT_STOP:
-                                  sendreport=false;
-                                  break;
-                              default:
-                                  cmd_buffer=USART1_RX_Buffer[i+1];
-                                  break;
-                          }
-                          i+=2;
-                          break;
-                      default:
-                          i+=2;
-                          break;
-                  }
-              }
-          }
-          HAL_UART_Receive_DMA(huart, USART1_RX_Buffer, BUFFER_LENGTH);
-      }
+        if(huart->Instance==USART1)
+        {
+            USART1_RX_Length = BUFFER_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
+            //if(USART1_RX_Buffer[0]==1&&USART1_RX_Buffer[1]==2&&USART1_RX_Buffer[USART1_RX_Length-2]==3&&USART1_RX_Buffer[USART1_RX_Length-1]==4)
+            if(USART1_RX_Buffer[USART1_RX_Length-1]==USART1_RX_Length)
+            {
+                for(uint8_t i = 0;i<USART1_RX_Length-1;)
+                {
+                    switch(USART1_RX_Buffer[i])
+                    {
+                        case PROTOCOL_CMD:
+                            switch (USART1_RX_Buffer[i+1])
+                            {
+                                case CMD_FLAG_CLEAR:
+                                    Keyboard_SHIFT_Flag=false;
+                                    Keyboard_ALPHA_Flag=false;
+                                    break;
+                                case CMD_REPORT_START:
+                                    sendreport_ready=true;
+                                    break;
+                                case CMD_REPORT_STOP:
+                                    sendreport=false;
+                                    break;
+                                default:
+                                    cmd_buffer=USART1_RX_Buffer[i+1];
+                                    break;
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_SET_TARGET_RGB:
+                            RGB_TargetConfig=USART1_RX_Buffer[i+1];
+                            i+=2;
+                            break;
+                        case PROTOCOL_RGB_MODE:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].mode=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.mode=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_COLOR_RGB_R:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].rgb.r=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.rgb.r=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_COLOR_RGB_G:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].rgb.g=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.rgb.g=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_COLOR_RGB_B:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].rgb.b=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.rgb.b=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_COLOR_HSV_S:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].hsv.s=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.hsv.s=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        case PROTOCOL_COLOR_HSV_V:
+                            if(RGB_TargetConfig)
+                            {
+                                RGB_Configs[RGB_TargetConfig-1].hsv.v=USART1_RX_Buffer[i+1];
+                            }
+                            else
+                            {
+                                RGB_GlobalConfig.hsv.v=USART1_RX_Buffer[i+1];
+                            }
+                            i+=2;
+                            break;
+                        default:
+                            i+=2;
+                            break;
+                    }
+                }
+            }
+            HAL_UART_Receive_DMA(huart, USART1_RX_Buffer, BUFFER_LENGTH);
+        }
     }
 }
 

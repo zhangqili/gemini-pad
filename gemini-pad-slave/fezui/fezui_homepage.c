@@ -156,6 +156,8 @@ void homepage_draw(void *page)
     u8g2_DrawVLine(&(fezui.u8g2),96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
 
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
+    sprintf(fezui_buffer,"%#x",fezui_debug);
+    u8g2_DrawStr(&(fezui.u8g2),64,10,fezui_buffer);
     if(KEY_SHIFT.state)
     {
         u8g2_DrawBox(&(fezui.u8g2), 65 , 1 ,MARGIN_UP-2, MARGIN_UP-2);

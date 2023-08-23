@@ -9,6 +9,7 @@
 
 uint8_t fram_buf[16];
 uint16_t fram_address;
+bool eeprom_buzy = false;
 
 uint8_t MB85RC16_ReadArray (uint16_t framAddr, uint8_t length, uint8_t value[])
 {

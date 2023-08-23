@@ -16,8 +16,8 @@
 #define KPS_HISTORY_LENGTH    65
 //#define TILE_LENGTH         56
 #define SCREEN_REST_TIME      60
-#define KEY_NUM               12
-#define MAIN_KEY_NUM          4
+#define ADVANCED_KEY_NUM      4
+#define KEY_NUM               8
 #define ITEM_HEIGHT           14
 #define HISTORY_LENGTH        129
 
@@ -110,6 +110,12 @@ void calibrationpage_init();
 void calibrationpage_logic(void *page);
 void calibrationpage_draw(void *page);
 void calibrationpage_load(void *page);
+
+extern lefl_page_t rgbconfigpage;
+void rgbconfigpage_init();
+void rgbconfigpage_logic(void *page);
+void rgbconfigpage_draw(void *page);
+void rgbconfigpage_load(void *page);
 
 extern lefl_page_t statisticpage;
 void statisticpage_logic(void *page);

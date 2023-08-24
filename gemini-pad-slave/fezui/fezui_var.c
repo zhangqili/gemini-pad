@@ -43,6 +43,8 @@ float fezui_debug_float;
 uint32_t fezui_run_time;
 uint32_t fezui_temp_raw;
 
+uint8_t current_key_index;
+uint8_t current_function_key;
 
 /*
   Fontname: fez_font_6x10

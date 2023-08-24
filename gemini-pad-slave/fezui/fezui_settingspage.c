@@ -6,9 +6,17 @@
  */
 #include "fezui.h"
 #include "fezui_var.h"
+#include "communication.h"
+#include "main.h"
+#include "tim.h"
 lefl_menu_t settingsmenu;
-const char* settingsmenu_items[] = {"Keys Configuration","RGB","Calibration","About"};
+const char* settingsmenu_items[] = {"Keys Configuration","RGB","Calibration","Display", "Debug", "Reboot", "About"};
 lefl_page_t settingspage={settingspage_logic,settingspage_draw,settingspage_load};
+
+#define ROW_HEIGHT 16
+
+static fezui_scrollview_t scrollview={.content_height=ROW_HEIGHT*7};
+static float target_ordinate=0;
 
 void settingspage_init()
 {
@@ -17,18 +25,30 @@ void settingspage_init()
 
 void settingspage_logic(void *page)
 {
-    lefl_cursor_set(&target_cursor, 3,
-            settingsmenu.selected_index * ITEM_HEIGHT + 3,
-            strlen(settingsmenu.items[settingsmenu.selected_index]) * 6 + 6,
-            ITEM_HEIGHT);
+    lefl_cursor_set(
+        &target_cursor ,
+        4,
+        settingsmenu.selected_index*ROW_HEIGHT - (u8g2_int_t)scrollview.ordinate,
+        strlen(settingsmenu.items[settingsmenu.selected_index])*6+3,
+        ROW_HEIGHT);
+    if((settingsmenu.selected_index+1)*ROW_HEIGHT-target_ordinate>64)
+    {
+        target_ordinate = (settingsmenu.selected_index+1)*ROW_HEIGHT-64;
+    }
+    if((settingsmenu.selected_index)*ROW_HEIGHT<target_ordinate)
+    {
+        target_ordinate = (settingsmenu.selected_index)*ROW_HEIGHT;
+    }
+    lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
 }
 void settingspage_draw(void *page)
 {
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_6x13_tf);
     for(uint8_t i=0;i<settingsmenu.len;i++)
     {
-        u8g2_DrawStr(&(fezui.u8g2),5,ITEM_HEIGHT*(i+1),settingsmenu.items[i]);
+        u8g2_DrawStr(&(fezui.u8g2),5,ROW_HEIGHT*(i+1) - 3 - (u8g2_int_t)scrollview.ordinate,settingsmenu.items[i]);
     }
+    fezui_draw_scrollview(&fezui, 0, 0, WIDTH, HEIGHT, &scrollview);
     fezui_draw_cursor(&fezui, &cursor);
 }
 void settings_menu_cb(void *menu)
@@ -46,6 +66,22 @@ void settings_menu_cb(void *menu)
         lefl_link_frame_navigate(&mainframe, &calibrationpage);
         break;
     case 3:
+        //lefl_link_frame_navigate(&mainframe, &aboutpage);
+        break;
+    case 4:
+        lefl_link_frame_navigate(&mainframe, &debugpage);
+        break;
+    case 5:
+        Communication_Add8(USART1,PROTOCOL_CMD,CMD_RESET);
+        USART1_TX_Buffer[USART1_TX_Length]=(USART1_TX_Length+1);
+        USART1_TX_Length++;
+        HAL_UART_Transmit(&huart1,USART1_TX_Buffer,USART1_TX_Length,0xFF);
+        USART1_TX_Length=0;
+        __set_FAULTMASK(1);
+        HAL_NVIC_SystemReset();
+        //lefl_link_frame_navigate(&mainframe, &debugpage);
+        break;
+    case 6:
         lefl_link_frame_navigate(&mainframe, &aboutpage);
         break;
     default:

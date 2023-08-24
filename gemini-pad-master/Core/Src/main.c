@@ -151,7 +151,6 @@ int main(void)
         {
             case CMD_CALIBRATION_START:
                 memset(Keyboard_ReportBuffer,0,sizeof(Keyboard_ReportBuffer)/sizeof(uint8_t));
-                USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
                 HAL_TIM_Base_Stop_IT(&htim7);
                 Analog_Init();
                 HAL_TIM_Base_Start_IT(&htim7);

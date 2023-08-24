@@ -31,6 +31,7 @@ uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
 uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
 uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
 uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
+uint8_t Keyboard_TargetAdvancedKey;
 bool Keyboard_SHIFT_Flag=false;
 bool Keyboard_ALPHA_Flag=false;
 extern bool sendreport;

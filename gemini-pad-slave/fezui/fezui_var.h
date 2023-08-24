@@ -60,6 +60,8 @@ extern uint8_t fezui_rest_countdown;
 extern uint8_t fezui_debug;
 extern float fezui_debug_float;
 extern uint8_t cmd_buffer;
+extern uint8_t current_key_index;
+extern uint8_t current_function_key;
 
 extern uint32_t fezui_run_time;
 extern uint32_t fezui_temp_raw;

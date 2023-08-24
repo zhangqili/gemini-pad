@@ -41,6 +41,7 @@ extern uint16_t Keyboard_Advanced_SHIFT_IDs[ADVANCED_KEY_NUM];
 extern uint16_t Keyboard_SHIFT_IDs[KEY_NUM];
 extern uint16_t Keyboard_Advanced_ALPHA_IDs[ADVANCED_KEY_NUM];
 extern uint16_t Keyboard_ALPHA_IDs[KEY_NUM];
+extern uint8_t Keyboard_TargetAdvancedKey;
 
 extern lefl_key_t Keyboard_Keys[KEY_NUM];
 extern lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];

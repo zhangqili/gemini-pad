@@ -11,6 +11,7 @@
 #include "string.h"
 #include "lefl.h"
 #include "rgb.h"
+#include "keyboard.h"
 
 COM_CREATE(USART1)
 
@@ -21,6 +22,102 @@ extern bool sendreport_ready;
 extern uint8_t cmd_buffer;
 
 extern DMA_HandleTypeDef hdma_usart1_rx;
+
+void Communication_Pack_Advanced_Key(uint8_t index,lefl_advanced_key_t *k)
+{
+    Communication_Add8(USART1,PROTOCOL_ADVANCED_KEY_SET,index);
+    Communication_Add8(USART1,PROTOCOL_ADVANCED_KEY_MODE,k->mode);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_TRIGGER_DISTANCE,k->trigger_distance);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_RELEASE_DISTANCE,k->release_distance);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_SCHMITT_PARAMETER,k->schmitt_parameter);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_TRIGGER_SPEED,k->trigger_speed);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_RELEASE_SPEED,k->release_speed);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_UPPER_DEADZONE,k->upper_deadzone);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_LOWER_DEADZONE,k->lower_deadzone);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_UPPER_BOUND,k->upper_bound);
+    Communication_Add32(USART1,PROTOCOL_ADVANCED_KEY_LOWER_BOUND,k->lower_bound);
+    if(USART1_TX_Length<64)USART1_TX_Length+=(2*2+5*9);
+}
+
+void Communication_Unpack_Advanced_Key(uint8_t i)
+{
+    uint8_t index = USART1_RX_Buffer[i+1];
+    i+=2;
+    Keyboard_AdvancedKeys[index].mode = USART1_RX_Buffer[i+1];
+    i+=2;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].trigger_distance),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].release_distance),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].schmitt_parameter),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].trigger_speed),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].release_speed),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].upper_deadzone),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].lower_deadzone),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].upper_bound),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    memcpy((uint8_t*)&(Keyboard_AdvancedKeys[index].lower_bound),USART1_RX_Buffer+i+1,4);
+    i+=5;
+    lefl_advanced_key_set_range(Keyboard_AdvancedKeys+index, Keyboard_AdvancedKeys[index].upper_bound, Keyboard_AdvancedKeys[index].lower_bound);
+    lefl_advanced_key_set_deadzone(Keyboard_AdvancedKeys+index, Keyboard_AdvancedKeys[index].upper_deadzone, Keyboard_AdvancedKeys[index].lower_deadzone);
+}
+
+void Communication_Pack_Key(uint8_t index,uint8_t function_key,uint16_t id)
+{
+    USART1_TX_Buffer[USART1_TX_Length]=(PROTOCOL_TARGET_KEY_AND_BINDING);
+    USART1_TX_Buffer[USART1_TX_Length+1]=index;
+    USART1_TX_Buffer[USART1_TX_Length+2]=index;
+    memcpy(USART1_TX_Buffer+3,(uint8_t*)&id,2);
+    if(USART1_TX_Length<64)USART1_TX_Length+=5;
+}
+
+void Communication_Unpack_Key(uint8_t i)
+{
+    uint8_t index = USART1_RX_Buffer[i+1];
+    uint8_t function_key = USART1_RX_Buffer[i+2];
+    uint16_t id;
+    memcpy((uint8_t*)&id,&USART1_RX_Buffer[i+3],2);
+    switch (function_key)
+    {
+        case 0:
+            if(index<ADVANCED_KEY_NUM)
+            {
+                Keyboard_AdvancedKeys[index].key.id=id;
+            }
+            else
+            {
+                Keyboard_Keys[index-ADVANCED_KEY_NUM].id=id;
+            }
+            break;
+        case 1:
+            if(index<ADVANCED_KEY_NUM)
+            {
+                Keyboard_Advanced_SHIFT_IDs[index]=id;
+            }
+            else
+            {
+                Keyboard_SHIFT_IDs[index-ADVANCED_KEY_NUM]=id;
+            }
+            break;
+        case 2:
+            if(index<ADVANCED_KEY_NUM)
+            {
+                Keyboard_Advanced_ALPHA_IDs[index]=id;
+            }
+            else
+            {
+                Keyboard_ALPHA_IDs[index-ADVANCED_KEY_NUM]=id;
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 void Communication_Pack()
 {
@@ -66,7 +163,7 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG2_RAW,Keyboard_AdvancedKeys[1].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
-    Communication_Add8(USART1, PROTOCOL_DEBUG,ADC_Conversion_Count);
+    Communication_Add8(USART1, PROTOCOL_DEBUG, (sendreport_ready<<4)|sendreport);
 
     //Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);
@@ -102,6 +199,11 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                                     break;
                                 case CMD_REPORT_STOP:
                                     sendreport=false;
+                                    sendreport_ready=false;
+                                    break;
+                                case CMD_RESET:
+                                    __set_FAULTMASK(1);
+                                    HAL_NVIC_SystemReset();
                                     break;
                                 default:
                                     cmd_buffer=USART1_RX_Buffer[i+1];
@@ -190,6 +292,57 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                             }
                             i+=5;
                             break;
+                        case PROTOCOL_TARGET_KEY_AND_BINDING:
+                            Communication_Unpack_Key(i);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_SET:
+                            Keyboard_TargetAdvancedKey = USART1_RX_Buffer[i+1];
+                            i+=2;
+                        case PROTOCOL_ADVANCED_KEY_MODE:
+                            Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].mode = USART1_RX_Buffer[i+1];
+                            i+=2;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_TRIGGER_DISTANCE:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].trigger_distance),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_RELEASE_DISTANCE:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].release_distance),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_SCHMITT_PARAMETER:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].schmitt_parameter),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_TRIGGER_SPEED:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].trigger_speed),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_RELEASE_SPEED:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].release_speed),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_UPPER_DEADZONE:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].upper_deadzone),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_LOWER_DEADZONE:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].lower_deadzone),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_UPPER_BOUND:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].upper_bound),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_LOWER_BOUND:
+                            memcpy((uint8_t*)&(Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].lower_bound),USART1_RX_Buffer+i+1,4);
+                            i+=5;
+                            break;
+                        case PROTOCOL_ADVANCED_KEY_REFRESH:
+                            lefl_advanced_key_set_range(Keyboard_AdvancedKeys+Keyboard_TargetAdvancedKey, Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].upper_bound, Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].lower_bound);
+                            lefl_advanced_key_set_deadzone(Keyboard_AdvancedKeys+Keyboard_TargetAdvancedKey, Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].upper_deadzone, Keyboard_AdvancedKeys[Keyboard_TargetAdvancedKey].lower_deadzone);
+                            i+=2;
                         default:
                             i+=2;
                             break;

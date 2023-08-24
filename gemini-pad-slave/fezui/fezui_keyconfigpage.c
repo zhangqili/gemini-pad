@@ -65,7 +65,7 @@ void keyconfigpage_load(void *page)
     lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         Keyboard_ID_Save();
-        Communication_Add8(USART1, PROTOCOL_CMD, CMD_ID_READ);
+        Communication_Pack_Key(current_key_index, current_function_key, *current_target_id);
         Communication_USART1_Transmit();
         lefl_link_frame_go_back(&mainframe);
     }));

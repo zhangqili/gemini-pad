@@ -92,6 +92,42 @@ void knobconfigpage_draw(void *page)
     fezui_draw_cursor(&fezui, &cursor);
 }
 
+void go_back_cb(void*k)
+{
+    Keyboard_ID_Save();
+    switch (current_function_key)
+    {
+        case 0:
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_INDEX, current_function_key, KEY_KNOB.id);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_CLOCKWISE_INDEX, current_function_key, KEY_KNOB_CLOCKWISE.id);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_ANTICLOCKWISE_INDEX, current_function_key, KEY_KNOB_ANTICLOCKWISE.id);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_INDEX, current_function_key, KEY_WHEEL.id);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_CLOCKWISE_INDEX, current_function_key, KEY_WHEEL_CLOCKWISE.id);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_ANTICLOCKWISE_INDEX, current_function_key, KEY_WHEEL_ANTICLOCKWISE.id);
+            break;
+        case 1:
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_INDEX, current_function_key, Keyboard_SHIFT_IDs[KEY_KNOB_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_CLOCKWISE_INDEX, current_function_key,  Keyboard_SHIFT_IDs[KEY_KNOB_CLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_ANTICLOCKWISE_INDEX, current_function_key,  Keyboard_SHIFT_IDs[KEY_KNOB_ANTICLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_INDEX, current_function_key, Keyboard_SHIFT_IDs[KEY_WHEEL_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_CLOCKWISE_INDEX, current_function_key, Keyboard_SHIFT_IDs[KEY_WHEEL_CLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_ANTICLOCKWISE_INDEX, current_function_key, Keyboard_SHIFT_IDs[KEY_WHEEL_ANTICLOCKWISE_INDEX]);
+            break;
+        case 2:
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_INDEX, current_function_key, Keyboard_ALPHA_IDs[KEY_KNOB_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_CLOCKWISE_INDEX, current_function_key,  Keyboard_ALPHA_IDs[KEY_KNOB_CLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_KNOB_ANTICLOCKWISE_INDEX, current_function_key,  Keyboard_ALPHA_IDs[KEY_KNOB_ANTICLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_INDEX, current_function_key, Keyboard_ALPHA_IDs[KEY_WHEEL_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_CLOCKWISE_INDEX, current_function_key, Keyboard_ALPHA_IDs[KEY_WHEEL_CLOCKWISE_INDEX]);
+            Communication_Pack_Key(ADVANCED_KEY_NUM+KEY_WHEEL_ANTICLOCKWISE_INDEX, current_function_key, Keyboard_ALPHA_IDs[KEY_WHEEL_ANTICLOCKWISE_INDEX]);
+            break;
+        default:
+            break;
+    }
+    Communication_USART1_Transmit();
+    lefl_link_frame_go_back(&mainframe);
+}
+
 void knobconfigpage_load(void *page)
 {
     keyid_prase(*current_target_knob_press_id, press_binding_text, 128);
@@ -103,13 +139,7 @@ void knobconfigpage_load(void *page)
     keyid_prase(*current_target_knob_anticlockwise_id, anticlockwise_binding_text, 128);
     fezui_scrolling_text_init(&anticlockwise_scrolling_text, 78, 0.2, u8g2_font_4x6_mr, anticlockwise_binding_text);
 
-    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
-    {
-        Keyboard_ID_Save();
-        Communication_Add8(USART1, PROTOCOL_CMD, CMD_ID_READ);
-        Communication_USART1_Transmit();
-        lefl_link_frame_go_back(&mainframe);
-    }));
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, go_back_cb);
     lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k)
     {
         lefl_menu_click(&knobconfig_menu);

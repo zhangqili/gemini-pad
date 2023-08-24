@@ -50,7 +50,7 @@ void RGB_Update()
     switch (RGB_GlobalConfig.mode)
     {
         case RGB_GLOBAL_MODE_INDIVIDUAL:
-            for (uint8_t i = 0; i < RGB_NUM; i++)
+            for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 switch (RGB_Configs[i].mode)
                 {
@@ -70,6 +70,21 @@ void RGB_Update()
                         RGB_Colors[i].g=RGB_Configs[i].rgb.g;
                         RGB_Colors[i].b=RGB_Configs[i].rgb.b;
                         break;
+                    case RGB_MODE_CYCLE:
+                        RGB_Configs[i].argument+=RGB_Configs[i].speed;
+                        if(RGB_Configs[i].argument>359.9f)
+                        {
+                            RGB_Configs[i].argument=0;
+                        }
+                        if(RGB_Configs[i].argument<0)
+                        {
+                            RGB_Configs[i].argument=360;
+                        }
+                        temp_hsv.s = RGB_Configs[i].hsv.s;
+                        temp_hsv.v = RGB_Configs[i].hsv.v;
+                        temp_hsv.h = (RGB_Configs[i].hsv.h+(uint16_t)(RGB_Configs[i].argument))%360;
+                        lefl_color_set_hsv(RGB_Colors + i, &temp_hsv);
+                        break;
                     default:
                         break;
                 }
@@ -86,14 +101,14 @@ void RGB_Update()
             {
                 RGB_GlobalConfig.argument=360;
             }
-            for (uint8_t i = 0; i < RGB_NUM; i++)
+            for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 temp_hsv.h = ((uint16_t)RGB_GlobalConfig.argument + i*15)%360;
                 lefl_color_set_hsv(RGB_Colors+i, &temp_hsv);
             }
             break;
         case RGB_GLOBAL_MODE_OFF:
-            for (uint8_t i = 0; i < 4; i++)
+            for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 RGB_Colors[i].r=0;
                 RGB_Colors[i].g=0;
@@ -101,13 +116,13 @@ void RGB_Update()
             }
             break;
         case RGB_GLOBAL_MODE_RIPPLE:
-            for (uint8_t i = 0; i < 4; i++)
+            for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 RGB_Colors[i].r=0;
                 RGB_Colors[i].g=0;
                 RGB_Colors[i].b=0;
             }
-            for (int8_t i = 0; i < 4; i++)
+            for (int8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 lefl_loop_queue_foreach(RGB_Argument_Queues+i,j)
                 {
@@ -117,7 +132,7 @@ void RGB_Update()
                         lefl_loop_queue_dequeue(RGB_Argument_Queues+i);
                     }
                 }
-                for (int8_t j = 0; j < 4; j++)
+                for (int8_t j = 0; j < ADVANCED_KEY_NUM; j++)
                 {
                     lefl_loop_queue_foreach(RGB_Argument_Queues+i,k)
                     {
@@ -158,7 +173,7 @@ void RGB_Update()
             }
             break;
         default:
-            for (uint8_t i = 0; i < 4; i++)
+            for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
             {
                 RGB_Colors[i].r=0;
                 RGB_Colors[i].g=0;

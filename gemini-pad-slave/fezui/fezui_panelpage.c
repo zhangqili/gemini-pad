@@ -152,9 +152,11 @@ static void wheel_cb(void *k)
 {
     if(SHIFT_STATE)
     {
+        current_function_key = 1;
         if (selection<4)
         {
             current_target_id = &Keyboard_Advanced_SHIFT_IDs[selection];
+            current_key_index = selection;
             sprintf(current_key_name,"KEY%d S",selection+1);
             lefl_link_frame_navigate(&mainframe,&keyconfigpage);
         }
@@ -178,9 +180,11 @@ static void wheel_cb(void *k)
     }
     if(ALPHA_STATE)
     {
+        current_function_key = 2;
         if (selection<4)
         {
             current_target_id = &Keyboard_Advanced_ALPHA_IDs[selection];
+            current_key_index = selection;
             sprintf(current_key_name,"KEY%d A",selection+1);
             lefl_link_frame_navigate(&mainframe,&keyconfigpage);
         }
@@ -202,9 +206,11 @@ static void wheel_cb(void *k)
         }
         return;
     }
+    current_function_key = 0;
     if (selection<4)
     {
         current_config_advanced_key = Keyboard_AdvancedKeys + selection;
+        current_key_index = selection;
         lefl_link_frame_navigate(&mainframe,&advancedconfigpage);
     }
     else if(selection==4)

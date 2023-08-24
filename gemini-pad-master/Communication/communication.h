@@ -8,6 +8,7 @@
 #ifndef COMMUNICATION_H_
 #define COMMUNICATION_H_
 #include "stdint.h"
+#include "lefl.h"
 
 #define BUFFER_LENGTH 64
 
@@ -70,6 +71,7 @@ typedef enum
     PROTOCOL_CMD,
     //0x40
     PROTOCOL_TARGET_KEY_AND_BINDING=0x40,
+    PROTOCOL_ADVANCED_KEY_SET,
     PROTOCOL_ADVANCED_KEY_MODE,
     PROTOCOL_ADVANCED_KEY_TRIGGER_DISTANCE,
     PROTOCOL_ADVANCED_KEY_RELEASE_DISTANCE,
@@ -81,6 +83,7 @@ typedef enum
     PROTOCOL_ADVANCED_KEY_RANGE,
     PROTOCOL_ADVANCED_KEY_UPPER_BOUND,
     PROTOCOL_ADVANCED_KEY_LOWER_BOUND,
+    PROTOCOL_ADVANCED_KEY_REFRESH,
     //0x50
     PROTOCOL_SET_TARGET_RGB=0x50,
     PROTOCOL_RGB_MODE,
@@ -117,6 +120,8 @@ typedef enum
     CMD_EEPROM_ENABLE,
     CMD_NA_0E,
     CMD_NA_0F,
+    //
+    CMD_RESET=0xFF,
 } USART_CMD;
 
 
@@ -125,6 +130,10 @@ COM_DECLARE(USART1)
 extern uint16_t USART1_TX_Count;
 extern uint16_t USART1_RX_Count;
 
+void Communication_Pack_Advanced_Key(uint8_t index,lefl_advanced_key_t *k);
+void Communication_Unpack_Advanced_Key(uint8_t i);
+void Communication_Pack_Key(uint8_t index,uint8_t function_key,uint16_t id);
+void Communication_Unpack_Key(uint8_t i);
 void Communication_Pack();
 void Communication_Unpack(UART_HandleTypeDef *huart);
 

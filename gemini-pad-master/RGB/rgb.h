@@ -26,7 +26,7 @@
 typedef enum __rgb_mode_t
 {
     RGB_MODE_STATIC,
-    RGB_MODE_CYClE,
+    RGB_MODE_CYCLE,
     RGB_MODE_REACT_LINEAR,
     RGB_MODE_REACT_TRIGGER,
 } rgb_mode_t;

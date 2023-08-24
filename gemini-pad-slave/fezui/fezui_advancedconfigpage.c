@@ -443,7 +443,7 @@ void advancedconfigpage_load(void *page)
         else
         {
             Analog_Save();
-            Communication_Add8(USART1, PROTOCOL_CMD, CMD_ANALOG_READ);
+            Communication_Pack_Key(current_key_index, current_function_key, current_config_advanced_key->key.id);
             Communication_USART1_Transmit();
             lefl_link_frame_go_back(&mainframe);
         }

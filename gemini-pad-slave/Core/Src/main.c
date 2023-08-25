@@ -157,6 +157,7 @@ int main(void)
     }
     else
     {
+
     }
     u8g2_SetDrawColor(&(fezui.u8g2),1);
     //u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
@@ -165,17 +166,18 @@ int main(void)
     lefl_link_frame_draw(&mainframe);
     //u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
     //u8g2_DrawStr(&(fezui.u8g2),64,10,comstr);
-#ifdef _SCREEN_REST_ON
-    if(fezui.invert)
+    if(fezui.screensaver_timeout)
     {
-        fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,1);
+        if(fezui.invert)
+        {
+            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,1);
+        }
+        else
+        {
+            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,0);
+        }
+        u8g2_SetPowerSave(&(fezui.u8g2),!fezui.screensaver_countdown);
     }
-    else
-    {
-        fezui_veil(&(fezui),0,0,128,64,7-fezui_rest_countdown,0);
-    }
-    u8g2_SetPowerSave(&(fezui.u8g2),!fezui_rest_countdown);
-#endif
 #ifdef _FPS_ON
     u8g2_SetDrawColor(&(fezui.u8g2), 2);
     u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
@@ -250,8 +252,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
         sprintf(fpsstr, "%3ld", fezui_fps);
         sprintf(comstr, "%4ld", USART1_RX_Count);
-        if (fezui_rest_countdown)
-            fezui_rest_countdown--;
+        if (fezui.screensaver_countdown)
+            fezui.screensaver_countdown--;
         lefl_loop_array_push_back(&KPS_history, UI_KPSMaximumPerSecond);
         if(USART1_RX_Count<500)
         {

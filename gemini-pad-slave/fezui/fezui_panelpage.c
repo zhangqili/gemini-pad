@@ -12,7 +12,7 @@ void panelpage_init()
 
 void panelpage_logic(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor ,
             (32*selection)%128,
             (selection)/4*32,

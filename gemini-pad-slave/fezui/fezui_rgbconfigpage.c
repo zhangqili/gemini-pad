@@ -27,8 +27,8 @@ static const char* rgb_global_mode_items[]={"Off", "Individual", "Wave", "Ripple
 static lefl_color_rgb_t *target_rgb;
 static lefl_color_hsv_t *target_hsv;
 
-static lefl_cursor_t config_cursor;
-static lefl_cursor_t target_config_cursor;
+static fezui_cursor_t config_cursor;
+static fezui_cursor_t target_config_cursor;
 //lefl_menu_t rgb_global_config_menu;
 //static const char* rgb_global_config_menu_items[] = {"Mode", "R", "G", "B", "H", "S", "V", "Speed"};
 
@@ -63,7 +63,7 @@ void rgbconfigpage_init()
 
 void rgbconfigpage_logic(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor,
             0,
             rgb_key_select_menu.selected_index*ROW_HEIGHT,
@@ -75,7 +75,7 @@ void rgbconfigpage_logic(void *page)
         {
             if(rgb_config_menu.selected_index)
             {
-                lefl_cursor_set(
+                fezui_cursor_set(
                         &target_config_cursor,
                         WIDTH-16,
                         rgb_config_menu.selected_index*ROW_HEIGHT,
@@ -86,7 +86,7 @@ void rgbconfigpage_logic(void *page)
             {
                 if(rgb_key_select_menu.selected_index)
                 {
-                    lefl_cursor_set(
+                    fezui_cursor_set(
                             &target_config_cursor,
                             WIDTH - 1 - strlen(rgb_mode_items[RGB_Configs[rgb_key_select_menu.selected_index-1].mode])*5,
                             rgb_config_menu.selected_index*ROW_HEIGHT,
@@ -95,7 +95,7 @@ void rgbconfigpage_logic(void *page)
                 }
                 else
                 {
-                    lefl_cursor_set(
+                    fezui_cursor_set(
                             &target_config_cursor,
                             WIDTH - 1 - strlen(rgb_global_mode_items[RGB_GlobalConfig.mode])*5,
                             rgb_config_menu.selected_index*ROW_HEIGHT,
@@ -107,7 +107,7 @@ void rgbconfigpage_logic(void *page)
         }
         else
         {
-            lefl_cursor_set(
+            fezui_cursor_set(
                     &target_config_cursor,
                     SPERATOR_X,
                     rgb_config_menu.selected_index*ROW_HEIGHT,
@@ -117,14 +117,14 @@ void rgbconfigpage_logic(void *page)
     }
     else
     {
-        lefl_cursor_set(
+        fezui_cursor_set(
                 &target_config_cursor,
                 SPERATOR_X,
-                0,
+                rgb_config_menu.selected_index*ROW_HEIGHT,
                 1,
-                HEIGHT);
+                ROW_HEIGHT);
     }
-    lefl_cursor_move(&config_cursor, &target_config_cursor);
+    fezui_cursor_move(&fezui, &config_cursor, &target_config_cursor);
 }
 
 void rgbconfigpage_draw(void *page)
@@ -232,7 +232,7 @@ void usart_rgb_set()
     Communication_USART1_Transmit();
 }
 
-void key_up_cb(void *k)
+static void key_up_cb(void *k)
 {
     if(key_selected)
     {
@@ -302,7 +302,7 @@ void key_up_cb(void *k)
 }
 
 
-void key_down_cb(void *k)
+static void key_down_cb(void *k)
 {
     if(key_selected)
     {
@@ -373,7 +373,7 @@ void key_down_cb(void *k)
 
 void rgbconfigpage_load(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
             &config_cursor,
             SPERATOR_X,
             0,

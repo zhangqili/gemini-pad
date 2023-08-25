@@ -37,7 +37,7 @@ void menupage_init()
 void menupage_logic(void *page)
 {
     lefl_animation_tick(&menuanimation);
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor ,
             3+(int16_t)menu_offset,
             mainmenu.selected_index*ITEM_HEIGHT+3 ,
@@ -85,7 +85,7 @@ void menupage_load(void *page)
     Communication_USART1_Transmit();
     lefl_animation_begin(&menuanimation);
 
-    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);fezui_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
     lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_click(&mainmenu);}));
     lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, 1);}));
     lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_menu_index_increase(&mainmenu, -1);}));

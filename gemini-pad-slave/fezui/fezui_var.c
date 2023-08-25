@@ -9,10 +9,7 @@
 char fpsstr[8] = {0};
 char comstr[8] = {0};
 
-fezui_t fezui =
-{
-    .invert=1
-};
+fezui_t fezui;
 
 bool eeprom_enable = true;
 uint8_t key_triggered_count = 0;
@@ -37,8 +34,8 @@ uint8_t KPS_history_max=0;
 uint32_t fezui_fps = 0;
 uint8_t fezui_kps = 0;
 uint8_t UI_KPSMaximumPerSecond = 0;
-uint8_t fezui_rest_countdown = SCREEN_REST_TIME;
 uint8_t fezui_debug;
+uint8_t fezui_adc_conversion_count;
 float fezui_debug_float;
 uint32_t fezui_run_time;
 uint32_t fezui_temp_raw;
@@ -62,17 +59,15 @@ const uint8_t fez_font_6x10_m[204] U8G2_FONT_SECTION("fez_font_6x10_m") =
   "\232\61\321\0\0\0\0\4\377\377\0";
 
 
-lefl_link_frame_t mainframe = {
-        .current_page=&homepage
-    };
+lefl_link_frame_t mainframe;
 
 lefl_loop_array_t analog_historys[4];
 lefl_array_elm_t analog_history1_data[HISTORY_LENGTH];
 lefl_array_elm_t analog_history2_data[HISTORY_LENGTH];
 lefl_array_elm_t analog_history3_data[HISTORY_LENGTH];
 lefl_array_elm_t analog_history4_data[HISTORY_LENGTH];
-lefl_cursor_t cursor={0,0,128,64};
-lefl_cursor_t target_cursor={0,0,0,0};
+fezui_cursor_t cursor={0,0,128,64};
+fezui_cursor_t target_cursor={0,0,0,0};
 
 lefl_bit_array_t lines[4];
 lefl_bit_array_unit_t lines1_data[4];

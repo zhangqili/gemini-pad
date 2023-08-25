@@ -29,7 +29,7 @@ void keyconfigpage_init()
 
 void keyconfigpage_logic(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor ,
             0,
             keyconfig_menu.selected_index*ROW_HEIGHT,

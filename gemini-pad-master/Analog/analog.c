@@ -155,7 +155,8 @@ void Analog_Check()
 {
     for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
-        lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+i, ADC_Value_List[i]);
+        if(Keyboard_AdvancedKeys[i].mode!=LEFL_KEY_DIGITAL_MODE)
+            lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+i, ADC_Value_List[i]);
     }
 }
 

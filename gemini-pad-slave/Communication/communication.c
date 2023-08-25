@@ -203,6 +203,10 @@ void Communication_Unpack(UART_HandleTypeDef *huart)
                         memcpy((uint8_t *)&(fezui_debug_float),USART1_RX_Buffer+i+1,4);
                         i+=5;
                         break;
+                    case PROTOCOL_SCAN_COUNT:
+                        fezui_adc_conversion_count = USART1_RX_Buffer[i+1];
+                        i+=2;
+                        break;
                     default:
                         i+=2;
                         break;

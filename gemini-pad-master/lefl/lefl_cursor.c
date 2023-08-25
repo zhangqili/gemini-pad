@@ -3,7 +3,7 @@
  */
 #include "lefl.h"
 
-void lefl_cursor_move(lefl_cursor_t *c,lefl_cursor_t *tc)
+void fezui_cursor_move(fezui_cursor_t *c,fezui_cursor_t *tc)
 {
     lefl_easing_pid(&(c->x),tc->x);
     lefl_easing_pid(&(c->y),tc->y);
@@ -11,7 +11,7 @@ void lefl_cursor_move(lefl_cursor_t *c,lefl_cursor_t *tc)
     lefl_easing_pid(&(c->h),tc->h);
 }
 
-inline void lefl_cursor_set(lefl_cursor_t *c,float x,float y,float w,float h)
+inline void fezui_cursor_set(fezui_cursor_t *c,float x,float y,float w,float h)
 {
     c->x=x;
     c->y=y;

@@ -21,19 +21,19 @@ extern "C" {
      * lefl_cursor.c
      */
 
-    typedef struct __lefl_cursor_t
+    typedef struct __fezui_cursor_t
     {
         float x;
         float y;
         float w;
         float h;
-    } lefl_cursor_t;
+    } fezui_cursor_t;
 
-    extern lefl_cursor_t cursor;
-    extern lefl_cursor_t target_cursor;
+    extern fezui_cursor_t cursor;
+    extern fezui_cursor_t target_cursor;
 
-    void lefl_cursor_move(lefl_cursor_t* c, lefl_cursor_t* tc);
-    void lefl_cursor_set(lefl_cursor_t* c, float x, float y, float w, float h);
+    void fezui_cursor_move(fezui_cursor_t* c, fezui_cursor_t* tc);
+    void fezui_cursor_set(fezui_cursor_t* c, float x, float y, float w, float h);
 
     /*
      * lefl_menu.c

@@ -70,11 +70,13 @@ void fezui_init()
     keylistpage_init();
     knobconfigpage_init();
     rgbconfigpage_init();
+    displayconfigpage_init();
 
     Analog_Read();
     Keyboard_ID_Recovery();
     RGB_Recovery();
     fezui_read_counts();
+    fezui_read();
     lefl_link_frame_navigate(&mainframe, &homepage);
 }
 
@@ -85,7 +87,7 @@ void fezui_timer_handler()
         lefl_key_update(Keyboard_Keys+i, key_buffer[i+ADVANCED_KEY_NUM]);
     }
     lefl_link_frame_logic(&mainframe);
-    lefl_cursor_move(&cursor, &target_cursor);
+    fezui_cursor_move(&fezui ,&cursor, &target_cursor);
 
     for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
@@ -119,7 +121,7 @@ void fezui_timer_handler()
     {
         //tempuint=keys[0].state+(keys[1].state<<1)+(keys[2].state<<2)+(keys[3].state<<3)+(keys[4].state<<4)+(keys[5].state<<5)+(keys[6].state<<6)+(keys[7].state<<7);
 
-        fezui_rest_countdown = SCREEN_REST_TIME;
+        fezui.screensaver_countdown = fezui.screensaver_timeout;
     }
     if(Keyboard_Keys[1].state&&Keyboard_Keys[0].state)
     {
@@ -241,6 +243,7 @@ void Analog_Read()
             MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*7, &(Keyboard_AdvancedKeys[i].range));
             MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*8, &(Keyboard_AdvancedKeys[i].upper_bound));
             MB85RC16_ReadFloat(i*64+ADVANCED_KEY_CONFIG_ADDRESS+3+4*9, &(Keyboard_AdvancedKeys[i].lower_bound));
+            lefl_advanced_key_set_deadzone(&Keyboard_AdvancedKeys[i], Keyboard_AdvancedKeys[i].upper_deadzone, Keyboard_AdvancedKeys[i].lower_deadzone);
         }
     }
 }
@@ -290,3 +293,29 @@ void fezui_read_counts()
         }
     }
 }
+
+void fezui_save()
+{
+    if(eeprom_enable)
+    {
+        MB85RC16_WriteByte(FEZUI_CONFIG_ADDRESS, fezui.invert);
+        MB85RC16_WriteByte(FEZUI_CONFIG_ADDRESS+1, fezui.contrast);
+        MB85RC16_WriteFloat(FEZUI_CONFIG_ADDRESS+2, fezui.speed);
+        MB85RC16_WriteWord(FEZUI_CONFIG_ADDRESS+6, fezui.screensaver_timeout);
+    }
+}
+
+void fezui_read()
+{
+    uint8_t b;
+    if(eeprom_enable)
+    {
+        MB85RC16_ReadByte(FEZUI_CONFIG_ADDRESS, &b);
+        MB85RC16_ReadByte(FEZUI_CONFIG_ADDRESS+1, &fezui.contrast);
+        MB85RC16_ReadFloat(FEZUI_CONFIG_ADDRESS+2, &fezui.speed);
+        MB85RC16_ReadWord(FEZUI_CONFIG_ADDRESS+6, &fezui.screensaver_timeout);
+    }
+    fezui.invert = b;
+    fezui_apply(&fezui);
+}
+

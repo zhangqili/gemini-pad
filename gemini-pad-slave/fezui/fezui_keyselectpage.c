@@ -281,7 +281,7 @@ void keyselectpage_logic(void *page)
             + strlen(custom_hid_usage_id_name[ansi_104_keycode[keyboard.y][keyboard.x]]) * 4 / 2 - 64;
     if (target_abscissa >= 0)
     {
-        lefl_cursor_set(&target_cursor,
+        fezui_cursor_set(&target_cursor,
                 64 - strlen(custom_hid_usage_id_name[ansi_104_keycode[keyboard.y][keyboard.x]]) * 4 / 2,
                 keyboard.y * 10,
                 strlen(custom_hid_usage_id_name[ansi_104_keycode[keyboard.y][keyboard.x]]) * 4 + 1, 7);
@@ -289,10 +289,10 @@ void keyselectpage_logic(void *page)
     else
     {
         target_abscissa = 0;
-        lefl_cursor_set(&target_cursor, Cursor_TargetX, keyboard.y * 10,
+        fezui_cursor_set(&target_cursor, Cursor_TargetX, keyboard.y * 10,
                 strlen(custom_hid_usage_id_name[ansi_104_keycode[keyboard.y][keyboard.x]]) * 4 + 1, 7);
     }
-    lefl_easing_pid(&(scrollview.abscissa), target_abscissa);
+    TEND_TO_ROUNDED(scrollview.abscissa, target_abscissa, fezui.speed);
 }
 void keyselectpage_draw(void *page)
 {
@@ -331,7 +331,7 @@ void keyselectpage_load(void *page)
     scrollview.abscissa = 0;
     lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_link_frame_go_back(&mainframe);}));
     lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, LAMBDA(void,
-            (void*k){lefl_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);}));
+            (void*k){fezui_cursor_set(&cursor ,cursor.x-3 ,cursor.y-3 ,cursor.w+6 ,cursor.h+6);}));
     lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, 1);}));
     lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_x_increase(&keyboard, -1);}));
     lefl_key_attach(&KEY_WHEEL_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void, (void*k){lefl_keyboard_y_increase(&keyboard, 1);}));

@@ -65,7 +65,7 @@ void calibrationpage_logic(void *page)
             Analog_Read();
         cmd_buffer=CMD_NULL;
     }
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor ,
             100,
             0 ,

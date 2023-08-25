@@ -237,7 +237,7 @@ void advancedconfigpage_logic(void *page)
 {
     if(configing)
     {
-        lefl_cursor_set(
+        fezui_cursor_set(
                 &target_cursor ,
                 SPERATOR_X-4*6,
                 current_menu->selected_index*ROW_HEIGHT + ROW_HEIGHT/2 - (u8g2_int_t)scrollview.ordinate,
@@ -247,7 +247,7 @@ void advancedconfigpage_logic(void *page)
     }
     else if(mode_switching)
     {
-        lefl_cursor_set(
+        fezui_cursor_set(
                 &target_cursor ,
                 SPERATOR_X-4*13,
                 current_menu->selected_index*ROW_HEIGHT + ROW_HEIGHT/2 - (u8g2_int_t)scrollview.ordinate,
@@ -257,7 +257,7 @@ void advancedconfigpage_logic(void *page)
     }
     else
     {
-        lefl_cursor_set(
+        fezui_cursor_set(
                 &target_cursor ,
                 0,
                 current_menu->selected_index*ROW_HEIGHT - (u8g2_int_t)scrollview.ordinate,
@@ -296,7 +296,7 @@ void advancedconfigpage_logic(void *page)
         target_ordinate = 0;
     }
     fezui_scrolling_text_update(&scrolling_text);
-    lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
+    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 
 void advancedconfigpage_draw(void *page)

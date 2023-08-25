@@ -14,14 +14,11 @@
 #define NUMBER_STRING_LENGTH  BUFFER_LENGTH
 #define REFRESH_RATE          170
 #define KPS_HISTORY_LENGTH    65
-//#define TILE_LENGTH         56
-#define SCREEN_REST_TIME      60
 #define ADVANCED_KEY_NUM      4
 #define KEY_NUM               8
 #define ITEM_HEIGHT           14
 #define HISTORY_LENGTH        129
 
-#define _SCREEN_REST_ON
 //#define _FPS_ON
 
 #define roll()                rand()%2;
@@ -34,6 +31,8 @@ void Analog_Read();
 void Analog_Save();
 void fezui_read_counts();
 void fezui_save_counts();
+void fezui_read();
+void fezui_save();
 
 
 extern lefl_link_frame_t mainframe;
@@ -94,6 +93,11 @@ void advancedconfigpage_init();
 void advancedconfigpage_logic(void *page);
 void advancedconfigpage_draw(void *page);
 extern lefl_advanced_key_t* current_config_advanced_key;
+
+extern lefl_page_t displayconfigpage;
+void displayconfigpage_init();
+void displayconfigpage_logic(void *page);
+void displayconfigpage_draw(void *page);
 
 extern lefl_page_t panelpage;
 void panelpage_logic(void *page);

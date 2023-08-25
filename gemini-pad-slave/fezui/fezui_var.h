@@ -56,12 +56,12 @@ extern lefl_array_elm_t KPS_history_data[KPS_HISTORY_LENGTH];
 extern lefl_loop_array_t KPS_queue;
 extern lefl_array_elm_t KPS_queue_data[REFRESH_RATE];
 extern uint8_t UI_KPSMaximumPerSecond;
-extern uint8_t fezui_rest_countdown;
 extern uint8_t fezui_debug;
 extern float fezui_debug_float;
 extern uint8_t cmd_buffer;
 extern uint8_t current_key_index;
 extern uint8_t current_function_key;
+extern uint8_t fezui_adc_conversion_count;
 
 extern uint32_t fezui_run_time;
 extern uint32_t fezui_temp_raw;

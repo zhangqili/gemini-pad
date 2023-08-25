@@ -163,7 +163,7 @@ void Communication_Pack()
     Communication_Add32(USART1, PROTOCOL_ANALOG2_RAW,Keyboard_AdvancedKeys[1].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG3_RAW,Keyboard_AdvancedKeys[2].raw);
     Communication_Add32(USART1, PROTOCOL_ANALOG4_RAW,Keyboard_AdvancedKeys[3].raw);
-    Communication_Add8(USART1, PROTOCOL_DEBUG, (sendreport_ready<<4)|sendreport);
+    Communication_Add8(USART1, PROTOCOL_SCAN_COUNT, ADC_Conversion_Count);
 
     //Communication_Add32(USART1, PROTOCOL_DEBUG_FLOAT,Keyboard_AdvancedKeys[1].value);
     //Communication_Add(3,4);

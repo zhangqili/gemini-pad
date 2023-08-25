@@ -17,23 +17,6 @@ extern "C" {
 #include "math.h"
 #include "lefl_macro.h"
 
-    /*
-     * lefl_cursor.c
-     */
-
-    typedef struct __lefl_cursor_t
-    {
-        float x;
-        float y;
-        float w;
-        float h;
-    } lefl_cursor_t;
-
-    extern lefl_cursor_t cursor;
-    extern lefl_cursor_t target_cursor;
-
-    void lefl_cursor_move(lefl_cursor_t* c, lefl_cursor_t* tc);
-    void lefl_cursor_set(lefl_cursor_t* c, float x, float y, float w, float h);
 
     /*
      * lefl_menu.c

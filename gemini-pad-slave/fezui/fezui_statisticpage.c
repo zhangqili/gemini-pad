@@ -24,7 +24,7 @@ static float target_ordinate=0;
 
 void statisticpage_logic(void *page)
 {
-    lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
+    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void statisticpage_draw(void *page)
 {
@@ -80,7 +80,7 @@ void statisticpage_draw(void *page)
 
 void statisticpage_load(void *page)
 {
-    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
+    lefl_key_attach(&KEY_KNOB, KEY_EVENT_DOWN, LAMBDA(void,(void*k){lefl_link_frame_go_back(&mainframe);fezui_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);}));
     lefl_key_attach(&KEY_WHEEL, KEY_EVENT_DOWN, NULL);
     lefl_key_attach(&KEY_KNOB_CLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){target_ordinate+=10;if(target_ordinate+64>scrollview.content_height)target_ordinate=scrollview.content_height-64;}));
     lefl_key_attach(&KEY_KNOB_ANTICLOCKWISE, KEY_EVENT_DOWN, LAMBDA(void,(void*k){target_ordinate-=10;if(target_ordinate<0)target_ordinate=0;}));

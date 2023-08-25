@@ -47,7 +47,7 @@ void keylistpage_init()
 
 void keylistpage_logic(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
         &target_cursor ,
         0,
         keylist.selected_index*ROW_HEIGHT - (u8g2_int_t)scrollview.ordinate,
@@ -61,7 +61,7 @@ void keylistpage_logic(void *page)
     {
         target_ordinate = (keylist.selected_index)*ROW_HEIGHT;
     }
-    lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
+    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void keylistpage_draw(void *page)
 {

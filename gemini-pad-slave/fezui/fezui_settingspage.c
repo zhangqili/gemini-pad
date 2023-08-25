@@ -18,6 +18,7 @@ lefl_page_t settingspage={settingspage_logic,settingspage_draw,settingspage_load
 static fezui_scrollview_t scrollview={.content_height=ROW_HEIGHT*7};
 static float target_ordinate=0;
 
+
 void settingspage_init()
 {
     lefl_menu_init(&settingsmenu, settingsmenu_items, sizeof(settingsmenu_items)/sizeof(const char*), settings_menu_cb);
@@ -25,7 +26,7 @@ void settingspage_init()
 
 void settingspage_logic(void *page)
 {
-    lefl_cursor_set(
+    fezui_cursor_set(
         &target_cursor ,
         4,
         settingsmenu.selected_index*ROW_HEIGHT - (u8g2_int_t)scrollview.ordinate,
@@ -39,7 +40,7 @@ void settingspage_logic(void *page)
     {
         target_ordinate = (settingsmenu.selected_index)*ROW_HEIGHT;
     }
-    lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
+    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void settingspage_draw(void *page)
 {
@@ -66,7 +67,7 @@ void settings_menu_cb(void *menu)
         lefl_link_frame_navigate(&mainframe, &calibrationpage);
         break;
     case 3:
-        //lefl_link_frame_navigate(&mainframe, &aboutpage);
+        lefl_link_frame_navigate(&mainframe, &displayconfigpage);
         break;
     case 4:
         lefl_link_frame_navigate(&mainframe, &debugpage);

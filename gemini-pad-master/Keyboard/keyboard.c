@@ -40,10 +40,8 @@ extern bool sendreport_ready;
 lefl_key_t Keyboard_Keys[KEY_NUM];
 lefl_advanced_key_t Keyboard_AdvancedKeys[ADVANCED_KEY_NUM];
 
-void flag_clear(void*e)
+void report_start(void*e)
 {
-    Keyboard_SHIFT_Flag=false;
-    Keyboard_ALPHA_Flag=false;
     if(sendreport_ready)
     {
         sendreport_ready=false;
@@ -62,14 +60,14 @@ void Keyboard_Init()
     lefl_key_attach(&KEY_ALPHA, KEY_EVENT_DOWN, LAMBDA(void,(void*k){Keyboard_ALPHA_Flag = !Keyboard_ALPHA_Flag;}));
     for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
-        lefl_key_attach(&(Keyboard_AdvancedKeys[i].key), KEY_EVENT_UP, flag_clear);
+        lefl_key_attach(&(Keyboard_AdvancedKeys[i].key), KEY_EVENT_UP, report_start);
     }
-    lefl_key_attach(&(KEY_KNOB), KEY_EVENT_UP, flag_clear);
-    lefl_key_attach(&(KEY_WHEEL), KEY_EVENT_UP, flag_clear);
-    lefl_key_attach(&(KEY_KNOB_CLOCKWISE), KEY_EVENT_UP, flag_clear);
-    lefl_key_attach(&(KEY_KNOB_ANTICLOCKWISE), KEY_EVENT_UP, flag_clear);
-    lefl_key_attach(&(KEY_WHEEL_CLOCKWISE), KEY_EVENT_UP, flag_clear);
-    lefl_key_attach(&(KEY_WHEEL_ANTICLOCKWISE), KEY_EVENT_UP, flag_clear);
+    lefl_key_attach(&(KEY_KNOB), KEY_EVENT_UP, report_start);
+    lefl_key_attach(&(KEY_WHEEL), KEY_EVENT_UP, report_start);
+    lefl_key_attach(&(KEY_KNOB_CLOCKWISE), KEY_EVENT_UP, report_start);
+    lefl_key_attach(&(KEY_KNOB_ANTICLOCKWISE), KEY_EVENT_UP, report_start);
+    lefl_key_attach(&(KEY_WHEEL_CLOCKWISE), KEY_EVENT_UP, report_start);
+    lefl_key_attach(&(KEY_WHEEL_ANTICLOCKWISE), KEY_EVENT_UP, report_start);
 
     Keyboard_ID_Recovery();
 }
@@ -80,6 +78,22 @@ void Keyboard_Scan()
     //Keyboard_Keys[1]=KEY2;
     //Keyboard_Keys[2]=KEY3;
     //Keyboard_Keys[3]=KEY4;
+    if(Keyboard_AdvancedKeys[0].mode==LEFL_KEY_DIGITAL_MODE)
+    {
+        lefl_advanced_key_update(Keyboard_AdvancedKeys+0,KEY1);
+    }
+    if(Keyboard_AdvancedKeys[1].mode==LEFL_KEY_DIGITAL_MODE)
+    {
+        lefl_advanced_key_update(Keyboard_AdvancedKeys+1,KEY2);
+    }
+    if(Keyboard_AdvancedKeys[2].mode==LEFL_KEY_DIGITAL_MODE)
+    {
+        lefl_advanced_key_update(Keyboard_AdvancedKeys+2,KEY3);
+    }
+    if(Keyboard_AdvancedKeys[3].mode==LEFL_KEY_DIGITAL_MODE)
+    {
+        lefl_advanced_key_update(Keyboard_AdvancedKeys+3,KEY4);
+    }
     lefl_key_update(&KEY_SHIFT,SHIFT);
     lefl_key_update(&KEY_ALPHA,ALPHA);
     lefl_key_update(&KEY_KNOB,KNOB);

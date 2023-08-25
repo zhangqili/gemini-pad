@@ -28,11 +28,16 @@ typedef struct __fezui_t
     uint16_t width;
     uint16_t height;
     bool invert;
+    uint8_t contrast;
+    float speed;
+    uint16_t screensaver_timeout;
+    uint16_t screensaver_countdown;
 } fezui_t;
 
 //#define FEZUI_CREATE(name) fezui_t name;
 //#define FEZUI_DECLARE(name) fezui_t name;
 
+void fezui_apply(fezui_t* fezui_ptr);
 void fezui_timer_handler();
 void fezui_init();
 
@@ -79,13 +84,27 @@ typedef enum
  * fezui_controls.c
  */
 
+typedef struct __fezui_cursor_t
+{
+    float x;
+    float y;
+    float w;
+    float h;
+} fezui_cursor_t;
+
+extern fezui_cursor_t cursor;
+extern fezui_cursor_t target_cursor;
+
+void fezui_cursor_move(fezui_t *fezui_ptr, fezui_cursor_t *c,fezui_cursor_t *tc);
+void fezui_cursor_set(fezui_cursor_t* c, float x, float y, float w, float h);
+
 typedef enum
 {
 	ORIENTATION_HORIZAIONTAL,
 	ORIENTATION_VERTICAL
 } fezui_orientation_t;
 
-void fezui_draw_cursor(fezui_t *fezui_ptr, lefl_cursor_t*c);
+void fezui_draw_cursor(fezui_t *fezui_ptr, fezui_cursor_t*c);
 void fezui_draw_flowingwater(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
         u8g2_uint_t w, u8g2_uint_t h, lefl_bit_array_t *bits);
 void fezui_draw_wave(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,

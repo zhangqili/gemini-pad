@@ -72,7 +72,7 @@ void homepage_logic(void *page)
     if(Keyboard_Keys[1].state&&Keyboard_Keys[0].state)
     {
         lefl_link_frame_navigate(&mainframe, &menupage);
-        lefl_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);
+        fezui_cursor_set(&cursor ,0 ,0 ,WIDTH ,HEIGHT);
     }
     fezui_rolling_number_set(&key1_num,fezui_keytotalcounts[0]-fezui_keyinitcounts[0]);
     fezui_rolling_number_set(&key2_num,fezui_keytotalcounts[1]-fezui_keyinitcounts[1]);
@@ -155,11 +155,11 @@ void homepage_draw(void *page)
     u8g2_DrawVLine(&(fezui.u8g2),32,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
     u8g2_DrawVLine(&(fezui.u8g2),96,HEIGHT-MARGIN_DOWN,MARGIN_DOWN);
 
-    /*
+
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
-    sprintf(fezui_buffer,"%#x",fezui_debug);
-    u8g2_DrawStr(&(fezui.u8g2),64,10,fezui_buffer);
-    */
+    //sprintf(fezui_buffer,"%d",fezui_adc_conversion_count);
+    //u8g2_DrawStr(&(fezui.u8g2),64,10,fezui_buffer);
+
     u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
     if(KEY_SHIFT.state)
     {

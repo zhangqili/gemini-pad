@@ -19,5 +19,6 @@
 #define RGB_CONFIG_ADDRESS   0x310
 
 #define KEY_COUNTS_ADDRESS    0x400
+#define FEZUI_CONFIG_ADDRESS    0x500
 
 #endif /* FLASH_ADDRESS_H_ */

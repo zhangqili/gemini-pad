@@ -20,4 +20,8 @@
 
 #define VAR_LOOP_DECREMENT(x,min,max,delta) if((x)>(min)) (x)-=(delta);else (x)=(max);
 
+#define TEND_TO_ROUNDED(x,y,m) (x)=(x)+(m)*((y)+0.5f-(x))
+
+#define TEND_TO(x,y,m) (x)=(x)+(m)*((y)-(x))
+
 #endif /* LEFL_MACRO_H_ */

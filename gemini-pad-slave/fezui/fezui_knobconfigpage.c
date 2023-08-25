@@ -56,7 +56,7 @@ void knobconfigpage_init()
 void knobconfigpage_logic(void *page)
 {
 
-    lefl_cursor_set(
+    fezui_cursor_set(
             &target_cursor,
             0,
             knobconfig_menu.selected_index*ROW_HEIGHT,

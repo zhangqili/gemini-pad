@@ -7,7 +7,24 @@
 
 #include "fezui.h"
 
-void fezui_draw_cursor(fezui_t *fezui_ptr, lefl_cursor_t*c)
+
+inline void fezui_cursor_set(fezui_cursor_t *c,float x,float y,float w,float h)
+{
+    c->x=x;
+    c->y=y;
+    c->w=w;
+    c->h=h;
+}
+
+void fezui_cursor_move(fezui_t *fezui_ptr, fezui_cursor_t *c,fezui_cursor_t *tc)
+{
+    TEND_TO_ROUNDED((c->x),tc->x,fezui_ptr->speed);
+    TEND_TO_ROUNDED((c->y),tc->y,fezui_ptr->speed);
+    TEND_TO_ROUNDED((c->w),tc->w,fezui_ptr->speed);
+    TEND_TO_ROUNDED((c->h),tc->h,fezui_ptr->speed);
+}
+
+void fezui_draw_cursor(fezui_t *fezui_ptr, fezui_cursor_t*c)
 {
     uint8_t color_backup = u8g2_GetDrawColor(&(fezui_ptr->u8g2));
     u8g2_SetDrawColor(&(fezui_ptr->u8g2), 2);
@@ -206,12 +223,16 @@ void fezui_draw_scrollbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2
 	if(o == ORIENTATION_HORIZAIONTAL)
 	{
 		u8g2_DrawHLine(&(fezui_ptr->u8g2), x, y+2, w);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x + (w-w*size)*value, y ,w*size, h);
+        u8g2_DrawVLine(&(fezui_ptr->u8g2), x, y, h);
+        u8g2_DrawVLine(&(fezui_ptr->u8g2), x+w-1, y, h);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x + ROUND((w-w*size)*value), y ,w*size, h);
 	}
 	else
 	{
 		u8g2_DrawVLine(&(fezui_ptr->u8g2), x+2, y, h);
-		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y  + (h-h*size)*value, w, h*size);
+        u8g2_DrawHLine(&(fezui_ptr->u8g2), x, y, w);
+        u8g2_DrawHLine(&(fezui_ptr->u8g2), x, y+h-1, w);
+		u8g2_DrawBox(&(fezui_ptr->u8g2), x , y + ROUND((h-h*size)*value), w, h*size);
 	}
 }
 
@@ -267,16 +288,16 @@ void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rol
     const uint8_t *temp_font=(fezui_ptr->u8g2).font;
     u8g2_SetFont(&(fezui_ptr->u8g2), rolling_number->font);
     u8g2_long_t num=rolling_number->number;
-    lefl_easing_pid(rolling_number->offsets, num%10*u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2)));
+    TEND_TO_ROUNDED(rolling_number->offsets[0], num%10*u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2)),fezui_ptr->speed);
     for (uint8_t i = 1; i < rolling_number->digit; i++)
     {
         if(num/=10)
         {
-            lefl_easing_pid(rolling_number->offsets+i, num%10*(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
+            TEND_TO_ROUNDED(rolling_number->offsets[i], num%10*(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
         }
         else
         {
-            lefl_easing_pid(rolling_number->offsets+i, -1-(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
+            TEND_TO_ROUNDED(rolling_number->offsets[i], -1-(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
         }
     }
     u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);
@@ -285,13 +306,24 @@ void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rol
 void fezui_draw_progressbar(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y, u8g2_uint_t w, u8g2_uint_t h,fezui_progressbar_t* bar)
 {
     u8g2_DrawFrame(&(fezui_ptr->u8g2), x, y, w, h);
+    u8g2_uint_t length;
     if(bar->orientation == ORIENTATION_HORIZAIONTAL)
     {
+        length = (u8g2_int_t)ROUND((bar->value-bar->min)/(bar->max-bar->min)*w);
+        if(length>w)
+            length=w;
+        if(length<0)
+            length=0;
         u8g2_DrawBox(&(fezui_ptr->u8g2), x, y, ROUND((bar->value-bar->min)/(bar->max-bar->min)*w), h);
     }
     else
     {
-        u8g2_DrawBox(&(fezui_ptr->u8g2), x, y+h-ROUND((bar->value-bar->min)/(bar->max-bar->min)*h), w, ROUND((bar->value-bar->min)/(bar->max-bar->min)*h));
+        length = (u8g2_int_t)ROUND((bar->value-bar->min)/(bar->max-bar->min)*h);
+        if(length>h)
+            length=h;
+        if(length<0)
+            length=0;
+        u8g2_DrawBox(&(fezui_ptr->u8g2), x, y+h-length, w, ROUND((bar->value-bar->min)/(bar->max-bar->min)*h));
     }
 }
 

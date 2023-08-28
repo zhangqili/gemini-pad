@@ -24,7 +24,7 @@ static float target_ordinate=0;
 
 void statisticpage_logic(void *page)
 {
-    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void statisticpage_draw(void *page)
 {

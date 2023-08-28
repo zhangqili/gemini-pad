@@ -84,7 +84,7 @@ static const char* device_information[]={
         "Copyright (c) 2023 Lzq12345",
         "",
         "Master MCU: STM32F303RBT6",
-        "Slave MCU: STM32F431CBT6",
+        "Slave MCU: STM32G431CBT6",
         "",
 };
 
@@ -100,7 +100,7 @@ static float icon_x=WIDTH;
 static float url_y=WIDTH;
 
 static float text_box_height=(HEIGHT-18-12);
-static float text_height=(ROW_HEIGHT*sizeof(device_project_url)/sizeof(char*));
+//static float text_height=(ROW_HEIGHT*sizeof(device_project_url)/sizeof(char*));
 static float ordinate=0;
 static float target_ordinate=0;
 
@@ -126,20 +126,20 @@ void draw_gemini()
 
 void aboutpage_logic(void *page)
 {
-    TEND_TO(icon_x,target_icon_x,fezui.speed);
-    TEND_TO(url_y,target_url_y,fezui.speed);
-    TEND_TO_ROUNDED(device_name_offsets[0],icon_x,fezui.speed);
-    TEND_TO_ROUNDED(device_version_offsets[0],icon_x,fezui.speed);
+    CONVERGE_TO(icon_x,target_icon_x,fezui.speed);
+    CONVERGE_TO(url_y,target_url_y,fezui.speed);
+    CONVERGE_TO_ROUNDED(device_name_offsets[0],icon_x,fezui.speed);
+    CONVERGE_TO_ROUNDED(device_version_offsets[0],icon_x,fezui.speed);
     for (uint8_t i = 1; i < 10; i++)
     {
-        TEND_TO(device_name_offsets[i],device_name_offsets[i-1]+device_name_width[i-1],fezui.speed);
+        CONVERGE_TO(device_name_offsets[i],device_name_offsets[i-1]+device_name_width[i-1],fezui.speed);
     }
     for (uint8_t i = 1; i < 14; i++)
     {
-        TEND_TO(device_version_offsets[i],device_version_offsets[i-1]+4,fezui.speed);
+        CONVERGE_TO(device_version_offsets[i],device_version_offsets[i-1]+4,fezui.speed);
     }
     target_ordinate+=0.1;
-    TEND_TO(ordinate,target_ordinate,fezui.speed);
+    CONVERGE_TO(ordinate,target_ordinate,fezui.speed);
     if(ordinate>text_box_height+10)
     {
         ordinate=-text_box_height;

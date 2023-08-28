@@ -18,10 +18,10 @@ inline void fezui_cursor_set(fezui_cursor_t *c,float x,float y,float w,float h)
 
 void fezui_cursor_move(fezui_t *fezui_ptr, fezui_cursor_t *c,fezui_cursor_t *tc)
 {
-    TEND_TO_ROUNDED((c->x),tc->x,fezui_ptr->speed);
-    TEND_TO_ROUNDED((c->y),tc->y,fezui_ptr->speed);
-    TEND_TO_ROUNDED((c->w),tc->w,fezui_ptr->speed);
-    TEND_TO_ROUNDED((c->h),tc->h,fezui_ptr->speed);
+    CONVERGE_TO_ROUNDED((c->x),tc->x,fezui_ptr->speed);
+    CONVERGE_TO_ROUNDED((c->y),tc->y,fezui_ptr->speed);
+    CONVERGE_TO_ROUNDED((c->w),tc->w,fezui_ptr->speed);
+    CONVERGE_TO_ROUNDED((c->h),tc->h,fezui_ptr->speed);
 }
 
 void fezui_draw_cursor(fezui_t *fezui_ptr, fezui_cursor_t*c)
@@ -288,16 +288,16 @@ void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rol
     const uint8_t *temp_font=(fezui_ptr->u8g2).font;
     u8g2_SetFont(&(fezui_ptr->u8g2), rolling_number->font);
     u8g2_long_t num=rolling_number->number;
-    TEND_TO_ROUNDED(rolling_number->offsets[0], num%10*u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2)),fezui_ptr->speed);
+    CONVERGE_TO_ROUNDED(rolling_number->offsets[0], num%10*u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2)),fezui_ptr->speed);
     for (uint8_t i = 1; i < rolling_number->digit; i++)
     {
         if(num/=10)
         {
-            TEND_TO_ROUNDED(rolling_number->offsets[i], num%10*(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
+            CONVERGE_TO_ROUNDED(rolling_number->offsets[i], num%10*(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
         }
         else
         {
-            TEND_TO_ROUNDED(rolling_number->offsets[i], -1-(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
+            CONVERGE_TO_ROUNDED(rolling_number->offsets[i], -1-(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))),fezui_ptr->speed);
         }
     }
     u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);

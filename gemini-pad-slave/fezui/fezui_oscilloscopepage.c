@@ -18,7 +18,7 @@ void oscilloscopepage_logic(void *page)
     lefl_loop_array_push_back(analog_historys+1, (uint16_t)Keyboard_AdvancedKeys[1].raw);
     lefl_loop_array_push_back(analog_historys+2, (uint16_t)Keyboard_AdvancedKeys[2].raw);
     lefl_loop_array_push_back(analog_historys+3, (uint16_t)Keyboard_AdvancedKeys[3].raw);
-    TEND_TO_ROUNDED(offset_x, target_offset_x,fezui.speed);
+    CONVERGE_TO_ROUNDED(offset_x, target_offset_x,fezui.speed);
 }
 void oscilloscopepage_draw(void *page)
 {

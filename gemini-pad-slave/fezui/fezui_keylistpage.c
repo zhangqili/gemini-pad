@@ -61,7 +61,7 @@ void keylistpage_logic(void *page)
     {
         target_ordinate = (keylist.selected_index)*ROW_HEIGHT;
     }
-    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void keylistpage_draw(void *page)
 {

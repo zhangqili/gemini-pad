@@ -292,7 +292,7 @@ void keyselectpage_logic(void *page)
         fezui_cursor_set(&target_cursor, Cursor_TargetX, keyboard.y * 10,
                 strlen(custom_hid_usage_id_name[ansi_104_keycode[keyboard.y][keyboard.x]]) * 4 + 1, 7);
     }
-    TEND_TO_ROUNDED(scrollview.abscissa, target_abscissa, fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.abscissa, target_abscissa, fezui.speed);
 }
 void keyselectpage_draw(void *page)
 {

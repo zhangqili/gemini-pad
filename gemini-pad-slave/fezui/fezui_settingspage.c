@@ -40,7 +40,7 @@ void settingspage_logic(void *page)
     {
         target_ordinate = (settingsmenu.selected_index)*ROW_HEIGHT;
     }
-    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 void settingspage_draw(void *page)
 {

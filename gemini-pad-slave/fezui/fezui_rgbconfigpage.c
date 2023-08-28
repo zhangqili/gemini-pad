@@ -209,6 +209,7 @@ void rgbconfigpage_draw(void *page)
     fezui_draw_cursor(&fezui, &config_cursor);
 
     u8g2_DrawVLine(&(fezui.u8g2), SPERATOR_X, 0, 64);
+
 }
 
 void usart_rgb_set()
@@ -222,12 +223,16 @@ void usart_rgb_set()
     if(rgb_key_select_menu.selected_index)
     {
         Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_Configs[rgb_key_select_menu.selected_index-1].mode);
-        Communication_Add32(USART1, PROTOCOL_RGB_SPEED, RGB_Configs[rgb_key_select_menu.selected_index-1].speed);
+        USART1_TX_Buffer[USART1_TX_Length]=(PROTOCOL_RGB_SPEED);
+        *((float*)(USART1_TX_Buffer+USART1_TX_Length+1))=RGB_Configs[rgb_key_select_menu.selected_index-1].speed;
+        if(USART1_TX_Length<64)USART1_TX_Length+=5;
     }
     else
     {
         Communication_Add8(USART1, PROTOCOL_RGB_MODE, RGB_GlobalConfig.mode);
-        Communication_Add32(USART1, PROTOCOL_RGB_SPEED, RGB_GlobalConfig.speed);
+        USART1_TX_Buffer[USART1_TX_Length]=(PROTOCOL_RGB_SPEED);
+        *((float*)(USART1_TX_Buffer+USART1_TX_Length+1))=RGB_GlobalConfig.speed;
+        if(USART1_TX_Length<64)USART1_TX_Length+=5;
     }
     Communication_USART1_Transmit();
 }

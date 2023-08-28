@@ -296,7 +296,7 @@ void advancedconfigpage_logic(void *page)
         target_ordinate = 0;
     }
     fezui_scrolling_text_update(&scrolling_text);
-    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.ordinate, target_ordinate, fezui.speed);
 }
 
 void advancedconfigpage_draw(void *page)

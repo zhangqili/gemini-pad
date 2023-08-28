@@ -66,7 +66,7 @@ void displayconfigpage_draw(void *page)
     sprintf(fezui_buffer,"%3.0f",fezui.speed*100);
     u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(fezui_buffer)*font_width, ROW_HEIGHT*3-1, fezui_buffer);
 
-    sprintf(fezui_buffer,"%3",fezui.screensaver_timeout);
+    sprintf(fezui_buffer,"%3d",fezui.screensaver_timeout);
     u8g2_DrawStr(&(fezui.u8g2), WIDTH - strlen(fezui_buffer)*font_width, ROW_HEIGHT*4-1, fezui_buffer);
 
     //u8g2_SetFont(&(fezui.u8g2), u8g2_font_5x8_mr);

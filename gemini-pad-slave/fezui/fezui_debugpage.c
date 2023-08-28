@@ -39,8 +39,8 @@ static fezui_rolling_number_t rolling_number=
 
 void debugpage_logic(void *page)
 {
-    TEND_TO_ROUNDED(scrollview.abscissa, target_abscissa,fezui.speed);
-    TEND_TO_ROUNDED(scrollview.ordinate, target_ordinate,fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.abscissa, target_abscissa,fezui.speed);
+    CONVERGE_TO_ROUNDED(scrollview.ordinate, target_ordinate,fezui.speed);
     fezui_rolling_number_update(&fezui, &rolling_number);
 }
 void debugpage_draw(void *page)

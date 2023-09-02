@@ -119,8 +119,6 @@ void fezui_timer_handler()
 
     if (KPS_history_max || Keyboard_Keys[0].state||Keyboard_Keys[1].state||Keyboard_Keys[2].state||Keyboard_Keys[3].state||Keyboard_Keys[4].state||Keyboard_Keys[5].state||Keyboard_Keys[6].state||Keyboard_Keys[7].state)
     {
-        //tempuint=keys[0].state+(keys[1].state<<1)+(keys[2].state<<2)+(keys[3].state<<3)+(keys[4].state<<4)+(keys[5].state<<5)+(keys[6].state<<6)+(keys[7].state<<7);
-
         fezui.screensaver_countdown = fezui.screensaver_timeout;
     }
     if(Keyboard_Keys[1].state&&Keyboard_Keys[0].state)
@@ -128,18 +126,41 @@ void fezui_timer_handler()
         Communication_Add8(USART1, PROTOCOL_CMD,CMD_FLAG_CLEAR);
         Communication_USART1_Transmit();
     }
-    /*
+}
+
+
+void fezui_render_handler()
+{
     u8g2_ClearBuffer(&(fezui.u8g2));
-    //sprintf(fezui_tempstr,"%d",UI_IsDisplayOn);
-    //u8g2_DrawStr(&(fezui.u8g2), 64, 10, fezui_tempstr);
+    if(fezui.invert)
+    {
+        u8g2_SendF(&(fezui.u8g2), "c", 0xA7);
+    }
+    else
+    {
+
+    }
+    u8g2_SetDrawColor(&(fezui.u8g2),1);
     lefl_link_frame_draw(&mainframe);
-#ifdef _SCREEN_REST_ON
-    u8g2_SetPowerSave(&(fezui.u8g2),!UI_IsDisplayOn);
+    if(fezui.screensaver_timeout)
+    {
+        if(fezui.invert)
+        {
+            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,1);
+        }
+        else
+        {
+            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,0);
+        }
+        u8g2_SetPowerSave(&(fezui.u8g2),!fezui.screensaver_countdown);
+    }
+#ifdef _FPS_ON
+    u8g2_SetDrawColor(&(fezui.u8g2), 2);
+    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
+    u8g2_DrawStr(&(fezui.u8g2),95+15,10,fpsstr);
 #endif
     u8g2_SendBuffer(&(fezui.u8g2));
-
-    UI_FPS++;
-    */
+    fezui_fps++;
 }
 
 

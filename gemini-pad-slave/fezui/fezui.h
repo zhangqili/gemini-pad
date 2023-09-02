@@ -39,6 +39,7 @@ typedef struct __fezui_t
 
 void fezui_apply(fezui_t* fezui_ptr);
 void fezui_timer_handler();
+void fezui_render_handler();
 void fezui_init();
 
 

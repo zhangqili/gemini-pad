@@ -148,44 +148,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    u8g2_ClearBuffer(&(fezui.u8g2));
-    //sprintf(fezui_tempstr,"%d",UI_IsDisplayOn);
-    //u8g2_DrawStr(&(fezui.u8g2), 64, 10, fezui_tempstr);
-    if(fezui.invert)
-    {
-        u8g2_SendF(&(fezui.u8g2), "c", 0xA7);
-    }
-    else
-    {
-
-    }
-    u8g2_SetDrawColor(&(fezui.u8g2),1);
-    //u8g2_SetFont(&(fezui.u8g2), u8g2_font_micro_tr);
-    //sprintf(fezui_buffer,"%#x",fezui_debug);
-    //u8g2_DrawStr(&(fezui.u8g2),64,10,fezui_buffer);
-    lefl_link_frame_draw(&mainframe);
-    //u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
-    //u8g2_DrawStr(&(fezui.u8g2),64,10,comstr);
-    if(fezui.screensaver_timeout)
-    {
-        if(fezui.invert)
-        {
-            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,1);
-        }
-        else
-        {
-            fezui_veil(&(fezui),0,0,128,64,7-fezui.screensaver_countdown,0);
-        }
-        u8g2_SetPowerSave(&(fezui.u8g2),!fezui.screensaver_countdown);
-    }
-#ifdef _FPS_ON
-    u8g2_SetDrawColor(&(fezui.u8g2), 2);
-    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
-    u8g2_DrawStr(&(fezui.u8g2),95+15,10,fpsstr);
-#endif
-    u8g2_SendBuffer(&(fezui.u8g2));
-    fezui_fps++;
-
+    fezui_render_handler();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

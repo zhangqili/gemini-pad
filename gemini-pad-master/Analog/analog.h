@@ -15,10 +15,8 @@
 #define ANALOG_INIT_SCAN_COUNT 32768
 
 extern uint8_t ADC_Conversion_Count;
-extern int16_t ADC1_Values[64];
-extern int16_t ADC2_Values[64];
-extern int16_t ADC3_Values[64];
-extern int16_t ADC4_Values[64];
+extern int16_t ADC_Values[ADVANCED_KEY_NUM][64];
+
 extern int16_t ADC_Value_List[ADVANCED_KEY_NUM];
 
 extern float ADC_Sums[ADVANCED_KEY_NUM];
@@ -30,7 +28,6 @@ void Analog_Scan();
 void Analog_Init();
 void Analog_Average();
 void Analog_Check();
-float Analog_Normalize(float x, uint8_t n);
 void Analog_Recovery();
 void Analog_Save();
 

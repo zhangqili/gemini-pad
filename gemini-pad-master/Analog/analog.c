@@ -19,10 +19,7 @@
 #include "lefl.h"
 
 uint8_t ADC_Conversion_Count=0;
-int16_t ADC1_Values[64]={0};
-int16_t ADC2_Values[64]={0};
-int16_t ADC3_Values[64]={0};
-int16_t ADC4_Values[64]={0};
+int16_t ADC_Values[ADVANCED_KEY_NUM][64];
 
 int16_t ADC_Value_List[ADVANCED_KEY_NUM]={0};
 uint8_t ADC_Conversion_Flag=0;
@@ -102,53 +99,30 @@ void Analog_Init()
 
     Communication_Add8(USART1, PROTOCOL_CMD,CMD_CALIBRATION_END);
     Communication_USART1_Transmit();
-    /*
-    for(uint8_t i =0;i<4;i++)
-    {
-        sprintf(buf,"UP%d=%f\n",i,Upper_Bound_List[i]);
-        HAL_UART_Transmit(&huart1,buf,30,10);
-        sprintf(buf,"LOW%d=%f\n",i,Lower_Bound_List[i]);
-        HAL_UART_Transmit(&huart1,buf,30,10);
-        sprintf(buf,"RANGE%d=%f\n",i,Range_List[i]);
-        HAL_UART_Transmit(&huart1,buf,30,10);
-    }
-    */
 }
 
 void Analog_Scan()
 {
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1,1);
-    ADC1_Values[ADC_Conversion_Count]=HAL_ADC_GetValue(&hadc1);
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1,1);
-    ADC2_Values[ADC_Conversion_Count]=HAL_ADC_GetValue(&hadc1);
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1,1);
-    ADC3_Values[ADC_Conversion_Count]=HAL_ADC_GetValue(&hadc1);
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1,1);
-    ADC4_Values[ADC_Conversion_Count]=HAL_ADC_GetValue(&hadc1);
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
+    {
+        HAL_ADC_Start(&hadc1);
+        HAL_ADC_PollForConversion(&hadc1,1);
+        ADC_Values[i][ADC_Conversion_Count]=HAL_ADC_GetValue(&hadc1);
+    }
     ADC_Conversion_Count++;
 }
 
 void Analog_Average()
 {
-    ADC_Sums[0]=0;
-    ADC_Sums[1]=0;
-    ADC_Sums[2]=0;
-    ADC_Sums[3]=0;
-    for (uint8_t i = 1; i < ADC_Conversion_Count; i++)
+    for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
-        ADC_Sums[0]+=ADC1_Values[i];
-        ADC_Sums[1]+=ADC2_Values[i];
-        ADC_Sums[2]+=ADC3_Values[i];
-        ADC_Sums[3]+=ADC4_Values[i];
+        ADC_Sums[i]=0;
+        for (uint8_t j = 1; j < ADC_Conversion_Count; j++)
+        {
+            ADC_Sums[i]+=ADC_Values[i][j];
+        }
+        ADC_Value_List[i]=ADC_Sums[i]/(ADC_Conversion_Count-1);
     }
-    ADC_Value_List[0]=ADC_Sums[0]/(ADC_Conversion_Count-1);
-    ADC_Value_List[1]=ADC_Sums[1]/(ADC_Conversion_Count-1);
-    ADC_Value_List[2]=ADC_Sums[2]/(ADC_Conversion_Count-1);
-    ADC_Value_List[3]=ADC_Sums[3]/(ADC_Conversion_Count-1);
 }
 
 void Analog_Check()

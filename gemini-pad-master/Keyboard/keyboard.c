@@ -74,25 +74,21 @@ void Keyboard_Init()
 
 void Keyboard_Scan()
 {
-    //Keyboard_Keys[0]=KEY1;
-    //Keyboard_Keys[1]=KEY2;
-    //Keyboard_Keys[2]=KEY3;
-    //Keyboard_Keys[3]=KEY4;
     if(Keyboard_AdvancedKeys[0].mode==LEFL_KEY_DIGITAL_MODE)
     {
-        lefl_advanced_key_update(Keyboard_AdvancedKeys+0,KEY1);
+        lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+0,KEY1);
     }
     if(Keyboard_AdvancedKeys[1].mode==LEFL_KEY_DIGITAL_MODE)
     {
-        lefl_advanced_key_update(Keyboard_AdvancedKeys+1,KEY2);
+        lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+1,KEY2);
     }
     if(Keyboard_AdvancedKeys[2].mode==LEFL_KEY_DIGITAL_MODE)
     {
-        lefl_advanced_key_update(Keyboard_AdvancedKeys+2,KEY3);
+        lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+2,KEY3);
     }
     if(Keyboard_AdvancedKeys[3].mode==LEFL_KEY_DIGITAL_MODE)
     {
-        lefl_advanced_key_update(Keyboard_AdvancedKeys+3,KEY4);
+        lefl_advanced_key_update_raw(Keyboard_AdvancedKeys+3,KEY4);
     }
     lefl_key_update(&KEY_SHIFT,SHIFT);
     lefl_key_update(&KEY_ALPHA,ALPHA);
@@ -160,22 +156,6 @@ void Keyboard_SendReport()
         USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,Keyboard_ReportBuffer,USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
         return;
     }
-    /*
-    if((!Keyboard_SHIFT_Flag)&&(!Keyboard_ALPHA_Flag))
-    {
-        for (uint8_t i = 0; i < KEY_NUM; i++)
-        {
-            lefl_bit_array_set(&Keyboard_KeyArray, Keyboard_Advanced_ALPHA_IDs[i] & 0xFF, false);
-            lefl_bit_array_set(&Keyboard_KeyArray, Keyboard_Advanced_SHIFT_IDs[i] & 0xFF, false);
-        }
-
-        for (uint8_t i = 2; i < 8; i++)
-        {
-            lefl_bit_array_set(&Keyboard_KeyArray, Keyboard_ALPHA_IDs[i] & 0xFF, false);
-            lefl_bit_array_set(&Keyboard_KeyArray, Keyboard_SHIFT_IDs[i] & 0xFF, false);
-        }
-    }
-    */
     for (uint8_t i = 0; i < ADVANCED_KEY_NUM; i++)
     {
         Keyboard_ReportBuffer[0]|= Keyboard_AdvancedKeys[i].key.state?((Keyboard_AdvancedKeys[i].key.id>>8) & 0xFF):0;

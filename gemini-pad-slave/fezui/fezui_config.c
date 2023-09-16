@@ -43,6 +43,23 @@ void fezui_init()
     u8g2_DrawLine(&(fezui.u8g2), 42, 21, 50, 32);
     u8g2_SendBuffer(&(fezui.u8g2));
 
+    lefl_loop_array_init(&KPS_history, KPS_history_data, sizeof(KPS_history_data)/sizeof(lefl_array_elm_t));
+    lefl_loop_array_init(&KPS_queue, KPS_queue_data, sizeof(KPS_queue_data)/sizeof(lefl_array_elm_t));
+    lefl_loop_array_init(analog_historys+0, analog_history1_data, sizeof(analog_history1_data)/sizeof(lefl_array_elm_t));
+    lefl_loop_array_init(analog_historys+1, analog_history2_data, sizeof(analog_history2_data)/sizeof(lefl_array_elm_t));
+    lefl_loop_array_init(analog_historys+2, analog_history3_data, sizeof(analog_history3_data)/sizeof(lefl_array_elm_t));
+    lefl_loop_array_init(analog_historys+3, analog_history4_data, sizeof(analog_history4_data)/sizeof(lefl_array_elm_t));
+
+    lefl_bit_array_init(lines+0, lines1_data, sizeof(lines1_data)*8);
+    lefl_bit_array_init(lines+1, lines2_data, sizeof(lines2_data)*8);
+    lefl_bit_array_init(lines+2, lines3_data, sizeof(lines3_data)*8);
+    lefl_bit_array_init(lines+3, lines4_data, sizeof(lines4_data)*8);
+
+    menupage_init();
+    settingspage_init();
+    calibrationpage_init();
+    keyconfigpage_init();
+
     Analog_Read();
     fezui_read_counts();
     lefl_link_frame_navigate(&mainframe, &homepage);
@@ -81,7 +98,7 @@ void fezui_timer_handler()
     fezui_kps = 0;
     for (uint8_t i = 0; i < REFRESH_RATE; i++)
     {
-        fezui_kps += KPS_queue.list[i];
+        fezui_kps += KPS_queue.data[i];
     }
     if (fezui_kps > UI_KPSMaximumPerSecond)
     {
@@ -91,7 +108,7 @@ void fezui_timer_handler()
     if(fezui_kps>KPS_history_max)
     {
         KPS_history_max=fezui_kps;
-        KPS_history.list[KPS_history.index]=fezui_kps;
+        KPS_history.data[KPS_history.index]=fezui_kps;
     }
     fezui_save_counts();
 

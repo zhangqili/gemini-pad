@@ -199,7 +199,7 @@ void fezui_draw_rolling_number(fezui_t *fezui_ptr, u8g2_uint_t x, u8g2_uint_t y,
     u8g2_long_t num=rolling_number->number;
     for (;num/=10;actual_digit++);
     num=rolling_number->number;
-    u8g2_SetClipWindow(&(fezui_ptr->u8g2),x,y-font_height,x+rolling_number->digit*font_width,y);
+    u8g2_SetClipWindow(&(fezui_ptr->u8g2),x,y-font_height,x+rolling_number->digit*font_width,y+1);
     for (uint8_t i = 0; i < rolling_number->digit; i++)
     {
         for (uint8_t j = 0; j < 10; j++)
@@ -226,7 +226,7 @@ void fezui_rolling_number_update(fezui_t *fezui_ptr, fezui_rolling_number_t* rol
         }
         else
         {
-            lefl_easing_pid(rolling_number->offsets+i, -(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
+            lefl_easing_pid(rolling_number->offsets+i, -1-(u8g2_GetMaxCharHeight(&(fezui_ptr->u8g2))));
         }
     }
     u8g2_SetFont(&(fezui_ptr->u8g2), temp_font);

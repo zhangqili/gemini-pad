@@ -12,11 +12,8 @@
 
 lefl_page_t calibrationpage={calibrationpage_logic,calibrationpage_draw,calibrationpage_load};
 
-lefl_menu_t calibrationmenu={
-        .items={"KEY1","KEY2","KEY3","KEY4"},
-        .len=4,
-        .selected_index=0,
-};
+lefl_menu_t calibrationmenu;
+const char* calibrationmenu_items[] = {"KEY1","KEY2","KEY3","KEY4"};
 
 uint8_t calibrationstate=0;
 
@@ -51,6 +48,12 @@ void drawrawdata(uint8_t x, uint8_t y,uint8_t n)
     sprintf(fezui_buffer,"range:%.3f",advanced_keys[n].range);
     u8g2_DrawStr(&(fezui.u8g2), x, y+7*8, fezui_buffer);
 
+}
+
+
+void calibrationpage_init()
+{
+    lefl_menu_init(&calibrationmenu, calibrationmenu_items, sizeof(calibrationmenu_items)/sizeof(const char*), NULL);
 }
 
 void calibrationpage_logic(lefl_page_t *page)

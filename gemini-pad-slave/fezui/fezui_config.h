@@ -40,12 +40,14 @@ void homepage_draw(lefl_page_t *page);
 void homepage_load(lefl_page_t *page);
 
 extern lefl_page_t menupage;
+void menupage_init();
 void menupage_logic(lefl_page_t *page);
 void menupage_draw(lefl_page_t *page);
 void menupage_load(lefl_page_t *page);
 void main_menu_cb(lefl_menu_t *menu);
 
 extern lefl_page_t settingspage;
+void settingspage_init();
 void settingspage_logic(lefl_page_t *page);
 void settingspage_draw(lefl_page_t *page);
 void settingspage_load(lefl_page_t *page);
@@ -62,6 +64,7 @@ void keyselectpage_draw(lefl_page_t *page);
 void keyselectpage_load(lefl_page_t *page);
 
 extern lefl_page_t keyconfigpage;
+void keyconfigpage_init();
 void keyconfigpage_logic(lefl_page_t *page);
 void keyconfigpage_draw(lefl_page_t *page);
 
@@ -72,6 +75,7 @@ void debugpage_draw(lefl_page_t *page);
 void debugpage_load(lefl_page_t *page);
 
 extern lefl_page_t calibrationpage;
+void calibrationpage_init();
 void calibrationpage_logic(lefl_page_t *page);
 void calibrationpage_draw(lefl_page_t *page);
 void calibrationpage_load(lefl_page_t *page);

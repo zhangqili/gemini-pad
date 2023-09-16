@@ -32,15 +32,16 @@ static fezui_scrollview_t scrollview =
 
 static fezui_rolling_number_t rolling_number=
 {
-    .digit=3,
+    .digit=5,
     .number=0,
-    .font = u8g2_font_freedoomr10_tu,
+    .font = u8g2_font_micro_mn,
 };
 
 void debugpage_logic(lefl_page_t *page)
 {
     lefl_easing_pid(&(scrollview.abscissa), target_abscissa);
     lefl_easing_pid(&(scrollview.ordinate), target_ordinate);
+    fezui_rolling_number_update(&fezui, &rolling_number);
 }
 void debugpage_draw(lefl_page_t *page)
 {
@@ -54,11 +55,11 @@ void debugpage_draw(lefl_page_t *page)
     u8g2_DrawBox(&(fezui.u8g2), 70-(u8g2_int_t)scrollview.abscissa, 5- (u8g2_int_t)scrollview.ordinate, 10, 10);
     u8g2_DrawHLine(&(fezui.u8g2), 3-(u8g2_int_t)scrollview.abscissa, 40- (u8g2_int_t)scrollview.ordinate, 100);
     fezui_draw_scrollview(&fezui, 0, 0, 128, 64, &scrollview);
-    u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
-    u8g2_DrawStr(&(fezui.u8g2), 96-(u8g2_int_t)scrollview.abscissa, 50- (u8g2_int_t)scrollview.ordinate, "123");
-    u8g2_DrawStr(&(fezui.u8g2), 96-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "1");
-    u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*1-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "2");
-    u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*2-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "3");
+    //u8g2_SetFont(&(fezui.u8g2), fez_font_6x10_m);
+    fezui_draw_rolling_number(&fezui, 96-(u8g2_int_t)scrollview.abscissa, 50- (u8g2_int_t)scrollview.ordinate, &rolling_number);
+    //u8g2_DrawStr(&(fezui.u8g2), 96-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "1");
+    //u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*1-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "2");
+    //u8g2_DrawStr(&(fezui.u8g2), 96+u8g2_GetMaxCharWidth(&(fezui.u8g2))*2-(u8g2_int_t)scrollview.abscissa, 63- (u8g2_int_t)scrollview.ordinate, "3");
     //u8g2_SetContrast(&(fezui.u8g2), targetnum);
 }
 

@@ -11,12 +11,8 @@
 
 lefl_page_t menupage={menupage_logic,menupage_draw,menupage_load};
 
-lefl_menu_t mainmenu = {
-    .items = {"Home","Oscilloscope","Statistic","Settings"},
-    .selected_index = 0,
-    .len = 4,
-    .menu_cb = main_menu_cb
-};
+lefl_menu_t mainmenu;
+const char* mainmenu_items[] = {"Home","Oscilloscope","Statistic","Settings"};
 
 
 float menu_offset;
@@ -33,6 +29,10 @@ lefl_animation_base_t menuanimation={
         .target=&menu_offset,
 };
 
+void menupage_init()
+{
+    lefl_menu_init(&mainmenu, mainmenu_items, sizeof(mainmenu_items)/sizeof(const char*), main_menu_cb);
+}
 
 void menupage_logic(lefl_page_t *page)
 {
